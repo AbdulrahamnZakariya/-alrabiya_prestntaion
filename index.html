@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دورة اللغة العربية - إعداد الأخبار</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<!-- أضف هذا بعد السطر 7 (بعد رابط خطوط Google) -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* استبدل محتوى :root (السطور 9-16) بهذا */
+:root {
+  --golden-sand:    #D4A657;
+  --deep-indigo:    #2D2A75;
+  --pomegranate:    #A7343A;
+  --charcoal-gray:  #222222;
+  --bg-pearl-white: #F8F6F2;
+  --complete-white: #FFFFFF;
+  --golden-light:   #E8C98A;
+  --golden-dark:    #9A7440;
+}
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: #1a1a1a;
+    overflow: hidden;
+    direction: rtl;
+  }
+
+  /* ===== SLIDESHOW ===== */
+  .presentation {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ===== LOGO — أسفل اليمين ثابت في كل الشرائح ===== */
+  .logo-fixed {
+    position: fixed;
+    bottom: 18px;
+    right: 22px;
+    z-index: 999;
+    width: 90px;
+    opacity: 0.92;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+  }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--golden-dark), var(--golden-sand), var(--golden-light));
+    z-index: 1000;
+    transition: width 0.5s ease;
+  }
+
+  /* ===== NAV BAR ===== */
+  .nav-bar {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 998;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(200,158,98,0.3);
+    border-radius: 50px;
+    padding: 10px 22px;
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--golden-sand);
+    font-size: 20px;
+    padding: 2px 8px;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .nav-btn:hover { color: var(--golden-light); transform: scale(1.2); }
+  .nav-btn:disabled { color: #666; cursor: default; transform: none; }
+
+  .slide-counter {
+    color: #ccc;
+    font-size: 13px;
+    min-width: 50px;
+    text-align: center;
+  }
+
+  .dots { display: flex; gap: 6px; align-items: center; }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(200,158,98,0.35);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot.active { background: var(--golden-sand); transform: scale(1.3); }
+
+  .keyboard-hint {
+    position: fixed;
+    top: 18px; left: 22px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    z-index: 998;
+    letter-spacing: 1px;
+  }
+
+  /* ===================================================
+     SLIDE 1 — COVER
+  =================================================== */
+  .slide-cover {
+    background: var(--charcoal-gray);
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 50%, rgba(200,158,98,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 80% at 80% 30%, rgba(200,158,98,0.07) 0%, transparent 60%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-cover::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    border: 1px solid rgba(200,158,98,0.1);
+    border-radius: 50%;
+  }
+  .slide-cover::after {
+    content: '';
+    position: absolute;
+    bottom: -150px; left: -150px;
+    width: 600px; height: 600px;
+    border: 1px solid rgba(200,158,98,0.07);
+    border-radius: 50%;
+  }
+
+  .cover-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 40px 60px 100px;
+    text-align: center;
+  }
+
+  .cover-tag {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: var(--golden-sand);
+    opacity: 0.8;
+    margin-bottom: 24px;
+  }
+
+  .cover-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    color: var(--complete-white);
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .cover-title span {
+    color: var(--golden-sand);
+    display: block;
+  }
+
+  .cover-subtitle {
+    font-size: clamp(14px, 2vw, 18px);
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+    margin-bottom: 48px;
+    letter-spacing: 1px;
+  }
+
+  .cover-divider {
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--golden-sand), transparent);
+    margin: 0 auto 48px;
+  }
+
+  .cover-instructor { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .cover-instructor-name {
+    font-family: 'Amiri', serif;
+    font-size: 26px;
+    color: var(--golden-light);
+    font-weight: 700;
+  }
+  .cover-instructor-title {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+  }
+
+  /* ===================================================
+     SLIDE 2 — BIO (صورة إبراهيم هنا فقط)
+  =================================================== */
+  .slide-bio {
+    background: var(--bg-pearl-white);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .slide-header {
+    background: var(--charcoal-gray);
+    padding: 22px 50px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 3px solid var(--golden-sand);
+    flex-shrink: 0;
+  }
+
+  .slide-header-number {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--golden-sand);
+    opacity: 0.7;
+  }
+
+  .slide-header-title {
+    font-family: 'Amiri', serif;
+    font-size: 20px;
+    color: var(--complete-white);
+    font-weight: 700;
+  }
+
+  .bio-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    overflow: hidden;
+    padding-bottom: 70px;
+  }
+
+  /* العمود الأيسر — الصورة والإحصاءات */
+  .bio-photo-col {
+    background: var(--charcoal-gray);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px 30px 40px;
+    gap: 20px;
+    position: relative;
+  }
+
+  .bio-photo-col::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--golden-dark), var(--golden-sand));
+  }
+
+  /* ↓ صورة إبراهيم — تُعرض في الشريحة الثانية فقط */
+  .bio-photo {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--golden-sand);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+
+  .bio-name {
+    font-family: 'Amiri', serif;
+    font-size: 22px;
+    color: var(--complete-white);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .bio-role {
+    font-size: 13px;
+    color: var(--golden-sand);
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .bio-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .bio-stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(200,158,98,0.1);
+    border-radius: 8px;
+    border-right: 3px solid var(--golden-sand);
+  }
+
+  .bio-stat-num {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--golden-sand);
+  }
+
+  .bio-stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+  }
+
+  /* العمود الأيمن — النص */
+  .bio-text-col {
+    padding: 40px 50px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .bio-paragraph {
+    font-size: 15px;
+    line-height: 2;
+    color: var(--charcoal-gray);
+    font-family: 'Amiri', serif;
+    background: rgba(200,158,98,0.04);
+    padding: 16px 18px;
+    border-right: 3px solid var(--golden-sand);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .bio-highlight {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: linear-gradient(135deg, rgba(200,158,98,0.08), rgba(200,158,98,0.02));
+    border: 1px solid rgba(200,158,98,0.2);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+
+  .bio-highlight-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+
+  .bio-highlight-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.8;
+  }
+
+  /* ===================================================
+     LESSON SLIDES (3–6)
+  =================================================== */
+  .slide-lesson {
+    background: var(--bg-pearl-white);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lesson-header {
+    background: linear-gradient(135deg, var(--charcoal-gray) 0%, #2a2a2a 100%);
+    padding: 28px 50px;
+    border-bottom: 3px solid var(--golden-sand);
+    flex-shrink: 0;
+  }
+
+  .lesson-session-tag {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--golden-sand);
+    opacity: 0.8;
+    margin-bottom: 6px;
+  }
+
+  .lesson-title {
+    font-family: 'Amiri', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    color: var(--complete-white);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .lesson-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+    margin-top: 4px;
+  }
+
+  /* منطقة المحتوى القابلة للتمرير */
+  .lesson-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 50px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* عنوان القسم */
+  .section-title {
+    font-family: 'Amiri', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--charcoal-gray);
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--golden-sand);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--golden-sand);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* بلوك القاعدة */
+  .rule-block {
+    background: var(--complete-white);
+    border-radius: 12px;
+    padding: 20px 24px;
+    border: 1px solid rgba(200,158,98,0.15);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .rule-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--golden-sand), var(--golden-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .rule-content { flex: 1; }
+
+  .rule-title {
+    font-family: 'Amiri', serif;
+    font-size: 17px;
+    color: var(--charcoal-gray);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .rule-text {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.9;
+    font-family: 'Amiri', serif;
+  }
+
+  /* صندوق المثال */
+  .example-box {
+    background: linear-gradient(135deg, rgba(200,158,98,0.1), rgba(200,158,98,0.03));
+    border: 1px solid rgba(200,158,98,0.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 10px;
+    font-family: 'Amiri', serif;
+    font-size: 15px;
+    color: var(--charcoal-gray);
+    line-height: 1.8;
+  }
+
+  .example-box strong { color: var(--golden-dark); }
+
+  /* شبكة القواعد */
+  .grid-rules {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .mini-rule {
+    background: var(--complete-white);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-right: 4px solid var(--golden-sand);
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+
+  .mini-rule-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--charcoal-gray);
+    margin-bottom: 6px;
+    font-family: 'Amiri', serif;
+  }
+
+  .mini-rule-text {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.8;
+    font-family: 'Amiri', serif;
+  }
+
+  /* بلوك التمارين */
+  .exercises-block {
+    background: #f8f4ee;
+    border: 2px dashed rgba(200,158,98,0.4);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+
+  .exercises-title {
+    font-family: 'Amiri', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--golden-dark);
+    margin-bottom: 14px;
+  }
+
+  .exercise-item {
+    font-size: 14px;
+    color: var(--charcoal-gray);
+    line-height: 2;
+    font-family: 'Amiri', serif;
+    padding-right: 16px;
+    position: relative;
+  }
+
+  .exercise-item::before {
+    content: '◈';
+    position: absolute;
+    right: 0;
+    color: var(--golden-sand);
+    font-size: 10px;
+    top: 6px;
+  }
+
+  /* الجدول */
+  .table-rules {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Amiri', serif;
+    font-size: 14px;
+  }
+
+  .table-rules th {
+    background: var(--charcoal-gray);
+    color: var(--golden-sand);
+    padding: 12px 16px;
+    text-align: right;
+    font-weight: 700;
+  }
+
+  .table-rules td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(200,158,98,0.1);
+    color: var(--charcoal-gray);
+    line-height: 1.7;
+  }
+
+  .table-rules tr:nth-child(even) td { background: rgba(200,158,98,0.04); }
+  .table-rules tr:hover td { background: rgba(200,158,98,0.08); }
+
+  /* Scrollbar */
+  .lesson-body::-webkit-scrollbar,
+  .bio-text-col::-webkit-scrollbar { width: 4px; }
+  .lesson-body::-webkit-scrollbar-thumb,
+  .bio-text-col::-webkit-scrollbar-thumb { background: var(--golden-sand); border-radius: 2px; }
+
+  /* Animation for cover */
+  .slide.active .cover-content > * {
+    animation: fadeUp 0.7s ease both;
+  }
+  .slide.active .cover-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .slide.active .cover-content > *:nth-child(2) { animation-delay: 0.2s; }
+  .slide.active .cover-content > *:nth-child(3) { animation-delay: 0.3s; }
+  .slide.active .cover-content > *:nth-child(4) { animation-delay: 0.4s; }
+  .slide.active .cover-content > *:nth-child(5) { animation-delay: 0.5s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* ===== ALARABIA BRAND — شريط الهوية العلوي ===== */
+.brand-header {
+  position: fixed;
+  top: 0; right: 0; left: 0;
+  height: 44px;
+  background: var(--charcoal-gray);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  z-index: 997;
+  border-bottom: 2px solid var(--golden-sand);
+}
+
+.brand-header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-header-logo svg {
+  width: 28px; height: 28px;
+}
+
+.brand-header-name {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--golden-sand);
+  letter-spacing: 0.5px;
+}
+
+.brand-header-slogan {
+  font-family: 'IBM Plex Sans Arabic', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* ===== شريط الهوية السفلي ===== */
+.brand-footer-strip {
+  position: fixed;
+  bottom: 0; right: 0; left: 0;
+  height: 4px;
+  background: linear-gradient(90deg,
+    var(--pomegranate) 0%,
+    var(--golden-sand) 40%,
+    var(--deep-indigo) 100%
+  );
+  z-index: 997;
+}
+
+/* ===== تحديث progress bar ليتناسب مع الهوية ===== */
+.progress-bar {
+  top: 44px !important;
+  background: linear-gradient(90deg, var(--golden-dark), var(--golden-sand), var(--golden-light)) !important;
+}
+
+/* ===== تحديث nav bar ===== */
+.nav-bar {
+  bottom: 16px !important;
+  background: rgba(34,34,34,0.85) !important;
+  border-color: rgba(212,166,87,0.4) !important;
+}
+
+/* ===== تحديث font body ===== */
+body {
+  font-family: 'IBM Plex Sans Arabic', 'Cairo', sans-serif !important;
+}
+
+/* ===== العنصر الزخرفي الجانبي (الخط الذهبي) ===== */
+.slide-lesson::before {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg,
+    var(--golden-sand) 0%,
+    var(--pomegranate) 50%,
+    var(--golden-sand) 100%
+  );
+  border-radius: 0 2px 2px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- شريط التقدم -->
+<div class="progress-bar" id="progressBar" style="width: 16.66%"></div>
+
+<!--
+  =====================================================
+  لوقو العربية للإعلام — ثابت أسفل اليمين في كل الشرائح
+  =====================================================
+  ضع صورة اللوقو في نفس مجلد الـ HTML باسم logo.png
+-->
+<img class="logo-fixed" src="logo.jpg" alt="العربية للإعلام" />
+
+<!-- تلميح لوحة المفاتيح -->
+<div class="keyboard-hint">← → للتنقل</div>
+
+<!-- شريط التنقل -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>&#8250;</button>
+  <div class="dots" id="dotsContainer"></div>
+  <span class="slide-counter" id="counter">1 / 14</span>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">&#8249;</button>
+</div>
+
+<div class="presentation">
+
+  <!-- ================================================
+       SLIDE 1 — الغلاف
+  ================================================ -->
+  <div class="slide slide-cover active" id="slide-0">
+    <div class="cover-content">
+      <div class="cover-tag">العربية للإعلام · 2025</div>
+      <div class="cover-title">
+        دورة اللغة العربية
+        <span>للعمل الإعلامي</span>
+      </div>
+      <div class="cover-subtitle">دورة التمكين اللغوي للإعلاميين  (الأساس)</div>
+      <div class="cover-divider"></div>
+      <div class="cover-instructor">
+        <div class="cover-instructor-name">إبراهيم الشيخ</div>
+        <div class="cover-instructor-title">معدّ أخبار تنفيذي · قناة رؤيا</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 2 — نبذة المدرب (صورة إبراهيم هنا فقط)
+  ================================================ -->
+  <div class="slide slide-bio" id="slide-1">
+    <div class="slide-header">
+      <div class="slide-header-number">٠٢</div>
+      <div class="slide-header-title">نبذة عن المدرب</div>
+    </div>
+    <div class="bio-body">
+
+      <!-- عمود الصورة — يسار -->
+      <div class="bio-photo-col">
+        <!--
+          ↓ صورة إبراهيم تظهر في هذه الشريحة فقط
+            ضع الصورة في نفس المجلد باسم ibrahim.jpg
+        -->
+        <img class="bio-photo" src="ibrahim.jpg" alt="إبراهيم" />
+        <div class="bio-name">إبراهيم الشيخ</div>
+        <div class="bio-role">معدّ أخبار تنفيذي<br/>قناة رؤيا</div>
+        <div class="bio-stats">
+          <div class="bio-stat">
+            <div class="bio-stat-num">+15</div>
+            <div class="bio-stat-label">عاماً من الخبرة<br/>الإعلامية</div>
+          </div>
+          <div class="bio-stat">
+            <div class="bio-stat-num">2</div>
+            <div class="bio-stat-label">مؤسسات إعلامية<br/>بارزة</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- عمود النص — يمين -->
+      <div class="bio-text-col">
+        <div class="bio-paragraph">
+          معدّ أخبار تنفيذي بخبرة تتجاوز 15 عاماً، تدرجت خلالها في العمل التحريري والإداري عبر مؤسسات إعلامية بارزة.
+        </div>
+        <div class="bio-highlight">
+          <div class="bio-highlight-icon">📺</div>
+          <div class="bio-highlight-text">
+            بدأت مسيرتي المهنية في فضائية <strong>"الحقيقة الدولية"</strong> (2011–2021)، حيث تدرجت من محرر إلى رئيس لقسم الأخبار، مع ممارسة مهام التدقيق اللغوي، قبل أن أنتقل في عام 2021 لأشغل منصبي الحالي كمعدّ تنفيذي للأخبار في قناة <strong>"رؤيا"</strong>.
+          </div>
+        </div>
+        <div class="bio-highlight">
+          <div class="bio-highlight-icon">🎓</div>
+          <div class="bio-highlight-text">
+            مساري المهني معزز بشهادة <strong>الصحافة والإعلام من جامعة البترا</strong> ودورات تدريبية متخصصة من <strong>معهد الجزيرة للإعلام</strong>.
+          </div>
+        </div>
+        <div class="bio-highlight">
+          <div class="bio-highlight-icon">✍️</div>
+          <div class="bio-highlight-text">
+            بجانب عملي في المؤسسات الإعلامية، أمتلك خبرة في <strong>التدقيق اللغوي الأكاديمي</strong>، حيث أشرفت على تدقيق وتجويد لغة العديد من الأبحاث ورسائل الماجستير.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 3 — الجلسة الأولى
+       أضف هنا المزيد من .rule-block و .grid-rules
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-2">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الأولى</div>
+      <div class="lesson-title">حروف الجر والمضاف إليه</div>
+      <div class="lesson-subtitle">أسماء الإشارة والأسماء الموصولة</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">حروف الجر — القاعدة الأساسية</div>
+      <div class="rule-block">
+        <div class="rule-icon">📌</div>
+        <div class="rule-content">
+          <div class="rule-title">تعريف حروف الجر</div>
+          <div class="rule-text">
+            أدوات تربط الأسماء بما قبلها وتجر الاسم الواقع بعدها.
+            من أهمها: <strong>من، إلى، عن، على، في، الباء، الكاف، اللام</strong>، وغيرها.
+          </div>
+          <div class="example-box">
+            <strong>مثال:</strong> ذهب المراسلُ <strong>إلى</strong> المدينةِ — المدينةِ اسم مجرور بـ"إلى" وعلامة جره الكسرة.
+          </div>
+        </div>
+      </div>
+
+      <!-- أضف المزيد من المحتوى هنا -->
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">🔹 الاسم بعد حرف الجر</div>
+          <div class="mini-rule-text">يكون دائماً مجروراً — علامة الجر الأصلية الكسرة.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">🔹 حذف حرف الجر</div>
+          <div class="mini-rule-text">يُحذف أحياناً للاختصار ويُعوَّض بإعراب الاسم بالفتح.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">🔹 "إلى" — الاتجاه</div>
+          <div class="mini-rule-text">توجهت البعثةُ <strong>إلى</strong> مقرِّ الأمم المتحدة.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">🔹 "في" — الظرفية</div>
+          <div class="mini-rule-text">انخفضت الأسعارُ <strong>في</strong> السوقِ المحلي.</div>
+        </div>
+      </div>
+
+      <div class="section-title">أسماء الإشارة</div>
+      <div class="rule-block">
+        <div class="rule-icon">👆</div>
+        <div class="rule-content">
+          <div class="rule-title">المطابقة في الجنس والعدد</div>
+          <div class="rule-text">
+            <strong>هذا</strong> للمفرد المذكر · <strong>هذه</strong> للمفرد المؤنث ·
+            <strong>هؤلاء</strong> للجمع الإنساني · <strong>ذلك/تلك</strong> للبعيد
+          </div>
+          <div class="example-box">
+            <strong>قاعدة ذهبية:</strong> الاسم المُعرَّف بـ"الـ" بعد اسم الإشارة يُعرب بدلاً مطابقاً لا مبتدأً ثانياً.<br/>
+            <strong>مثال:</strong> "هذا المذيعُ متميزٌ" — المذيعُ: بدل مرفوع من "هذا".
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">الأسماء الموصولة</div>
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمرين سريع</div>
+        <div class="exercise-item">أكمل بالاسم الموصول المناسب: هذه الفتاةُ ____ تفوقت في كتابة التقارير.</div>
+        <div class="exercise-item">أعلن المسؤولُ قراراتٍ جديدةً ____ أثارت الجدل.</div>
+        <div class="exercise-item">يحترم القارئُ كلَّ ____ يلتزمُ بالمهنية والأمانة في النشر.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 4 — الجلسة الثانية
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-3">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الثانية</div>
+      <div class="lesson-title">قواعد العدد في اللغة العربية</div>
+      <div class="lesson-subtitle">التذكير والتأنيث · الإعراب · التمييز</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">قاعدة التذكير والتأنيث</div>
+      <table class="table-rules">
+        <thead>
+          <tr>
+            <th>الأعداد</th>
+            <th>القاعدة</th>
+            <th>مثال</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1 و 2</td>
+            <td>تطابق المعدود</td>
+            <td>صحفيٌّ واحدٌ · صحفيةٌ واحدةٌ</td>
+          </tr>
+          <tr>
+            <td>3 – 10</td>
+            <td>تخالف المعدود</td>
+            <td>ثلاثةُ صحفيين · ثلاثُ صحفيات</td>
+          </tr>
+          <tr>
+            <td>11 و 12</td>
+            <td>تطابق المعدود</td>
+            <td>أحدَ عشرَ لاعباً · إحدى عشرةَ لاعبةً</td>
+          </tr>
+          <tr>
+            <td>13 – 19</td>
+            <td>الجزء الأول يخالف · "عشر/ة" تطابق</td>
+            <td>سبعةَ عشرَ وزيراً · سبعَ عشرةَ حقيبةً</td>
+          </tr>
+          <tr>
+            <td>العقود 20، 30...</td>
+            <td>صيغة ثابتة لا تتغير</td>
+            <td>واحدٌ وثلاثون يوماً</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">إعراب العدد والتمييز</div>
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">العدد 3–10</div>
+          <div class="mini-rule-text">معدوده جمعٌ مجرورٌ بالإضافة.<br/><strong>شاهدتُ خمسةَ تقاريرَ</strong></div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">العدد 11–99</div>
+          <div class="mini-rule-text">معدوده مفردٌ منصوبٌ تمييزاً.<br/><strong>قرأتُ خمسةَ عشرَ تقريراً</strong></div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">مئة وألف</div>
+          <div class="mini-rule-text">معدوده مضافٌ إليه مجرور.<br/><strong>شارك مئةُ صحفيٍّ</strong></div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">العقود 20، 30...</div>
+          <div class="mini-rule-text">ترفع بالواو وتنصب بالياء.<br/><strong>فاز عشرونَ مشاركاً</strong></div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين</div>
+        <div class="exercise-item">اختر الصحيح: قُدِّم في الحفل ___ (ثلاثةُ / ثلاثُ) فقراتٍ فنية.</div>
+        <div class="exercise-item">يشارك في المؤتمر ___ (خمسةَ عشرَ / خمسَ عشرةَ) دولةً عربيةً.</div>
+        <div class="exercise-item">صحح الخطأ: "بثت القناة ثلاثةَ عشرَ حلقةً وثلاثون تقريراً خاصاً."</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 5 — الجلسة الثالثة
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-4">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الثالثة</div>
+      <div class="lesson-title">الممنوع من الصرف وقواعد الأسماء</div>
+      <div class="lesson-subtitle">الأسماء الخمسة · المثنى · جمع المذكر والمؤنث السالم</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">الممنوع من الصرف</div>
+      <div class="rule-block">
+        <div class="rule-icon">🚫</div>
+        <div class="rule-content">
+          <div class="rule-title">تعريفه وأحكامه</div>
+          <div class="rule-text">اسمٌ لا يلحقه تنوينٌ، وعلامة جرِّه الفتحة بدل الكسرة — ما لم يكن معرَّفاً بـ"ال" أو مضافاً.</div>
+          <div class="example-box">
+            <strong>أمثلة:</strong> مصادرَ · وصل البابا فرنسيس إلى بغدادَ · اجتمعت قياداتٌ من لبنانَ والأردنِ
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">📋 صيغة منتهى الجموع</div>
+          <div class="mini-rule-text">مفاعل / مفاعيل: صحائفُ، تقاريرُ، مصادرُ — لا تُنوَّن وتُجرّ بالفتحة.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">📋 الأعلام الأعجمية</div>
+          <div class="mini-rule-text">إبراهيم، لندن، باريس — ممنوعة للعلمية والعجمة.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">📋 متى يُصرف؟</div>
+          <div class="mini-rule-text">عند التعريف بـ"ال": المصادرِ. أو الإضافة: تقاريرِ الوكالةِ.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">📋 وزن أفعل</div>
+          <div class="mini-rule-text">أفضل، أكبر، أحمر — للوصفية ووزن أفعل.</div>
+        </div>
+      </div>
+
+      <div class="section-title">الأسماء الخمسة — إعراب بالحروف</div>
+      <div class="rule-block">
+        <div class="rule-icon">5️⃣</div>
+        <div class="rule-content">
+          <div class="rule-title">أب · أخ · حم · فو · ذو</div>
+          <div class="rule-text">تُرفع بالواو · تُنصب بالألف · تُجرّ بالياء — شرط الإضافة.</div>
+          <div class="example-box">
+            <strong>جاء أبو محمدٍ</strong> · <strong>رأيتُ أبا محمدٍ</strong> · <strong>مررتُ بأبي محمدٍ</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">المثنى والجمع السالم</div>
+      <table class="table-rules">
+        <thead>
+          <tr><th>النوع</th><th>علامة الرفع</th><th>علامة النصب والجر</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>المثنى</td><td>الألف (صحفيانِ)</td><td>الياء (صحفيَيْنِ)</td></tr>
+          <tr><td>جمع المذكر السالم</td><td>الواو (صحفيونَ)</td><td>الياء (صحفيِّينَ)</td></tr>
+          <tr><td>جمع المؤنث السالم</td><td>الضمة (صحفياتٌ)</td><td>الكسرة (صحفياتٍ)</td></tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 6 — الجلسة الرابعة
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-5">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الرابعة</div>
+      <div class="lesson-title">التوابع النحوية وقواعد أخرى</div>
+      <div class="lesson-subtitle">نعت · عطف · توكيد · بدل · النسبة · الهمزة</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">النعت (الصفة)</div>
+      <div class="rule-block">
+        <div class="rule-icon">✨</div>
+        <div class="rule-content">
+          <div class="rule-title">التطابق الكامل مع المنعوت</div>
+          <div class="rule-text">يتبع النعت منعوته في: <strong>الإعراب · التعريف والتنكير · الإفراد والتثنية والجمع · الجنس</strong></div>
+          <div class="example-box">
+            <strong>ألقى الرئيسُ كلمةً شاملةً</strong> — شاملةً: نعت منصوب<br/>
+            <strong>استضاف البرنامجُ خبيراً دولياً معروفاً</strong> — نعتان مترادفان
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">🔗 العطف</div>
+          <div class="mini-rule-text">المعطوف يتبع المعطوف عليه في الإعراب.<br/>و · ف · ثم · أو · أم · بل · لا</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">💪 التوكيد المعنوي</div>
+          <div class="mini-rule-text">نفسه · عينه · كلهم · جميعهم · ذاته<br/><strong>أكد الوزيرُ نفسُهُ الخبرَ</strong></div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">🎯 البدل</div>
+          <div class="mini-rule-text">يتبع المبدل منه في الإعراب.<br/><strong>أعلنت العاصمةُ عمانُ الحدادَ</strong></div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">🔤 ياء النسبة</div>
+          <div class="mini-rule-text">صحافة ← صحافيّ · دولة ← دوليّ<br/>التاء المربوطة تُحذف عند الإضافة.</div>
+        </div>
+      </div>
+
+      <div class="section-title">همزة الوصل وهمزة القطع</div>
+      <div class="rule-block">
+        <div class="rule-icon">أ</div>
+        <div class="rule-content">
+          <div class="rule-title">طريقة التمييز — ضع "فـ" قبل الكلمة</div>
+          <div class="rule-text">إن نطقت الهمزة بعده → همزة قطع (اكتبها). إن لم تنطقها → همزة وصل (لا تكتبها).</div>
+          <div class="example-box">
+            <strong>فأخذ</strong> ← سمعنا الهمزة → همزة قطع: <strong>أخذ</strong><br/>
+            <strong>فاستمرار</strong> ← لم ننطق همزة → همزة وصل: <strong>استمرار</strong><br/>
+            <strong>بينما انتظر</strong> — همزتها وصل لأننا نقول "ننتظر" بدون ألف لفظاً في المضارع.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين ختامية</div>
+        <div class="exercise-item">صحح: "نطالب بخطةٍ اقتصادٌّي شاملةٌ." (انتبه لحالة النعت)</div>
+        <div class="exercise-item">أكمل: "قرأتُ التقرير _____ (نفسه/نفسُه) مرتين." (أعرب التوكيد)</div>
+        <div class="exercise-item">اذكر سبب المنع: مصابيحُ · أطباءُ · صحراءُ · أحمدُ · مدارسُ</div>
+      </div>
+
+    </div>
+  </div>
+ 
+</div><!-- end .presentation -->
+<!-- ================================================
+       SLIDE 7 — الجلسة الأولى (تكملة): المضاف والمضاف إليه
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-6">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الأولى — تكملة</div>
+      <div class="lesson-title">المضاف والمضاف إليه (أسلوب الإضافة)</div>
+      <div class="lesson-subtitle">قواعد التركيب الإضافي وأحكامه النحوية</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">تعريف الإضافة وأركانها</div>
+      <div class="rule-block">
+        <div class="rule-icon">🔗</div>
+        <div class="rule-content">
+          <div class="rule-title">المضاف والمضاف إليه</div>
+          <div class="rule-text">
+            أسلوب الإضافة هو تركيب يضم اسمين متتاليين: الأول <strong>المضاف</strong> والثاني <strong>المضاف إليه</strong>. يكون بينهما علاقة تملّك أو تخصيص أو تعريف.
+          </div>
+          <div class="example-box">
+            <strong>مركزُ الجزيرةِ</strong> — مركزُ: المضاف (مرفوع بالضمة)، الجزيرةِ: مضاف إليه مجرور بالكسرة.<br/>
+            <strong>قناةُ الجزيرةِ تقدم تغطيةً شاملة</strong> — قناةُ: مبتدأ مرفوع وهو مضاف.
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">📌 المضاف إليه دائماً مجرور</div>
+          <div class="mini-rule-text">علامة جره الكسرة أو ما ينوب عنها في جميع الأحوال.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">📌 المضاف يتغير إعرابه</div>
+          <div class="mini-rule-text">يعرب حسب موقعه في الجملة: مبتدأً أو فاعلاً أو مفعولاً به...</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">📌 حذف التنوين عند الإضافة</div>
+          <div class="mini-rule-text"><strong>خبرٌ عاجل</strong> ← <strong>خبرُ عاجلٍ</strong> — حُذف التنوين لأنه صار مضافاً.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">📌 حذف نون المثنى والجمع</div>
+          <div class="mini-rule-text"><strong>مراسلون</strong> ← <strong>مراسلو القناةِ</strong> — حُذفت النون للإضافة.</div>
+        </div>
+      </div>
+
+      <div class="section-title">طريقة تمييز المضاف إليه</div>
+      <div class="rule-block">
+        <div class="rule-icon">💡</div>
+        <div class="rule-content">
+          <div class="rule-title">الاختبار السريع — حوّله إلى ضمير</div>
+          <div class="rule-text">إذا أمكن تحويل المضاف إليه إلى ضمير متصل عائد على المضاف وصحّ المعنى، فهو مضاف إليه بالتأكيد.</div>
+          <div class="example-box">
+            <strong>موقعُ الوكالةِ</strong> ← موقعُها ✓<br/>
+            <strong>نشرةُ الأخبارِ</strong> ← نشرةُ أخبارنا ✓<br/>
+            <strong>مراسلو القناةِ</strong> ← مراسلوها ✓
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">أمثلة إعلامية مشروحة</div>
+      <div class="rule-block">
+        <div class="rule-icon">📺</div>
+        <div class="rule-content">
+          <div class="rule-title">من واقع الأخبار</div>
+          <div class="rule-text">
+            <strong>»اختتام قمةِ المناخِ العالميةِ بنجاح.«</strong><br/>
+            قمةِ: مفعول به منصوب بالكسرة نيابةً عن الفتحة (ممنوع من الصرف) وهو مضاف. المناخِ: مضاف إليه مجرور. العالميةِ: نعت مجرور.<br/><br/>
+            <strong>»استضاف البرنامجُ محلَّلَيْنِ سياسيَّيْنِ.«</strong><br/>
+            محلَّلَيْنِ: مفعول به منصوب بالياء (مثنى) وهو مضاف. سياسيَّيْنِ: مضاف إليه مجرور بالياء.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين المضاف والمضاف إليه</div>
+        <div class="exercise-item">عيّن المضاف والمضاف إليه وأعربهما: «انعقادُ مؤتمرِ الصحافةِ الدوليةِ في العاصمة.»</div>
+        <div class="exercise-item">حوّل المضاف إليه إلى ضمير: «قراراتُ الحكومةِ الأخيرة» ← قراراتُ___ الأخيرة.</div>
+        <div class="exercise-item">حوّل: «موقعُ الوكالةِ الرسمي» ← موقعُ___ الرسمي.</div>
+        <div class="exercise-item">صحح الخطأ: «ناقش المذيعُ تحليلُ الخبيرِ الاقتصادي.» — ما وجه الخطأ؟</div>
+        <div class="exercise-item">صحح: «وصلت نشرةِ الأخبارِ كاملةً للمشاهدين.» — لماذا الضبط خاطئ؟</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 8 — الجلسة الأولى (تكملة): أسماء الإشارة التفصيلية
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-7">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الأولى — تكملة</div>
+      <div class="lesson-title">أسماء الإشارة — التفصيل والإعراب</div>
+      <div class="lesson-subtitle">هذا · هذه · هؤلاء · ذلك · تلك · أولئك</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">جدول أسماء الإشارة الكاملة</div>
+      <table class="table-rules">
+        <thead>
+          <tr>
+            <th>اسم الإشارة</th>
+            <th>يُستخدم لـ</th>
+            <th>مثال إعلامي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>هذا</strong></td>
+            <td>مفرد مذكر قريب</td>
+            <td>هذا المراسلُ نشيطٌ.</td>
+          </tr>
+          <tr>
+            <td><strong>هذه</strong></td>
+            <td>مفرد مؤنث قريب</td>
+            <td>هذه المراسلةُ نشيطةٌ.</td>
+          </tr>
+          <tr>
+            <td><strong>هذانِ / هذَيْنِ</strong></td>
+            <td>مثنى مذكر (رفع / نصب وجر)</td>
+            <td>هذانِ المذيعانِ بارعان — استضفنا هذَيْنِ الخبيرَيْنِ.</td>
+          </tr>
+          <tr>
+            <td><strong>هاتانِ / هاتَيْنِ</strong></td>
+            <td>مثنى مؤنث (رفع / نصب وجر)</td>
+            <td>استضاف البرنامج هاتَيْنِ الضيفتَيْنِ الكريمتَيْنِ.</td>
+          </tr>
+          <tr>
+            <td><strong>هؤلاء</strong></td>
+            <td>جمع عاقل قريب</td>
+            <td>هؤلاء الصحفيون متميزون.</td>
+          </tr>
+          <tr>
+            <td><strong>ذلك / تلك</strong></td>
+            <td>مفرد مذكر / مؤنث بعيد</td>
+            <td>ذلك القرارُ خاطئٌ — تلك الليلةُ كانت حافلة.</td>
+          </tr>
+          <tr>
+            <td><strong>أولئك</strong></td>
+            <td>جمع عاقل بعيد</td>
+            <td>أولئكَ المراسلون قدموا تغطيةً مميزة.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">القاعدة الذهبية في الإعراب</div>
+      <div class="rule-block">
+        <div class="rule-icon">⭐</div>
+        <div class="rule-content">
+          <div class="rule-title">الاسم المعرَّف بـ"الـ" بعد اسم الإشارة = بدل لا مبتدأ ثانٍ</div>
+          <div class="rule-text">
+            خطأ شائع جداً في الإعلام: إعراب الاسم المعرَّف بعد اسم الإشارة مبتدأً ثانياً. الصحيح أنه <strong>بدل مطابق</strong>.
+          </div>
+          <div class="example-box">
+            <strong>»هذا المذيعُ متميزٌ«</strong><br/>
+            ✅ هذا: اسم إشارة مبني في محل رفع مبتدأ.<br/>
+            ✅ المذيعُ: بدل مرفوع من "هذا" وليس مبتدأً ثانياً.<br/>
+            ✅ متميزٌ: خبر المبتدأ "هذا" مرفوع بالضمة.
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">أمثلة إعلامية مشروحة</div>
+      <div class="rule-block">
+        <div class="rule-icon">📢</div>
+        <div class="rule-content">
+          <div class="rule-title">تطبيقات من الأخبار</div>
+          <div class="rule-text">
+            <strong>»هذه النشرةُ تلكَ الليلةِ كانت حافلةً بالأخبار.«</strong><br/>
+            "هذه": مبتدأ مبني في محل رفع — "النشرةُ": بدل مرفوع — "تلكَ": نعت في محل جر — "كانت حافلةً": خبر.<br/><br/>
+            <strong>»أولئكَ المراسلون قدموا تغطيةً ميدانيةً مميزة.«</strong><br/>
+            "أولئك": مبتدأ مبني في محل رفع — "المراسلون": بدل مرفوع بالواو.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين أسماء الإشارة</div>
+        <div class="exercise-item">اختر الصحيح: ____ التقاريرُ الدولية تؤكد وجود الأزمة. (هذا / هذه / هؤلاء)</div>
+        <div class="exercise-item">سافر مراسلا القناة إلى الميدان، ____ المراسلَيْنِ سينقلان الحدث مباشرةً. (هذانِ / هذَيْنِ / هاتانِ)</div>
+        <div class="exercise-item">حوّل من الإفراد إلى الجمع: «هذا الصحفي ملتزمٌ بأخلاق المهنة.» ← ________ الصحفيون ملتزمون.</div>
+        <div class="exercise-item">استخرج اسم الإشارة وبيّن موقعه الإعرابي: «أولئك الشهودُ رووا تفاصيلَ جديدةً.»</div>
+        <div class="exercise-item">استخرج اسم الإشارة وبيّن موقعه: «في يدِ هذا المصوِّرِ كاميرا احترافية.»</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 9 — الجلسة الأولى (تكملة): الأسماء الموصولة تفصيلاً
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-8">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الأولى — تكملة</div>
+      <div class="lesson-title">الأسماء الموصولة — التفصيل والأحكام</div>
+      <div class="lesson-subtitle">الذي · التي · الذين · اللاتي · مَن · ما</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">جدول الأسماء الموصولة</div>
+      <table class="table-rules">
+        <thead>
+          <tr>
+            <th>الاسم الموصول</th>
+            <th>يُستخدم لـ</th>
+            <th>مثال</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>الذي</strong></td>
+            <td>مفرد مذكر</td>
+            <td>حضر الصحفيُّ الذي فازَ بالجائزة.</td>
+          </tr>
+          <tr>
+            <td><strong>التي</strong></td>
+            <td>مفرد مؤنث</td>
+            <td>ناقشت اللجنةُ التقاريرَ التي أعدّها الخبراءُ.</td>
+          </tr>
+          <tr>
+            <td><strong>اللذانِ / اللذَيْنِ</strong></td>
+            <td>مثنى مذكر</td>
+            <td>المذيعانِ اللذانِ قدّما البرنامجَ مميّزان.</td>
+          </tr>
+          <tr>
+            <td><strong>اللتانِ / اللتَيْنِ</strong></td>
+            <td>مثنى مؤنث</td>
+            <td>المراسلتانِ اللتانِ غطّتا الحدثَ متمرّستان.</td>
+          </tr>
+          <tr>
+            <td><strong>الذين</strong></td>
+            <td>جمع مذكر عاقل</td>
+            <td>الصحفيون الذين حضروا الندوةَ كثيرون.</td>
+          </tr>
+          <tr>
+            <td><strong>اللاتي / اللواتي</strong></td>
+            <td>جمع مؤنث عاقل</td>
+            <td>المراسلاتُ اللاتي غطّين الحربَ شجاعات.</td>
+          </tr>
+          <tr>
+            <td><strong>مَن</strong></td>
+            <td>للعاقل (مفرد وجمع)</td>
+            <td>كرّم المهرجانُ كلَّ مَن أسهَمَ في الإنتاج.</td>
+          </tr>
+          <tr>
+            <td><strong>ما</strong></td>
+            <td>لغير العاقل والأمور</td>
+            <td>أعلنوا ما توصّلوا إليه من نتائج.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">صلة الموصول وأحكامها</div>
+      <div class="rule-block">
+        <div class="rule-icon">🔍</div>
+        <div class="rule-content">
+          <div class="rule-title">صلة الموصول — جملة لا محل لها من الإعراب</div>
+          <div class="rule-text">
+            صلة الموصول جملةٌ تأتي بعد الاسم الموصول لتحدد معناه وتكمل الفكرة. لا محل لها من الإعراب، لكنها ضرورية لفهم المعنى.
+          </div>
+          <div class="example-box">
+            <strong>»حضر الصحفيُّ الذي فازَ بالجائزةِ«</strong><br/>
+            الذي: اسم موصول مبني على السكون في محل رفع نعت للصحفي.<br/>
+            <strong>فازَ بالجائزةِ</strong>: صلة الموصول — جملة فعلية لا محل لها من الإعراب.
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">تنبيهات مهمة — أخطاء شائعة في الإعلام</div>
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">❌ خطأ شائع</div>
+          <div class="mini-rule-text">«هذه هي السيارةُ التي تمَّ استخدامها في الهجوم.»<br/>الصواب: «هذه هي السيارةُ تمَّ استخدامها في الهجوم.» — "التي" زائدة هنا.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">✅ قاعدة المطابقة</div>
+          <div class="mini-rule-text">الموصول يطابق ما قبله في النوع والعدد:<br/>«الموظفُ الذي نجح» — «الموظفةُ التي نجحت» — «الموظفون الذين نجحوا»</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">💡 مَن وما — لا يتغيران</div>
+          <div class="mini-rule-text">مَن وما كموصولات لا تتغير لفظاً، لكن يجوز أن يأتي الفعل بعدهما جمعاً أو مفرداً.<br/>«سأكرّم كلَّ مَن حضرَ» أو «مَن حضروا» — كلاهما صحيح.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">📌 إعراب "التي" في الخبر</div>
+          <div class="mini-rule-text">«هذه الأصواتُ هي التي تطالبُ بالإصلاح.»<br/>"التي": اسم موصول في محل رفع خبر المبتدأ "هذه الأصوات".</div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين الأسماء الموصولة</div>
+        <div class="exercise-item">أكمل بالموصول المناسب: هذه الفتاةُ ____ تفوّقت في كتابة التقارير.</div>
+        <div class="exercise-item">أكمل: أعلن المسؤولُ قراراتٍ جديدةً ____ أثارت الجدل.</div>
+        <div class="exercise-item">صِل بين الجملتين باسم موصول: «المذيعُ فازَ بجائزة أفضل مقدم» + «المذيعُ يقدّم نشرات التاسعة.»</div>
+        <div class="exercise-item">صِل: «استقالت الوزيرةُ» + «الوزيرةُ تعرّضت للضغط الإعلامي.»</div>
+        <div class="exercise-item">استخرج الاسم الموصول وصلته وأعربه: «تضمُّ اللجنةُ خبراءَ مَن لديهم خبرةٌ دولية في الاقتصاد.»</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 10 — الجلسة الثانية (تكملة): إعراب العدد تفصيلاً
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-9">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الثانية — تكملة</div>
+      <div class="lesson-title">إعراب الأعداد والتمييز — تفصيل</div>
+      <div class="lesson-subtitle">العدد المركب · العقود · المئة والألف · تمييز العدد</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">إعراب العدد المركب (11–19)</div>
+      <div class="rule-block">
+        <div class="rule-icon">🔢</div>
+        <div class="rule-content">
+          <div class="rule-title">مبني على فتح الجزأين دائماً</div>
+          <div class="rule-text">
+            الأعداد من 11 إلى 19 مبنية على فتح الجزأين في جميع حالات الإعراب (رفع أو نصب أو جر). معدودها يأتي <strong>مفرداً منصوباً تمييزاً</strong>.
+          </div>
+          <div class="example-box">
+            <strong>»قرأتُ خمسةَ عشرَ تقريراً.«</strong> — "خمسةَ عشرَ": مبني على فتح الجزأين في محل نصب مفعول به — "تقريراً": تمييز منصوب بالفتحة.<br/><br/>
+            <strong>»سبعَ عشرةَ قضيةً قُيِّدت.«</strong> — "سبعَ عشرةَ": مبني على فتح الجزأين في محل رفع مبتدأ — "قضيةً": تمييز منصوب.<br/><br/>
+            <strong>»إحدى عشرةَ مقالةً نُشرت.«</strong> — مبني على فتح الجزأين (لا نقول "إحدى عشرِةَ" بكسر التاء).
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">إعراب العقود (20، 30...90)</div>
+      <div class="rule-block">
+        <div class="rule-icon">🔟</div>
+        <div class="rule-content">
+          <div class="rule-title">تُعرب إعراب جمع المذكر السالم</div>
+          <div class="rule-text">
+            العقود ملحقةٌ بجمع المذكر السالم: تُرفع بالواو، وتُنصب وتُجَر بالياء. معدودها مفردٌ منصوب تمييزاً.
+          </div>
+          <div class="example-box">
+            <strong>رفع:</strong> «فازَ عشرونَ مشاركاً» — عشرونَ: فاعل مرفوع وعلامة رفعه الواو.<br/>
+            <strong>نصب:</strong> «كرّمت اللجنةُ خمسينَ صحفياً» — خمسينَ: مفعول به منصوب بالياء.<br/>
+            <strong>جر:</strong> «في الاجتماع ثلاثينَ خبيراً» — ثلاثينَ: مجرور بالياء.
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">مئة وألف وتمييزهما</div>
+      <div class="rule-block">
+        <div class="rule-icon">💯</div>
+        <div class="rule-content">
+          <div class="rule-title">المئة والألف — إعراب عادي والمعدود مضاف إليه</div>
+          <div class="rule-text">
+            "مئة" و"ألف" تُعربان حسب موقعهما في الجملة. معدودهما يأتي دائماً <strong>مضافاً إليه مجروراً</strong> (لا تمييزاً منصوباً).
+          </div>
+          <div class="example-box">
+            <strong>»شارك مئةُ صحفيٍّ في المؤتمر«</strong> — مئةُ: فاعل مرفوع بالضمة — صحفيٍّ: مضاف إليه مجرور بالكسرة.<br/>
+            <strong>»قدّمت القناةُ ألفَ ساعةٍ من البث«</strong> — ألفَ: مفعول به منصوب بالفتحة — ساعةٍ: مضاف إليه مجرور بالكسرة.<br/>
+            <strong>ملحوظة إملائية:</strong> يُفضّل كتابة "مئة" بلا ألف (لا "مائة") وفق التهجئة الحديثة.
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">ملخص تمييز الأعداد</div>
+      <table class="table-rules">
+        <thead>
+          <tr><th>العدد</th><th>حالة التمييز</th><th>مثال</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>3 – 10</td><td>جمع مجرور بالإضافة</td><td>شاهدتُ خمسةَ تقاريرَ</td></tr>
+          <tr><td>11 – 19</td><td>مفرد منصوب تمييزاً</td><td>قرأتُ خمسةَ عشرَ تقريراً</td></tr>
+          <tr><td>20 – 99</td><td>مفرد منصوب تمييزاً</td><td>كرّمنا خمسينَ صحفياً</td></tr>
+          <tr><td>مئة وألف</td><td>مفرد مجرور بالإضافة</td><td>شارك مئةُ صحفيٍّ</td></tr>
+        </tbody>
+      </table>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين الإعراب والتمييز</div>
+        <div class="exercise-item">أعرب: «حصل المتسابقانِ على اثنتَيْ عشرةَ ميداليةً.»</div>
+        <div class="exercise-item">أعرب: «طبعت المجلةُ خمسةً وعشرينَ ألفَ نسخةٍ من العدد الخاص.»</div>
+        <div class="exercise-item">اختر الصحيح: بلغ عددُ الحضور في الندوة (عشرينَ – عشرونَ – عشرينِ) إعلامياً.</div>
+        <div class="exercise-item">اختر: أعلنت المنظمةُ (خمسةُ آلافٍ – خمسةَ آلافٍ – خمسَ آلافٍ) فرصةِ عملٍ جديدة.</div>
+        <div class="exercise-item">حوّل الأرقام إلى كلمات واضبط التمييز: استمرت العملية 17 ساعة — في المكتبة 250 مجلةً.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 11 — الجلسة الثالثة (تكملة): الممنوع من الصرف
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-10">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الثالثة — تكملة</div>
+      <div class="lesson-title">الممنوع من الصرف — التفصيل والأسباب</div>
+      <div class="lesson-subtitle">صيغ منتهى الجموع · الأعلام · وزن أفعل · متى يُصرف؟</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">أسباب المنع من الصرف</div>
+      <table class="table-rules">
+        <thead>
+          <tr><th>السبب</th><th>أمثلة</th><th>مثال إعلامي</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>صيغة منتهى الجموع (مفاعل/مفاعيل)</td>
+            <td>مصادرُ، تقاريرُ، صحائفُ، مسائلُ</td>
+            <td>نعتمد على مصادرَ موثوقةٍ.</td>
+          </tr>
+          <tr>
+            <td>علَم أعجمي زائد عن ثلاثة أحرف</td>
+            <td>إبراهيم، لندنُ، باريسُ، فرنسيسُ</td>
+            <td>وصل البابا فرنسيس إلى بغدادَ.</td>
+          </tr>
+          <tr>
+            <td>علَم مختوم بألف ونون زائدتين</td>
+            <td>عثمانُ، سلمانُ، رمضانُ، لبنانُ</td>
+            <td>اجتمعت قياداتٌ من لبنانَ والأردنِ.</td>
+          </tr>
+          <tr>
+            <td>وزن أفعل (مؤنثه فعلاء)</td>
+            <td>أفضلُ، أكبرُ، أحمرُ، أهمُّ</td>
+            <td>موضوعٌ أهمُّ من غيره يستحق التغطية.</td>
+          </tr>
+          <tr>
+            <td>ألف التأنيث المقصورة أو الممدودة</td>
+            <td>صنعاءُ، حيفاءُ، لبنى، سلمى</td>
+            <td>وصلنا إلى صنعاءَ في الفجر.</td>
+          </tr>
+          <tr>
+            <td>أسماء الأشهر السريانية والأجنبية</td>
+            <td>يناير، فبراير، كانون، تموز</td>
+            <td>صدر القرار في شهر يناير الماضي.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">متى يُصرف الممنوع من الصرف؟</div>
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">✅ عند التعريف بـ"ال"</div>
+          <div class="mini-rule-text">مصادرُ ← <strong>المصادرِ</strong> (بكسرة وتنوين ممنوع).<br/>تقاريرُ ← <strong>التقاريرِ</strong> يعود للجر بالكسرة.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">✅ عند الإضافة</div>
+          <div class="mini-rule-text">اطلعنا على <strong>تقاريرِ الوكالةِ</strong> — جُرّت بالكسرة لأنها مضافة.<br/>وكذلك <strong>مصادرُك السرية</strong> — الكسر لإضافتها للضمير.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">❌ بدون ال وبدون إضافة</div>
+          <div class="mini-rule-text">نعتمد على <strong>مصادرَ</strong> موثوقةٍ — الفتحة بدل الكسرة.<br/>وصلنا إلى <strong>بغدادَ</strong> — منصوب بالفتحة بلا تنوين.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">⚠️ انتبه — الأردن مصروف</div>
+          <div class="mini-rule-text">«الأردنِ» تصرف لأن نونها أصلية وليست زائدة — علامة جرها الكسرة الأصلية.</div>
+        </div>
+      </div>
+
+      <div class="section-title">أمثلة إعلامية كاملة بالإعراب</div>
+      <div class="rule-block">
+        <div class="rule-icon">📰</div>
+        <div class="rule-content">
+          <div class="rule-title">تطبيقات من الأخبار</div>
+          <div class="rule-text">
+            <strong>»هذه أخبارُ عاجلةٌ.«</strong> — أخبارُ: مبتدأ مرفوع بالضمة (ممنوع من الصرف: جمع تكسير على وزن أفعال)، بدون تنوين.<br/><br/>
+            <strong>»نعتمد على مصادرَ موثوقةٍ.«</strong> — مصادرَ: مجرور بالفتحة نيابةً عن الكسرة لأنه ممنوع (صيغة مفاعل).<br/><br/>
+            <strong>»عُقد المؤتمر في شهرِ رمضانَ.«</strong> — رمضانَ: مضاف إليه مجرور بالفتحة (ممنوع + علَم + ألف ونون زائدتان). لكن لأنه مضاف إلى "شهر" فقد كان يمكن جرّه بالكسرة أيضاً.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين الممنوع من الصرف</div>
+        <div class="exercise-item">اذكر سبب المنع: مصابيحُ — أطباءُ — صحراءُ — أحمدُ — جوليا — مدارسُ.</div>
+        <div class="exercise-item">اجعل "مصدر" جمعاً في الجملة: «اعتمد المراسلُ على مصدرٍ موثوقٍ في تقريره.»</div>
+        <div class="exercise-item">اجعل "مسؤول" جمعاً: «التقى الوفدُ بمسؤولٍ كبيرٍ في الأمم المتحدة.»</div>
+        <div class="exercise-item">صحح إن لزم: «اطلعنا على تقاريرٍ هامةٍ من وكالاتٍ مختلفةٍ.» — ما الصواب في ضبط "تقارير"؟</div>
+        <div class="exercise-item">صحح: «كرّمت المنظمةُ أبطالٍ أولمبيين في الاحتفال.»</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 12 — الجلسة الرابعة (تكملة): العطف والتوكيد تفصيلاً
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-11">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الرابعة — تكملة</div>
+      <div class="lesson-title">العطف والتوكيد — تفصيل وتطبيقات</div>
+      <div class="lesson-subtitle">حروف العطف السبعة · التوكيد اللفظي والمعنوي</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">حروف العطف السبعة — معانيها وأحكامها</div>
+      <table class="table-rules">
+        <thead>
+          <tr><th>حرف العطف</th><th>المعنى</th><th>مثال إعلامي</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>الواو (و)</strong></td>
+            <td>مطلق الجمع بدون ترتيب</td>
+            <td>وصل المراسلُ والمصوِّرُ إلى الميدان.</td>
+          </tr>
+          <tr>
+            <td><strong>الفاء (ف)</strong></td>
+            <td>الترتيب والتعقيب الفوري</td>
+            <td>أُعلنت النتائجُ فانطلقت الاحتفالاتُ.</td>
+          </tr>
+          <tr>
+            <td><strong>ثم</strong></td>
+            <td>الترتيب مع التراخي (بمهلة)</td>
+            <td>ألقى البيانَ ثم غادر القاعةَ بهدوء.</td>
+          </tr>
+          <tr>
+            <td><strong>أو</strong></td>
+            <td>التخيير أو الشك أو التنويع</td>
+            <td>سيتم الاتصال اليومَ أو غداً بحسب الظروف.</td>
+          </tr>
+          <tr>
+            <td><strong>أم</strong></td>
+            <td>في سياق الاستفهام فقط</td>
+            <td>هل تفضّل الصحافة المطبوعةَ أم الإلكترونيةَ؟</td>
+          </tr>
+          <tr>
+            <td><strong>بل</strong></td>
+            <td>الإضراب (تصحيح ما قبله)</td>
+            <td>لم يكن مراسلاً بل محلِّلاً سياسياً.</td>
+          </tr>
+          <tr>
+            <td><strong>لا</strong></td>
+            <td>نفي ما بعده وإثبات ما قبله</td>
+            <td>نريد حلولاً لا مشاكلَ جديدةً.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">قاعدة العطف في الجمل الطويلة</div>
+      <div class="rule-block">
+        <div class="rule-icon">⛓️</div>
+        <div class="rule-content">
+          <div class="rule-title">المعطوف يتبع المعطوف عليه حتى لو بعُد عنه</div>
+          <div class="rule-text">
+            في الجمل الإخبارية الطويلة، قد يبتعد المعطوف عن المعطوف عليه لكنه يظل تابعاً له إعرابياً.
+          </div>
+          <div class="example-box">
+            <strong>»نقلت الخبرَ الجريدةُ ذاتُ المصداقيةِ العالية ووكالةُ الأنباء.«</strong><br/>
+            وكالةُ: معطوف على "الجريدةُ" مرفوع مثلها بالضمة، رغم وجود وصف طويل فاصل بينهما.
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">التوكيد المعنوي — ألفاظه وإعرابه</div>
+      <div class="rule-block">
+        <div class="rule-icon">💪</div>
+        <div class="rule-content">
+          <div class="rule-title">الألفاظ الخمسة للتوكيد المعنوي</div>
+          <div class="rule-text">
+            <strong>نفس · عين · كل · جميع · ذات</strong> — تأتي بعد الاسم المؤكَّد مضافةً للضمير العائد عليه، وتتبعه في الإعراب.
+          </div>
+          <div class="example-box">
+            <strong>رفع:</strong> «أكّد الوزيرُ نفسُهُ الخبرَ» — نفسُهُ: توكيد مرفوع تابع للوزير.<br/>
+            <strong>نصب:</strong> «شاهدتُ الحادثَ عينَهُ» — عينَه: توكيد منصوب تابع للحادثَ.<br/>
+            <strong>جر:</strong> «سلّمتُ على المشاركين جميعِهم» — جميعِهم: توكيد مجرور تابع للمشاركين.<br/><br/>
+            <strong>»المقترحاتُ كلُّها قُبلت دون تعديل.«</strong> — كلُّها: توكيد مرفوع تابع للمقترحات (مبتدأ).
+          </div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين العطف والتوكيد</div>
+        <div class="exercise-item">استخرج المعطوف والمعطوف عليه وحرف العطف وأعرب المعطوف: «اجتمع المراسلونَ والمصوِّرونَ في قاعة التحرير.»</div>
+        <div class="exercise-item">حدد لفظ التوكيد والمؤكَّد وأعربه: «صرّح المتحدثُ الرسميُّ نفسُهُ بنبأ الاستقالة.»</div>
+        <div class="exercise-item">حدد: «حرصت الإدارةُ على تنفيذ الوعدِ عينَهُ.»</div>
+        <div class="exercise-item">أكمل بحرف العطف المناسب: «لم يتأخر عن الموعد ____ قدّم اعتذاره للجمهور.» (الفاء/ثم/بل؟)</div>
+        <div class="exercise-item">صحح: «هذه هي الحقيقةُ نفسَها الذي تحدثنا عنها.» — ما وجه الخطأ في الضمير؟</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 13 — الجلسة الرابعة (تكملة): البدل تفصيلاً
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-12">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الرابعة — تكملة</div>
+      <div class="lesson-title">البدل — أنواعه وتطبيقاته</div>
+      <div class="lesson-subtitle">بدل مطابق · بدل بعض من كل · بدل اشتمال</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">أنواع البدل الثلاثة</div>
+      <div class="rule-block">
+        <div class="rule-icon">1️⃣</div>
+        <div class="rule-content">
+          <div class="rule-title">البدل المطابق (كل من كل)</div>
+          <div class="rule-text">البدل هو نفسه المبدل منه لكن باسم مختلف — يوضحه أو يعيّنه. الأكثر شيوعاً في الإعلام.</div>
+          <div class="example-box">
+            <strong>»استقال الوزيرُ عمرُ خالدٍ فجأةً.«</strong><br/>
+            عمرُ خالدٍ: بدل مطابق من "الوزير" مرفوع مثله — يوضح من هو الوزير.<br/><br/>
+            <strong>»أعلنت العاصمةُ عمانُ الحدادَ ثلاثةَ أيامٍ.«</strong><br/>
+            عمانُ: بدل مطابق من "العاصمةُ" مرفوع مثلها.
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-icon">2️⃣</div>
+        <div class="rule-content">
+          <div class="rule-title">بدل البعض من الكل</div>
+          <div class="rule-text">البدل جزءٌ من المبدل منه — يأتي معه ضمير يربطه بالمبدل منه.</div>
+          <div class="example-box">
+            <strong>»زار وزيرُ الصحة المستشفىَ قسمَ الطوارئ.«</strong><br/>
+            قسمَ الطوارئ: بدل بعض من كل من "المستشفى" منصوب مثله، لأنه جزء من المستشفى.<br/><br/>
+            <strong>»قرأ التقريرَ نصفُهُ.«</strong><br/>
+            نصفُهُ: بدل بعض من كل من "التقرير" — الضمير "هُ" يربطه بالمبدل منه.
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-icon">3️⃣</div>
+        <div class="rule-content">
+          <div class="rule-title">بدل الاشتمال</div>
+          <div class="rule-text">البدل معنىً متعلق بالمبدل منه أو من صفاته — يأتي معه ضمير أيضاً.</div>
+          <div class="example-box">
+            <strong>»أعجبني المقالُ أسلوبُهُ.«</strong><br/>
+            أسلوبُهُ: بدل اشتمال من "المقال" مرفوع مثله — الأسلوب ليس جزءاً مادياً من المقال بل من خصائصه.<br/><br/>
+            <strong>»أعجبني التقريرُ توثيقُهُ.«</strong><br/>
+            توثيقُهُ: بدل اشتمال من "التقرير" مرفوع بالضمة.
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">الاسم بعد اسم الإشارة = بدل لا خبر</div>
+      <div class="rule-block">
+        <div class="rule-icon">⚠️</div>
+        <div class="rule-content">
+          <div class="rule-title">تطبيق القاعدة الذهبية</div>
+          <div class="rule-text">
+            الاسم المعرّف بـ"الـ" الواقع بعد اسم الإشارة يُعرب <strong>بدلاً مطابقاً</strong>، وليس خبراً ولا مبتدأً ثانياً.
+          </div>
+          <div class="example-box">
+            <strong>»هذا الصحفيُّ متميزٌ.«</strong><br/>
+            هذا: مبتدأ مبني في محل رفع.<br/>
+            الصحفيُّ: <strong>بدل مطابق مرفوع بالضمة</strong> من اسم الإشارة "هذا" — وليس خبراً ولا مبتدأً ثانياً.<br/>
+            متميزٌ: <strong>خبر المبتدأ "هذا"</strong> مرفوع بالضمة.
+          </div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين البدل</div>
+        <div class="exercise-item">استخرج البدل والمبدل منه وأعرب البدل: «كرّم الحفلُ الفائزَيْنِ الصحفيَّيْنِ الشابَّيْنِ.»</div>
+        <div class="exercise-item">حدد نوع البدل وأعربه: «زار وزيرُ الصحةِ المستشفىَ قسمَ الطوارئ.»</div>
+        <div class="exercise-item">أعرب: «أعلنت العاصمةُ عمانُ الحدادَ ثلاثةَ أيامٍ.»</div>
+        <div class="exercise-item">أكمل ببدل مناسب: «زار رئيسُ الدولةِ ___ مدينةَ نابلس.» (اسم علم كبدل)</div>
+        <div class="exercise-item">صحح وبيّن السبب: «استقبلت النشرةُ مراسلَينا محمدٌ وأحمدُ.»</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================================================
+       SLIDE 14 — الجلسة الرابعة (تكملة): النسبة والهمزة تفصيلاً
+  ================================================ -->
+  <div class="slide slide-lesson" id="slide-13">
+    <div class="lesson-header">
+      <div class="lesson-session-tag">الجلسة الرابعة — تكملة</div>
+      <div class="lesson-title">ياء النسبة وكتابة الهمزة</div>
+      <div class="lesson-subtitle">قواعد صياغة النسبة · همزة الوصل وهمزة القطع</div>
+    </div>
+    <div class="lesson-body">
+
+      <div class="section-title">قواعد صياغة النسبة</div>
+      <table class="table-rules">
+        <thead>
+          <tr><th>حالة الاسم</th><th>القاعدة</th><th>مثال</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ينتهي بتاء مربوطة</td>
+            <td>احذف التاء وأضف ياء النسبة المشددة</td>
+            <td>دولة ← دوليّ — صحافة ← صحافيّ</td>
+          </tr>
+          <tr>
+            <td>ينتهي بألف مقصورة أو ممدودة</td>
+            <td>اقلب الألف واواً ثم أضف الياء</td>
+            <td>سماء ← سماويّ — صحراء ← صحراويّ</td>
+          </tr>
+          <tr>
+            <td>ينتهي بياء مسبوقة بحرف واحد</td>
+            <td>احذف الياء الزائدة ثم أضف الياء</td>
+            <td>صحيفة ← صحفيّ (حُذفت الياء بين الحاء والفاء)</td>
+          </tr>
+          <tr>
+            <td>اسم ثلاثي منتهٍ بحرف علة</td>
+            <td>أضف واواً قبل ياء النسبة</td>
+            <td>دم ← دمويّ — شفة ← شفويّ</td>
+          </tr>
+          <tr>
+            <td>لبنان، رمضان، عثمان</td>
+            <td>أضف الياء مباشرة</td>
+            <td>لبنان ← لبنانيّ — رمضان ← رمضانيّ</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">همزة الوصل وهمزة القطع — الفرق الجوهري</div>
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">🔡 همزة الوصل</div>
+          <div class="mini-rule-text">تُنطق في بداية الكلام وتسقط عند الوصل. تُكتب بدون رسم همزة (ألف مجردة).<br/>مثل: انطلق، استقال، ابن، اسم، التقرير.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">🔠 همزة القطع</div>
+          <div class="mini-rule-text">تُنطق دائماً ولا تسقط عند الوصل. تُكتب بهمزة فوق الألف أو تحتها.<br/>مثل: أخذ، أعلن، إعلام، أحمد، أُنجز.</div>
+        </div>
+      </div>
+
+      <div class="rule-block">
+        <div class="rule-icon">🧪</div>
+        <div class="rule-content">
+          <div class="rule-title">الاختبار العملي — ضع "فـ" قبل الكلمة</div>
+          <div class="rule-text">
+            إن سمعتَ الهمزة بعد "فـ" → همزة قطع اكتبها. إن لم تسمعها → همزة وصل لا تكتبها.
+          </div>
+          <div class="example-box">
+            <strong>فأخذَ</strong> ← سمعنا الهمزة ← همزة قطع: <strong>أخذ</strong> ✅<br/>
+            <strong>فاستمرار</strong> ← لم نسمع همزة ← همزة وصل: <strong>استمرار</strong> ✅<br/>
+            <strong>فانطلق</strong> ← لم نسمع همزة ← همزة وصل: <strong>انطلق</strong> ✅<br/>
+            <strong>فأعلن</strong> ← سمعنا الهمزة ← همزة قطع: <strong>أعلن</strong> ✅<br/><br/>
+            <strong>القاعدة الذهبية:</strong> «بينما انتظر» — همزة <strong>انتظر</strong> وصل لأننا نقول "ننتظر" بدون ألف لفظاً في المضارع.
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">همزات شائعة في الإعلام</div>
+      <div class="grid-rules">
+        <div class="mini-rule">
+          <div class="mini-rule-title">✅ همزة وصل دائماً</div>
+          <div class="mini-rule-text">اسم · ابن · ابنة · امرأة · اثنان · اثنتان — كلها بألف وصل لا تُكتب الهمزة فوقها.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">✅ همزة قطع دائماً</div>
+          <div class="mini-rule-text">أخذ · أعلن · أُنجز · إعلام · أحمد — تُكتب الهمزة فوق الألف أو تحتها دائماً.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">⚠️ تنوين النصب مع الهمزة</div>
+          <div class="mini-rule-text">سماءً (بألف واحدة) — جزءاً (بألفين لأنه لا ألف قبل الهمزة).<br/>القاعدة: إن كان قبل الهمزة ألف لا تُضاف ألف التنوين.</div>
+        </div>
+        <div class="mini-rule">
+          <div class="mini-rule-title">❌ أخطاء شائعة في الإعلام</div>
+          <div class="mini-rule-text">✗ إجتمع ← الصواب: <strong>اجتمع</strong> (وصل)<br/>✗ الذي ← الصواب: <strong>الذي</strong> (لا همزة في "ال")<br/>✗ الشيئ ← الصواب: <strong>الشيء</strong></div>
+        </div>
+      </div>
+
+      <div class="exercises-block">
+        <div class="exercises-title">✏️ تمارين النسبة والهمزة</div>
+        <div class="exercise-item">حوّل إلى نسبة مع الضبط: صحافة — صحيفة — إعلام — دولة — فلسطين — مغرب.</div>
+        <div class="exercise-item">أكمل بهمزة وصل أو قطع: سافر الوفدُ و____تقرّ بمطار إسطنبول.</div>
+        <div class="exercise-item">أكمل: لن ____ذنَ للفساد أن يستشري بعد اليوم. (فعل مضارع مجزوم من أَذِنَ)</div>
+        <div class="exercise-item">صحح الأخطاء: «أجتمع الوزيرُ مع المسؤولين لمناقشة الأزمات.»</div>
+        <div class="exercise-item">صحح: «هذا هو التقريرُ ألذي تحدثت عنه.» — «الشئ الوحيد الذي أثار إعجابي.»</div>
+        <div class="exercise-item">علّل سبب رسم الهمزة: تأخير (على السطر) — شؤون (على واو) — سائل (على ألف) — سيئة (على نبرة).</div>
+      </div>
+
+    </div>
+  </div>
+<script>
+  let current = 0;
+  const total = 14;
+
+  // بناء نقاط التنقل
+  const dotsContainer = document.getElementById('dotsContainer');
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsContainer.appendChild(d);
+  }
+
+  function goTo(idx) {
+    document.getElementById('slide-' + current).classList.remove('active');
+    current = idx;
+    document.getElementById('slide-' + current).classList.add('active');
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === total - 1;
+    document.getElementById('progressBar').style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  function changeSlide(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < total) goTo(next);
+  }
+
+  // التنقل بلوحة المفاتيح
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  changeSlide(1);
+    if (e.key === 'ArrowRight') changeSlide(-1);
+  });
+</script>
+</body>
+</html>
