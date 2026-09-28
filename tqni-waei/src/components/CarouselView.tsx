@@ -18,10 +18,10 @@ const H = 1440;
 
 const FONT_VARS: Record<string, string> = {
   Cairo: "var(--cf-cairo)",
-  Tajawal: "var(--cf-tajawal)",
+  Tajawal: "var(--font-arabic)",
   Almarai: "var(--cf-almarai)",
   "Readex Pro": "var(--cf-readex)",
-  "IBM Plex Sans Arabic": "var(--font-arabic)",
+  "IBM Plex Sans Arabic": "var(--cf-plex)",
 };
 
 /** إضاءة اللون لاختيار لون نص مقروء فوقه */

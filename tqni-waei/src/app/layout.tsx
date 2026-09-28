@@ -15,8 +15,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ar" dir="rtl" className={carouselFontVars}>
-      <body className={`${siteFont.variable} antialiased min-h-dvh flex flex-col`}>
+    <html lang="ar" dir="rtl" className={`${siteFont.variable} ${carouselFontVars}`}>
+      <body className="antialiased min-h-dvh flex flex-col">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

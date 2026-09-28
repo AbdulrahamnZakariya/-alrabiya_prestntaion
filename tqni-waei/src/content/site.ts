@@ -4,7 +4,8 @@
 export const brand = {
   name: "تقني واعي",
   tagline: "مكائن ذكاء اصطناعي تشتغل عنك — بفريق خبراء داخل كل ماكينة",
-  instagram: "https://instagram.com/", // TODO: ضع رابط حسابك
+  instagram: "https://instagram.com/taqni_waiee",
+  handle: "@taqni_waiee",
   whatsapp: "", // TODO: رقم واتساب للتواصل بصيغة 9627XXXXXXXX
   email: "", // TODO
 };

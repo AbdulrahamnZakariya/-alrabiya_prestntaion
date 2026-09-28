@@ -2,16 +2,18 @@
 
 /* هوية «تقني واعي» — غيّر الألوان من هنا فقط */
 :root {
-  --bg: #07090f;
-  --surface: #0e1320;
-  --surface-2: #151c2e;
-  --border: #222c44;
-  --text: #eef2ff;
-  --muted: #94a0bf;
-  --accent: #36e0b0;
-  --accent-2: #6c7bff;
-  --warn: #ffb547;
-  --danger: #ff5d6c;
+  /* من هوية تقني واعي (taqni-waiee brand.json) */
+  --bg: #141311;
+  --surface: #1F1D1A;
+  --surface-2: #292622;
+  --border: #2E2B27;
+  --text: #F4EFE9;
+  --muted: #9A9490;
+  --accent: #D76F32;
+  --accent-2: #E9A77C;
+  --on-accent: #141311;
+  --warn: #F2B33D;
+  --danger: #FF6B6B;
 }
 
 @theme inline {
@@ -51,7 +53,7 @@ body {
   display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
   border-radius: .9rem; padding: .75rem 1.25rem; font-weight: 700; transition: .15s;
 }
-.btn-primary { background: var(--accent); color: #04110c; }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
 .btn-primary:hover { filter: brightness(1.08); }
 .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
 .btn-ghost { border: 1px solid var(--border); color: var(--text); }
