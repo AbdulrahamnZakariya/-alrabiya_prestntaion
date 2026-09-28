@@ -1,0 +1,90 @@
+{
+  "order": 3,
+  "status": "live",
+  "icon": "❝",
+  "priceUsd": 20,
+  "name": "ماكينة الهوكات والكابشن",
+  "tagline": "هوكات وكابشن باللهجة اللي يحبها جمهورك",
+  "description": "تكتب لك 10 هوكات بأنماط مختلفة + كابشن كامل باللهجة المختارة، مع شرح ليش كل هوك يشتغل.",
+  "features": [
+    "10 هوكات بأنماط نفسية مختلفة",
+    "كابشن كامل بدعوة للتفاعل",
+    "لهجات: أردني، خليجي، مصري، فصحى",
+    "ترشيح أقوى 3 هوكات"
+  ],
+  "inputs": [
+    {
+      "name": "topic",
+      "label": "عن ماذا المحتوى؟",
+      "type": "textarea",
+      "required": true
+    },
+    {
+      "name": "dialect",
+      "label": "اللهجة",
+      "type": "select",
+      "options": [
+        "أردني/شامي",
+        "خليجي",
+        "مصري",
+        "فصحى مبسطة"
+      ]
+    },
+    {
+      "name": "goal",
+      "label": "الهدف",
+      "type": "select",
+      "options": [
+        "تفاعل وانتشار",
+        "بيع منتج/خدمة",
+        "بناء ثقة وخبرة",
+        "متابعين جدد"
+      ]
+    }
+  ],
+  "team": [
+    {
+      "id": "analyze",
+      "title": "تحليل الطلب وفهم الهدف",
+      "agents": [
+        "analyst"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "create",
+      "title": "الإنتاج",
+      "agents": [
+        "creator"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "review",
+      "title": "لجنة المراجعة",
+      "agents": [
+        "reviewer-expert",
+        "reviewer-audience",
+        "reviewer-redteam",
+        "reviewer-dialect"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "refine",
+      "title": "التحسين",
+      "agents": [
+        "refiner"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "qa",
+      "title": "التدقيق النهائي والتسليم",
+      "agents": [
+        "qa-final"
+      ],
+      "effort": "medium"
+    }
+  ]
+}

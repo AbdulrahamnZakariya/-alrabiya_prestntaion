@@ -1,0 +1,85 @@
+{
+  "order": 5,
+  "status": "live",
+  "icon": "◈",
+  "priceUsd": 20,
+  "name": "ماكينة دراسات الجدوى",
+  "tagline": "دراسة جدوى مبدئية متكاملة لمشروعك",
+  "description": "تبني دراسة جدوى مبدئية: تحليل السوق والمنافسين، الدراسة الفنية، التكاليف والإيرادات، نقطة التعادل، والمخاطر — مع توضيح كل الافتراضات.",
+  "features": [
+    "تحليل سوق ومنافسين و SWOT",
+    "تكاليف تأسيس وتشغيل",
+    "توقعات إيرادات ونقطة التعادل",
+    "افتراضات واضحة وقابلة للتعديل"
+  ],
+  "inputs": [
+    {
+      "name": "idea",
+      "label": "فكرة المشروع",
+      "type": "textarea",
+      "required": true
+    },
+    {
+      "name": "location",
+      "label": "الدولة / المدينة",
+      "type": "text",
+      "placeholder": "مثال: عمّان، الأردن"
+    },
+    {
+      "name": "budget",
+      "label": "رأس المال المتوقع",
+      "type": "text",
+      "placeholder": "مثال: 15,000 دينار"
+    },
+    {
+      "name": "details",
+      "label": "تفاصيل إضافية (اختياري)",
+      "type": "textarea"
+    }
+  ],
+  "team": [
+    {
+      "id": "analyze",
+      "title": "تحليل الطلب وفهم الهدف",
+      "agents": [
+        "analyst"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "create",
+      "title": "الإنتاج",
+      "agents": [
+        "creator"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "review",
+      "title": "لجنة المراجعة",
+      "agents": [
+        "reviewer-expert",
+        "reviewer-audience",
+        "reviewer-redteam",
+        "reviewer-finance"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "refine",
+      "title": "التحسين",
+      "agents": [
+        "refiner"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "qa",
+      "title": "التدقيق النهائي والتسليم",
+      "agents": [
+        "qa-final"
+      ],
+      "effort": "medium"
+    }
+  ]
+}

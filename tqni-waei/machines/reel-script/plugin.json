@@ -1,0 +1,101 @@
+{
+  "order": 4,
+  "status": "live",
+  "icon": "▶",
+  "priceUsd": 20,
+  "name": "ماكينة سكربت الريلز",
+  "tagline": "سكربت ريل كامل: هوك، محتوى، CTA — بالثانية",
+  "description": "تكتب لك سكربت ريل جاهز للتصوير: الهوك بأول 3 ثواني، النص مقسم بالمشاهد، توجيهات اللقطات والنصوص على الشاشة، والـ CTA.",
+  "features": [
+    "هوك أول 3 ثواني",
+    "تقسيم بالمشاهد والتوقيت",
+    "نصوص على الشاشة + لقطات بي-رول",
+    "مصمم لرفع نسبة المشاهدة الكاملة"
+  ],
+  "inputs": [
+    {
+      "name": "topic",
+      "label": "فكرة الريل",
+      "type": "textarea",
+      "required": true
+    },
+    {
+      "name": "duration",
+      "label": "المدة",
+      "type": "select",
+      "options": [
+        "30 ثانية",
+        "15 ثانية",
+        "60 ثانية",
+        "90 ثانية"
+      ]
+    },
+    {
+      "name": "dialect",
+      "label": "اللهجة",
+      "type": "select",
+      "options": [
+        "أردني/شامي",
+        "خليجي",
+        "مصري",
+        "فصحى مبسطة"
+      ]
+    },
+    {
+      "name": "style",
+      "label": "الأسلوب",
+      "type": "select",
+      "options": [
+        "كلام للكاميرا",
+        "فويس أوفر + لقطات",
+        "تعليمي خطوة بخطوة",
+        "قصة"
+      ]
+    }
+  ],
+  "team": [
+    {
+      "id": "analyze",
+      "title": "تحليل الطلب وفهم الهدف",
+      "agents": [
+        "analyst"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "create",
+      "title": "الإنتاج",
+      "agents": [
+        "creator"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "review",
+      "title": "لجنة المراجعة",
+      "agents": [
+        "reviewer-expert",
+        "reviewer-audience",
+        "reviewer-redteam",
+        "reviewer-retention"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "refine",
+      "title": "التحسين",
+      "agents": [
+        "refiner"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "qa",
+      "title": "التدقيق النهائي والتسليم",
+      "agents": [
+        "qa-final"
+      ],
+      "effort": "medium"
+    }
+  ]
+}

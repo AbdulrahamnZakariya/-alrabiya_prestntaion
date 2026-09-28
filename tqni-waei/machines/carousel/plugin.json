@@ -1,0 +1,96 @@
+{
+  "order": 2,
+  "status": "live",
+  "icon": "▦",
+  "priceUsd": 20,
+  "name": "ماكينة الكاروسيل",
+  "tagline": "من فكرة واحدة لكاروسيل إنستغرام يوقف السكرول",
+  "description": "تبني لك كاروسيل كامل: هوك الغلاف، محتوى كل سلايد، توجيهات التصميم، والكابشن والهاشتاقات — مبني على أنماط المحتوى العربي الأعلى تفاعلاً.",
+  "features": [
+    "هوك غلاف يوقف السكرول",
+    "تسلسل سلايدات يحافظ على الإكمال",
+    "توجيهات تصميم لكل سلايد",
+    "كابشن + CTA + هاشتاقات"
+  ],
+  "inputs": [
+    {
+      "name": "topic",
+      "label": "موضوع الكاروسيل",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "مثال: 5 أدوات ذكاء اصطناعي توفر عليك ساعات"
+    },
+    {
+      "name": "audience",
+      "label": "الجمهور المستهدف",
+      "type": "text",
+      "placeholder": "مثال: أصحاب المشاريع الصغيرة في الأردن"
+    },
+    {
+      "name": "dialect",
+      "label": "اللهجة",
+      "type": "select",
+      "options": [
+        "فصحى مبسطة",
+        "أردني/شامي",
+        "خليجي",
+        "مصري"
+      ]
+    },
+    {
+      "name": "slides",
+      "label": "عدد السلايدات",
+      "type": "select",
+      "options": [
+        "7",
+        "5",
+        "10"
+      ]
+    }
+  ],
+  "team": [
+    {
+      "id": "analyze",
+      "title": "تحليل الطلب وفهم الهدف",
+      "agents": [
+        "analyst"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "create",
+      "title": "الإنتاج",
+      "agents": [
+        "creator"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "review",
+      "title": "لجنة المراجعة",
+      "agents": [
+        "reviewer-expert",
+        "reviewer-audience",
+        "reviewer-redteam",
+        "reviewer-instagram"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "refine",
+      "title": "التحسين",
+      "agents": [
+        "refiner"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "qa",
+      "title": "التدقيق النهائي والتسليم",
+      "agents": [
+        "qa-final"
+      ],
+      "effort": "medium"
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "order": 1,
+  "status": "live",
+  "icon": "✦",
+  "priceUsd": 20,
+  "name": "ماكينة البرومتات",
+  "tagline": "أعطها أي برومت عادي… ترجّعه لك برومت خبير",
+  "description": "تحوّل أي فكرة أو برومت بسيط إلى برومت احترافي منظّم (الدور، السياق، القيود، صيغة المخرجات، الأمثلة) جاهز لـ ChatGPT وClaude وGemini ومولدات الصور والفيديو.",
+  "features": [
+    "يحدد الهدف الحقيقي خلف طلبك",
+    "يبني البرومت بأفضل ممارسات هندسة البرومتات",
+    "لجنة خبراء تراجع وتختبر",
+    "نسخة جاهزة للنسخ + شرح مختصر لكل جزء"
+  ],
+  "inputs": [
+    {
+      "name": "prompt",
+      "label": "البرومت أو الفكرة",
+      "type": "textarea",
+      "required": true,
+      "placeholder": "مثال: اكتب لي بوست عن مطعمي"
+    },
+    {
+      "name": "target",
+      "label": "لأي أداة؟",
+      "type": "select",
+      "options": [
+        "ChatGPT",
+        "Claude",
+        "Gemini",
+        "Midjourney / مولد صور",
+        "مولد فيديو (Veo / Kling / Runway)",
+        "أي أداة"
+      ]
+    },
+    {
+      "name": "context",
+      "label": "معلومات إضافية (اختياري)",
+      "type": "textarea",
+      "placeholder": "جمهورك، مجالك، اللهجة، أي تفاصيل…"
+    }
+  ],
+  "team": [
+    {
+      "id": "analyze",
+      "title": "تحليل الطلب وفهم الهدف",
+      "agents": [
+        "analyst"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "create",
+      "title": "الإنتاج",
+      "agents": [
+        "creator"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "review",
+      "title": "لجنة المراجعة",
+      "agents": [
+        "reviewer-expert",
+        "reviewer-audience",
+        "reviewer-redteam",
+        "reviewer-llm"
+      ],
+      "effort": "medium"
+    },
+    {
+      "id": "refine",
+      "title": "التحسين",
+      "agents": [
+        "refiner"
+      ],
+      "effort": "high"
+    },
+    {
+      "id": "qa",
+      "title": "التدقيق النهائي والتسليم",
+      "agents": [
+        "qa-final"
+      ],
+      "effort": "medium"
+    }
+  ]
+}
