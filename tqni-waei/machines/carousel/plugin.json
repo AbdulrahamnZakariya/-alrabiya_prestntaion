@@ -82,11 +82,12 @@
   "team": [
     {
       "id": "analyze",
-      "title": "تحليل الطلب وفهم الهدف",
+      "title": "تحليل الموضوع والتحقق من الحقائق",
       "agents": [
         "analyst"
       ],
-      "effort": "medium"
+      "effort": "medium",
+      "webSearch": true
     },
     {
       "id": "create",

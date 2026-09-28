@@ -4,6 +4,7 @@ import { getCurrentUser, getOwnedSlugs } from "@/lib/access";
 import { getMachines } from "@/lib/machines";
 import { createClient } from "@/lib/supabase/server";
 import { MachineCard } from "@/components/MachineCard";
+import { JOB_STATUS, type Job } from "@/lib/jobs";
 
 export const metadata = { title: "حسابي — تقني واعي" };
 
@@ -21,10 +22,19 @@ export default async function AccountPage() {
   const machines = getMachines();
   const names = new Map(machines.map((m) => [m.slug, m.name]));
   const supabase = await createClient();
-  const { data: orders } = await supabase
-    .from("orders")
-    .select("id, machine_slugs, amount_usd, status, reject_reason, created_at")
-    .order("created_at", { ascending: false });
+  const [{ data: orders }, { data: jobsData }] = await Promise.all([
+    supabase
+      .from("orders")
+      .select("id, machine_slugs, amount_usd, status, reject_reason, created_at")
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("jobs")
+      .select("id, machine_slug, status, created_at")
+      .neq("status", "draft")
+      .order("created_at", { ascending: false })
+      .limit(30),
+  ]);
+  const jobs = (jobsData ?? []) as Pick<Job, "id" | "machine_slug" | "status" | "created_at">[];
 
   return (
     <section className="mx-auto max-w-6xl px-4 py-12">
@@ -47,7 +57,24 @@ export default async function AccountPage() {
         </div>
       )}
 
-      <h2 className="mb-4 mt-10 text-xl font-extrabold">طلباتي</h2>
+      {jobs.length > 0 && (
+        <>
+          <h2 className="mb-4 mt-10 text-xl font-extrabold">ملفاتي من المكائن</h2>
+          <div className="flex flex-col gap-3">
+            {jobs.map((j) => (
+              <Link key={j.id} href={`/jobs/${j.id}`} className="card flex flex-wrap items-center justify-between gap-3 p-4 hover:border-accent">
+                <div>
+                  <p className="font-bold">{names.get(j.machine_slug) ?? j.machine_slug}</p>
+                  <p className="text-sm text-muted">{new Date(j.created_at).toLocaleString("ar-JO")}</p>
+                </div>
+                <span className={`rounded-full px-3 py-1 text-sm font-bold ${JOB_STATUS[j.status].cls}`}>{JOB_STATUS[j.status].label}</span>
+              </Link>
+            ))}
+          </div>
+        </>
+      )}
+
+      <h2 className="mb-4 mt-10 text-xl font-extrabold">طلبات الشراء</h2>
       {orders?.length ? (
         <div className="flex flex-col gap-3">
           {orders.map((o) => (

@@ -19,6 +19,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
       user_id: order.user_id,
       machine_slug: slug,
       order_id: order.id,
+      granted_at: new Date().toISOString(),
     }));
     const { error } = await db.from("entitlements").upsert(rows, { onConflict: "user_id,machine_slug" });
     if (error) return Response.json({ error: "تعذّر فتح المكائن" }, { status: 500 });

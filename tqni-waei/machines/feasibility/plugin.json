@@ -1,85 +1,164 @@
 {
-  "order": 5,
+  "order": 8,
   "status": "live",
+  "runner": "worker",
   "icon": "◈",
   "priceUsd": 20,
   "name": "ماكينة دراسات الجدوى",
-  "tagline": "دراسة جدوى مبدئية متكاملة لمشروعك",
-  "description": "تبني دراسة جدوى مبدئية: تحليل السوق والمنافسين، الدراسة الفنية، التكاليف والإيرادات، نقطة التعادل، والمخاطر — مع توضيح كل الافتراضات.",
+  "tagline": "دراسة جدوى كاملة: مستند Word + نموذج مالي Excel",
+  "description": "الفريق يبحث السوق بأرقام حقيقية بمصادرها، ويبني نموذجاً مالياً Excel بمعادلات حيّة (NPV، IRR، الاسترداد، الحساسية) هو مصدر كل رقم، ثم يكتب دراسة الجدوى الكاملة بصيغة Word وPDF بهويتك — ومعها عرض ملخّص للمستثمر عند الطلب.",
   "features": [
-    "تحليل سوق ومنافسين و SWOT",
-    "تكاليف تأسيس وتشغيل",
-    "توقعات إيرادات ونقطة التعادل",
-    "افتراضات واضحة وقابلة للتعديل"
+    "نموذج مالي Excel بمعادلات حيّة وحساسية",
+    "دراسة سوقية وفنية ومالية ومخاطر وتوصية صريحة",
+    "أرقام السوق بمصدر وتاريخ",
+    "Word + PDF + عرض مستثمر PowerPoint (اختياري)"
   ],
+  "eta": "30–60 دقيقة",
+  "crew": [
+    {
+      "title": "المحاور",
+      "role": "يفهم طلبك ويحوّله لموجز واضح للفريق"
+    },
+    {
+      "title": "مهندس البرومبت",
+      "role": "يكتب بطاقة مهمة دقيقة لكل موظف"
+    },
+    {
+      "title": "باحث الويب",
+      "role": "أرقام وحقائق حديثة بمصدر وتاريخ"
+    },
+    {
+      "title": "خبير المجال",
+      "role": "يكتب المحتوى بعقلية التخصص"
+    },
+    {
+      "title": "المصمم",
+      "role": "يبني الملف بجودة استوديو"
+    },
+    {
+      "title": "الرسام الهندسي",
+      "role": "رسوم بيانية ومخططات وهياكل أصلية"
+    },
+    {
+      "title": "المدقق",
+      "role": "بوابة الجودة الأخيرة قبل التسليم"
+    }
+  ],
+  "worker": {
+    "plugins": [
+      "taqni-bani"
+    ],
+    "maxBudgetUsd": 25,
+    "trialBudgetUsd": 10,
+    "timeoutMin": 120
+  },
   "inputs": [
     {
       "name": "idea",
       "label": "فكرة المشروع",
       "type": "textarea",
-      "required": true
+      "required": true,
+      "placeholder": "مثال: كافيه مختص في عبدون بمساحة 120م² مع جلسات خارجية"
     },
     {
       "name": "location",
       "label": "الدولة / المدينة",
       "type": "text",
-      "placeholder": "مثال: عمّان، الأردن"
+      "placeholder": "عمّان، الأردن"
+    },
+    {
+      "name": "currency",
+      "label": "العملة",
+      "type": "select",
+      "options": [
+        "دينار أردني",
+        "دولار أمريكي",
+        "ريال سعودي",
+        "درهم إماراتي",
+        "ريال قطري",
+        "دينار كويتي",
+        "جنيه مصري"
+      ]
     },
     {
       "name": "budget",
       "label": "رأس المال المتوقع",
       "type": "text",
-      "placeholder": "مثال: 15,000 دينار"
+      "placeholder": "مثال: 60,000 دينار"
     },
     {
-      "name": "details",
-      "label": "تفاصيل إضافية (اختياري)",
-      "type": "textarea"
-    }
-  ],
-  "team": [
-    {
-      "id": "analyze",
-      "title": "تحليل الطلب وفهم الهدف",
-      "agents": [
-        "analyst"
-      ],
-      "effort": "medium"
+      "name": "purpose",
+      "label": "الغرض من الدراسة",
+      "type": "select",
+      "options": [
+        "قرار داخلي",
+        "مستثمر أو شريك",
+        "تمويل بنكي",
+        "جهة حكومية / برنامج دعم"
+      ]
     },
     {
-      "id": "create",
-      "title": "الإنتاج",
-      "agents": [
-        "creator"
-      ],
-      "effort": "high"
+      "name": "financing",
+      "label": "التمويل",
+      "type": "select",
+      "options": [
+        "ذاتي",
+        "قرض (اكتب التفاصيل بالأسفل)",
+        "شراكة"
+      ]
     },
     {
-      "id": "review",
-      "title": "لجنة المراجعة",
-      "agents": [
-        "reviewer-expert",
-        "reviewer-audience",
-        "reviewer-redteam",
-        "reviewer-finance"
-      ],
-      "effort": "medium"
+      "name": "horizon",
+      "label": "الأفق الزمني",
+      "type": "select",
+      "options": [
+        "5 سنوات",
+        "10 سنوات"
+      ]
     },
     {
-      "id": "refine",
-      "title": "التحسين",
-      "agents": [
-        "refiner"
-      ],
-      "effort": "high"
+      "name": "outputs",
+      "label": "المخرجات",
+      "type": "select",
+      "options": [
+        "دراسة Word/PDF + نموذج Excel",
+        "دراسة + نموذج Excel + عرض ملخّص للمستثمر"
+      ]
     },
     {
-      "id": "qa",
-      "title": "التدقيق النهائي والتسليم",
-      "agents": [
-        "qa-final"
-      ],
-      "effort": "medium"
+      "name": "numbers",
+      "label": "أرقام متوفرة عندك (اختياري)",
+      "type": "textarea",
+      "placeholder": "إيجار، رواتب، أسعار بيع، تفاصيل القرض… كل رقم حقيقي يرفع دقة الدراسة"
+    },
+    {
+      "name": "brand_name",
+      "label": "اسم الشركة أو الجهة",
+      "type": "text",
+      "placeholder": "يظهر على الملف"
+    },
+    {
+      "name": "primary",
+      "label": "اللون الرئيسي لهويتك",
+      "type": "color",
+      "default": "#1F4E79",
+      "hint": "إذا رفعت شعارك بنستخرج الألوان منه ونعتمدها بدل هذا اللون"
+    },
+    {
+      "name": "logo",
+      "label": "الشعار (اختياري)",
+      "type": "file",
+      "accept": "image/png,image/svg+xml,image/jpeg,image/webp",
+      "maxMB": 10
+    },
+    {
+      "name": "data",
+      "label": "ملفات المحتوى أو البيانات (اختياري)",
+      "type": "file",
+      "multiple": true,
+      "maxMB": 50,
+      "accept": ".pdf,.docx,.xlsx,.xls,.csv,.pptx,.txt,.md,image/*",
+      "hint": "أي نقاط، أرقام، تقارير سابقة — الفريق يعتمد عليها بدل التخمين"
     }
   ]
 }

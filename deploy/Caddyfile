@@ -1,0 +1,5 @@
+# HTTPS تلقائي من Let's Encrypt — يكفي توجيه الدومين (A record) لعنوان السيرفر
+{$DOMAIN}, www.{$DOMAIN} {
+	encode zstd gzip
+	reverse_proxy site:3000
+}

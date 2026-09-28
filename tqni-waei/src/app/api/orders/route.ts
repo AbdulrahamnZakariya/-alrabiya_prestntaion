@@ -3,7 +3,8 @@ import { getCurrentUser } from "@/lib/access";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { quote } from "@/lib/pricing";
 
-const MAX_RECEIPT_BYTES = 5 * 1024 * 1024;
+// استضافة Vercel تقبل حتى ~4.5MB للطلب الواحد
+const MAX_RECEIPT_BYTES = 4 * 1024 * 1024;
 const RECEIPT_TYPES: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -33,7 +34,7 @@ export async function POST(req: Request) {
   }
   const ext = RECEIPT_TYPES[receipt.type];
   if (!ext) return Response.json({ error: "الإيصال لازم يكون صورة أو PDF" }, { status: 400 });
-  if (receipt.size > MAX_RECEIPT_BYTES) return Response.json({ error: "حجم الإيصال أكبر من 5MB" }, { status: 400 });
+  if (receipt.size > MAX_RECEIPT_BYTES) return Response.json({ error: "حجم الإيصال أكبر من 4MB" }, { status: 400 });
 
   const db = createAdminClient();
   const orderId = crypto.randomUUID();

@@ -4,6 +4,8 @@ import { getMachines, machineAgents, readAgentSkillFromDisk } from "@/lib/machin
 import { createAdminClient } from "@/lib/supabase/admin";
 import { OrderActions } from "@/components/admin/OrderActions";
 import { SkillsManager } from "@/components/admin/SkillsManager";
+import { JobActions } from "@/components/admin/JobActions";
+import { JOB_STATUS, type Job } from "@/lib/jobs";
 
 export const metadata = { title: "لوحة التحكم — تقني واعي" };
 export const dynamic = "force-dynamic";
@@ -16,11 +18,15 @@ export default async function AdminPage() {
   const machines = getMachines();
   const names = new Map(machines.map((m) => [m.slug, m.name]));
 
-  const [{ data: orders }, { data: overrides }, { count: runsCount }] = await Promise.all([
+  const [{ data: orders }, { data: overrides }, { count: runsCount }, { data: jobsData }] = await Promise.all([
     db.from("orders").select("*").order("status", { ascending: false }).order("created_at", { ascending: false }).limit(100),
     db.from("machine_skills").select("machine_slug, agent, content, updated_at"),
     db.from("runs").select("id", { count: "exact", head: true }),
+    db.from("jobs").select("*").neq("status", "draft").order("created_at", { ascending: false }).limit(50),
   ]);
+  const jobs = (jobsData ?? []) as Job[];
+  const activeJobs = jobs.filter((j) => j.status === "queued" || j.status === "running").length;
+  const jobsCost = jobs.reduce((n, j) => n + Number(j.cost_usd ?? 0), 0);
 
   const pending = (orders ?? []).filter((o) => o.status === "pending");
   const reviewed = (orders ?? []).filter((o) => o.status !== "pending");
@@ -35,7 +41,7 @@ export default async function AdminPage() {
   );
 
   const skills = machines
-    .filter((m) => m.team.length)
+    .filter((m) => m.runner !== "worker" && m.team.length)
     .map((m) => ({
       slug: m.slug,
       name: m.name,
@@ -53,10 +59,12 @@ export default async function AdminPage() {
     <section className="mx-auto max-w-6xl px-4 py-12">
       <h1 className="text-3xl font-extrabold">لوحة التحكم</h1>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <Stat label="طلبات بانتظارك" value={pending.length} highlight={pending.length > 0} />
         <Stat label="إيرادات مؤكدة" value={`${revenue}$`} />
-        <Stat label="مرات تشغيل المكائن" value={runsCount ?? 0} />
+        <Stat label="مرات تشغيل المكائن النصية" value={runsCount ?? 0} />
+        <Stat label="طلبات السيرفر النشطة" value={activeJobs} />
+        <Stat label="تكلفة Claude لآخر 50 طلب سيرفر" value={`${jobsCost.toFixed(2)}$`} />
       </div>
 
       <h2 className="mb-4 mt-10 text-xl font-extrabold">طلبات بانتظار التأكيد</h2>
@@ -97,6 +105,29 @@ export default async function AdminPage() {
                 <td className="p-3">{(o.machine_slugs as string[]).map((s) => names.get(s) ?? s).join("، ")}</td>
                 <td className="p-3">{o.amount_usd}$</td>
                 <td className={`p-3 font-bold ${o.status === "approved" ? "text-accent" : "text-danger"}`}>{o.status === "approved" ? "مفعّل" : "مرفوض"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h2 className="mb-4 mt-10 text-xl font-extrabold">طلبات سيرفر المعالجة</h2>
+      <div className="card overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="bg-surface-2 text-muted">
+            <tr><th className="p-3 text-start">العميل</th><th className="p-3 text-start">الماكينة</th><th className="p-3 text-start">الحالة</th><th className="p-3 text-start">التكلفة</th><th className="p-3 text-start"></th></tr>
+          </thead>
+          <tbody>
+            {jobs.map((j) => (
+              <tr key={j.id} className="border-t border-border align-top">
+                <td className="p-3" dir="ltr">{j.user_email}{j.is_trial && <span className="ms-2 text-xs text-warn">تجربة</span>}</td>
+                <td className="p-3"><a href={`/jobs/${j.id}`} className="text-accent">{names.get(j.machine_slug) ?? j.machine_slug}</a></td>
+                <td className="p-3">
+                  <span className={`rounded-full px-2 py-0.5 text-xs font-bold ${JOB_STATUS[j.status].cls}`}>{JOB_STATUS[j.status].label}</span>
+                  {j.error && <p className="mt-1 max-w-xs text-xs text-danger">{j.error}</p>}
+                </td>
+                <td className="p-3">{j.cost_usd != null ? `${Number(j.cost_usd).toFixed(2)}$` : "—"}</td>
+                <td className="p-3"><JobActions id={j.id} status={j.status} /></td>
               </tr>
             ))}
           </tbody>

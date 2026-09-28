@@ -9,7 +9,7 @@ type M = { slug: string; name: string; icon: string; priceUsd: number; owned: bo
 
 export function CheckoutForm({ machines, preselected, methods }: { machines: M[]; preselected: string[]; methods: PaymentMethod[] }) {
   const [selected, setSelected] = useState<string[]>(
-    preselected.filter((s) => machines.some((m) => m.slug === s && !m.owned)),
+    preselected.filter((s) => machines.some((m) => m.slug === s)),
   );
   const [method, setMethod] = useState<PaymentMethod["id"]>(methods[0].id);
   const [sending, setSending] = useState(false);
@@ -61,12 +61,12 @@ export function CheckoutForm({ machines, preselected, methods }: { machines: M[]
               key={m.slug}
               className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 ${
                 selected.includes(m.slug) ? "border-accent bg-accent/10" : "border-border"
-              } ${m.owned ? "cursor-not-allowed opacity-50" : ""}`}
+              }`}
             >
-              <input type="checkbox" disabled={m.owned} checked={selected.includes(m.slug)} onChange={() => toggle(m.slug)} className="accent-[var(--accent)]" />
+              <input type="checkbox" checked={selected.includes(m.slug)} onChange={() => toggle(m.slug)} className="accent-[var(--accent)]" />
               <span className="text-accent">{m.icon}</span>
               <span className="flex-1 font-semibold">{m.name}</span>
-              <span className="text-sm text-muted">{m.owned ? "مفعّلة" : `${m.priceUsd}$`}</span>
+              <span className="text-sm text-muted">{m.owned ? `تجديد · ${m.priceUsd}$` : `${m.priceUsd}$`}</span>
             </label>
           ))}
         </div>
@@ -123,7 +123,7 @@ export function CheckoutForm({ machines, preselected, methods }: { machines: M[]
           <input name="reference" className="field" dir="ltr" />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="font-semibold">صورة الإيصال (صورة أو PDF، حتى 5MB)</span>
+          <span className="font-semibold">صورة الإيصال (صورة أو PDF، حتى 4MB)</span>
           <input name="receipt" type="file" accept="image/*,application/pdf" required className="field file:me-3 file:rounded-lg file:border-0 file:bg-accent file:px-3 file:py-1 file:font-bold file:text-bg" />
         </label>
         {error && <p className="text-danger">{error}</p>}

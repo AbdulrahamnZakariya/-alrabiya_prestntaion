@@ -1,0 +1,55 @@
+# منصة «تقني واعي» كاملة على سيرفر واحد:
+#   site   → الموقع (Next.js)
+#   worker → سيرفر المعالجة للمكائن الثقيلة (Claude Agent SDK + البلجنز)
+#   caddy  → HTTPS تلقائي على الدومين
+#
+# التشغيل (من مجلد deploy):  docker compose up -d --build
+# السجلات:                    docker compose logs -f worker
+# سيرفري معالجة بالتوازي:     docker compose up -d --scale worker=2
+services:
+  site:
+    build:
+      context: ../tqni-waei
+      args:
+        NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+    environment:
+      NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      ADMIN_EMAILS: ${ADMIN_EMAILS}
+      CLAUDE_MODEL: ${CLAUDE_MODEL:-claude-opus-5}
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ..
+      dockerfile: worker/Dockerfile
+      args:
+        WITH_VIDEO: ${WITH_VIDEO:-1}   # 0 = بدون ماكينة المونتاج (صورة أصغر بكثير)
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      CLAUDE_MODEL: ${CLAUDE_MODEL:-claude-opus-5}
+    restart: unless-stopped
+    shm_size: "1gb"          # كروميوم يحتاج ذاكرة مشتركة
+    stop_grace_period: 30s   # يرجّع الطلب الجاري للطابور قبل الإيقاف
+    volumes:
+      - whisper-cache:/home/worker/.cache/whisper
+
+  caddy:
+    image: caddy:2
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on: [site]
+    restart: unless-stopped
+
+volumes:
+  whisper-cache: {}
+  caddy-data: {}

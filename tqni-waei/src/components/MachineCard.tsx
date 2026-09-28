@@ -23,9 +23,10 @@ export function MachineCard({ machine, owned }: { machine: Machine; owned?: bool
       </div>
       <h3 className="text-lg font-extrabold">{machine.name}</h3>
       <p className="text-sm text-muted">{machine.tagline}</p>
-      {size > 0 && (
-        <p className="mt-auto pt-2 text-xs text-accent-2">👥 فريق من {size} خبراء ذكاء اصطناعي</p>
-      )}
+      <div className="mt-auto flex flex-wrap items-center gap-2 pt-2 text-xs">
+        {size > 0 && <span className="text-accent-2">👥 فريق من {size} خبراء</span>}
+        {machine.runner === "worker" && <span className="rounded-full bg-surface-2 px-2 py-0.5 text-muted">يسلّمك ملفات{machine.eta ? ` · ${machine.eta}` : ""}</span>}
+      </div>
     </Link>
   );
 }

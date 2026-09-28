@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { getMachine } from "@/lib/machines";
-import { getAccess, getCurrentUser } from "@/lib/access";
+import { canRun, getAccess, getCurrentUser } from "@/lib/access";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { runTeam, type TeamEvent } from "@/lib/pipeline";
 
@@ -10,17 +10,15 @@ export const maxDuration = 800;
 export async function POST(req: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const machine = getMachine(slug);
-  if (!machine || machine.status !== "live") {
+  if (!machine || machine.status !== "live" || machine.runner === "worker") {
     return Response.json({ error: "الماكينة غير متاحة" }, { status: 404 });
   }
 
   const user = await getCurrentUser();
   if (!user) return Response.json({ error: "سجّل دخولك أولاً" }, { status: 401 });
 
-  const access = await getAccess(user, slug);
-  if (!access.owned && access.trialsLeft <= 0) {
-    return Response.json({ error: "انتهت تجربتك المجانية — اشترِ الماكينة لتكمل" }, { status: 402 });
-  }
+  const allowed = canRun(await getAccess(user, machine));
+  if (!allowed.ok) return Response.json({ error: allowed.reason }, { status: 402 });
 
   const body = (await req.json().catch(() => ({}))) as { inputs?: Record<string, unknown> };
   const inputs: Record<string, string> = {};
@@ -32,7 +30,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ slug: s
     }
   }
 
-  const isTrial = !access.owned;
+  const isTrial = allowed.isTrial;
   const db = createAdminClient();
   // نحجز التجربة قبل التشغيل حتى لا تُستغل بطلبات متزامنة
   const { data: run, error } = await db

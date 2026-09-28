@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMachine, teamSize } from "@/lib/machines";
-import { getAccess, getCurrentUser } from "@/lib/access";
+import { canRun, getAccess, getCurrentUser, isAdmin } from "@/lib/access";
 import { MachineRunner } from "@/components/MachineRunner";
+import { JobForm } from "@/components/JobForm";
 import { Testimonials } from "@/components/Testimonials";
 
 export default async function MachinePage({ params }: { params: Promise<{ slug: string }> }) {
@@ -11,8 +12,10 @@ export default async function MachinePage({ params }: { params: Promise<{ slug: 
   if (!machine) notFound();
 
   const user = await getCurrentUser();
-  const access = await getAccess(user, slug);
+  const access = await getAccess(user, machine);
+  const allowed = canRun(access);
   const live = machine.status === "live";
+  const worker = machine.runner === "worker";
 
   return (
     <>
@@ -36,9 +39,13 @@ export default async function MachinePage({ params }: { params: Promise<{ slug: 
                 <p className="text-sm text-muted">سعر الماكينة</p>
                 <p className="text-4xl font-extrabold">{machine.priceUsd}$</p>
                 <p className="mt-1 text-sm text-muted">أو ضمن باقة الثلاث مكائن بـ 50$</p>
+                <p className="mt-2 text-sm">يشمل {access.usesPerPurchase} {worker ? "طلبات" : "استخدام"} — والشراء مرة ثانية يجدّد الرصيد</p>
+                {machine.eta && <p className="mt-3 text-sm">⏱ التسليم خلال {machine.eta}</p>}
                 <div className="mt-5 flex flex-col gap-2">
-                  {access.owned ? (
-                    <a href="#run" className="btn btn-primary">شغّل الماكينة</a>
+                  {access.owned && allowed.ok ? (
+                    <a href="#run" className="btn btn-primary">{worker ? "اطلب الآن" : "شغّل الماكينة"}</a>
+                  ) : access.owned ? (
+                    <Link href={`/checkout?machines=${machine.slug}`} className="btn btn-primary">جدّد الرصيد</Link>
                   ) : (
                     <>
                       <Link href={`/checkout?machines=${machine.slug}`} className="btn btn-primary">اشترِ الماكينة</Link>
@@ -46,6 +53,9 @@ export default async function MachinePage({ params }: { params: Promise<{ slug: 
                     </>
                   )}
                 </div>
+                {access.owned && !isAdmin(user) && (
+                  <p className="mt-3 text-xs text-muted">المتبقي من رصيدك: {access.usesLeft} من {access.usesPerPurchase}</p>
+                )}
               </>
             ) : (
               <>
@@ -57,7 +67,21 @@ export default async function MachinePage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      {machine.team.length > 0 && (
+      {worker && machine.crew?.length ? (
+        <section className="mx-auto max-w-6xl px-4 py-10">
+          <h2 className="text-2xl font-extrabold">فريق العمل داخل الماكينة</h2>
+          <p className="mt-1 text-muted">{teamSize(machine)} خبراء يشتغلوا على طلبك ويسلّموك ملفات جاهزة</p>
+          <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {machine.crew.map((c, i) => (
+              <li key={c.title} className="card p-4">
+                <span className="text-xs text-muted">{i + 1}</span>
+                <h3 className="mt-1 font-bold">{c.title}</h3>
+                <p className="mt-1 text-sm text-muted">{c.role}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : machine.team.length > 0 ? (
         <section className="mx-auto max-w-6xl px-4 py-10">
           <h2 className="text-2xl font-extrabold">فريق العمل داخل الماكينة</h2>
           <p className="mt-1 text-muted">{teamSize(machine)} خبراء يشتغلوا على طلبك على {machine.team.length} مراحل</p>
@@ -71,16 +95,25 @@ export default async function MachinePage({ params }: { params: Promise<{ slug: 
             ))}
           </ol>
         </section>
-      )}
+      ) : null}
 
       {live && (
         <section id="run" className="mx-auto max-w-4xl scroll-mt-20 px-4 py-10">
-          <MachineRunner
-            machine={{ slug: machine.slug, name: machine.name, inputs: machine.inputs, output: machine.output }}
-            loggedIn={Boolean(user)}
-            owned={access.owned}
-            trialsLeft={access.trialsLeft}
-          />
+          {worker ? (
+            <JobForm
+              machine={{ slug: machine.slug, name: machine.name, inputs: machine.inputs, eta: machine.eta }}
+              loggedIn={Boolean(user)}
+              owned={access.owned}
+              blockedReason={allowed.ok ? null : allowed.reason}
+            />
+          ) : (
+            <MachineRunner
+              machine={{ slug: machine.slug, name: machine.name, inputs: machine.inputs, output: machine.output }}
+              loggedIn={Boolean(user)}
+              owned={access.owned}
+              trialsLeft={access.owned ? (allowed.ok ? 1 : 0) : access.trialsLeft}
+            />
+          )}
         </section>
       )}
 

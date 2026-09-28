@@ -10,11 +10,18 @@ import path from "node:path";
 export type MachineInput = {
   name: string;
   label: string;
-  type: "text" | "textarea" | "select" | "color";
+  type: "text" | "textarea" | "select" | "color" | "file";
   default?: string;
   placeholder?: string;
   options?: string[];
   required?: boolean;
+  /** للملفات: الامتدادات المقبولة مثل ".pptx,.pdf,image/*" */
+  accept?: string;
+  /** للملفات: الحد الأقصى للحجم بالميغابايت */
+  maxMB?: number;
+  /** للملفات: السماح بأكثر من ملف */
+  multiple?: boolean;
+  hint?: string;
 };
 
 export type Effort = "low" | "medium" | "high" | "xhigh" | "max";
@@ -25,6 +32,8 @@ export type Stage = {
   /** أسماء ملفات الوكلاء (بدون .md). أكثر من وكيل = يشتغلوا بالتوازي */
   agents: string[];
   effort?: Effort;
+  /** يسمح لوكلاء المرحلة بالبحث في الإنترنت للتحقق من الأرقام والأخبار */
+  webSearch?: boolean;
 };
 
 export type Machine = {
@@ -41,6 +50,27 @@ export type Machine = {
   team: Stage[];
   /** شكل المخرج: markdown (افتراضي) أو carousel (سلايدات مصممة تُصدَّر PNG) */
   output?: "markdown" | "carousel";
+  /**
+   * أين تشتغل الماكينة:
+   * text   → داخل الموقع (فريق وكلاء نصي — team)
+   * worker → على سيرفر المعالجة (Claude Agent SDK + بلجنز) وتسلّم ملفات
+   */
+  runner?: "text" | "worker";
+  /** فريق الماكينة للعرض في الصفحة (لمكائن السيرفر) */
+  crew?: { title: string; role: string }[];
+  worker?: {
+    /** مجلدات البلجنز داخل worker/plugins التي تُحمَّل للطلب */
+    plugins: string[];
+    /** سقف تكلفة Claude للطلب المدفوع وللتجربة المجانية (دولار) */
+    maxBudgetUsd: number;
+    trialBudgetUsd: number;
+    /** الحد الأقصى لمدة الطلب بالدقائق */
+    timeoutMin: number;
+  };
+  /** الوقت المتوقع للتسليم (يُعرض للعميل) */
+  eta?: string;
+  /** عدد الاستخدامات المشمولة بكل شراء (الافتراضي في access.ts) */
+  usesPerPurchase?: number;
 };
 
 const MACHINES_DIR = path.join(process.cwd(), "machines");
@@ -64,13 +94,16 @@ function readPlugin(slug: string): Machine | null {
   const file = path.join(MACHINES_DIR, slug, "plugin.json");
   if (!fs.existsSync(file)) return null;
   const data = JSON.parse(fs.readFileSync(file, "utf8"));
-  return { ...data, slug } as Machine;
+  return { team: [], inputs: [], features: [], ...data, slug } as Machine;
 }
 
 /** عدد الموظفين (الوكلاء) في فريق الماكينة */
 export function teamSize(machine: Machine): number {
+  if (machine.runner === "worker") return machine.crew?.length ?? 0;
   return machine.team.reduce((n, s) => n + s.agents.length, 0);
 }
+
+export const isWorkerMachine = (m: Machine) => m.runner === "worker";
 
 /** يقرأ مهارة الوكيل من ملفات الماكينة، وإن لم توجد فمن الوكلاء المشتركين */
 export function readAgentSkillFromDisk(slug: string, agent: string): string | null {

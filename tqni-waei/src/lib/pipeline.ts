@@ -82,30 +82,41 @@ async function runAgent(
   schema: Record<string, unknown> | null = null,
 ): Promise<string> {
   const skill = await loadSkill(machine.slug, agent);
-  const response = await anthropic().beta.messages.create({
-    model: MODEL,
-    max_tokens: 16000,
-    betas: ["server-side-fallback-2026-07-01"],
-    fallbacks: "default",
-    thinking: { type: "adaptive" },
-    output_config: {
-      effort: stage.effort ?? "high",
-      ...(schema && { format: { type: "json_schema" as const, schema } }),
-    },
-    system: [
-      { type: "text", text: HOUSE_RULES },
-      { type: "text", text: skill, cache_control: { type: "ephemeral" } },
-    ],
-    messages: [{ role: "user", content: brief }],
-  });
+  const messages: Anthropic.Beta.BetaMessageParam[] = [{ role: "user", content: brief }];
 
-  if (response.stop_reason === "refusal") {
-    throw new Error("تعذّر تنفيذ هذا الطلب. جرّب صياغة مختلفة.");
+  // البحث في الإنترنت أداة على سيرفر Anthropic؛ إن طال البحث يرجع pause_turn فنكمل من حيث توقف
+  for (let round = 0; round < 4; round++) {
+    const response = await anthropic().beta.messages.create({
+      model: MODEL,
+      max_tokens: 16000,
+      betas: ["server-side-fallback-2026-07-01"],
+      fallbacks: "default",
+      thinking: { type: "adaptive" },
+      output_config: {
+        effort: stage.effort ?? "high",
+        ...(schema && { format: { type: "json_schema" as const, schema } }),
+      },
+      ...(stage.webSearch && { tools: [{ type: "web_search_20260209" as const, name: "web_search" as const, max_uses: 6 }] }),
+      system: [
+        { type: "text", text: HOUSE_RULES },
+        { type: "text", text: skill, cache_control: { type: "ephemeral" } },
+      ],
+      messages,
+    });
+
+    if (response.stop_reason === "refusal") {
+      throw new Error("تعذّر تنفيذ هذا الطلب. جرّب صياغة مختلفة.");
+    }
+    if (response.stop_reason === "pause_turn") {
+      messages.push({ role: "assistant", content: response.content });
+      continue;
+    }
+    return response.content
+      .map((b) => (b.type === "text" ? b.text : ""))
+      .join("")
+      .trim();
   }
-  return response.content
-    .map((b) => (b.type === "text" ? b.text : ""))
-    .join("")
-    .trim();
+  throw new Error("استغرق البحث وقتاً أطول من المسموح — حاول مرة ثانية.");
 }
 
 export async function runTeam(
