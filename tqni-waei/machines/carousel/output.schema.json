@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slides", "caption", "hashtags"],
+  "properties": {
+    "slides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "kicker", "title", "body", "highlight"],
+        "properties": {
+          "kind": { "type": "string", "enum": ["cover", "point", "stat", "question", "share", "cta"] },
+          "kicker": { "type": "string" },
+          "title": { "type": "string" },
+          "body": { "type": "string" },
+          "highlight": { "type": "string" }
+        }
+      }
+    },
+    "caption": { "type": "string" },
+    "hashtags": { "type": "array", "items": { "type": "string" } }
+  }
+}

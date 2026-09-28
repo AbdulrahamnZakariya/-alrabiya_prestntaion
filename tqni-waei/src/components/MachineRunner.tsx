@@ -5,9 +5,10 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { MachineInput } from "@/lib/machines";
+import { CarouselView, type CarouselData } from "@/components/CarouselView";
 
 type Props = {
-  machine: { slug: string; name: string; inputs: MachineInput[] };
+  machine: { slug: string; name: string; inputs: MachineInput[]; output?: "markdown" | "carousel" };
   loggedIn: boolean;
   owned: boolean;
   trialsLeft: number;
@@ -17,7 +18,9 @@ type Progress = { index: number; total: number; title: string; agents: number };
 
 export function MachineRunner({ machine, loggedIn, owned, trialsLeft }: Props) {
   const [values, setValues] = useState<Record<string, string>>(() =>
-    Object.fromEntries(machine.inputs.map((i) => [i.name, i.type === "select" ? i.options?.[0] ?? "" : ""])),
+    Object.fromEntries(
+      machine.inputs.map((i) => [i.name, i.default ?? (i.type === "select" ? i.options?.[0] ?? "" : "")]),
+    ),
   );
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState<Progress | null>(null);
@@ -25,6 +28,8 @@ export function MachineRunner({ machine, loggedIn, owned, trialsLeft }: Props) {
   const [error, setError] = useState("");
   const [trials, setTrials] = useState(trialsLeft);
   const [copied, setCopied] = useState(false);
+
+  const carousel = machine.output === "carousel" ? parseCarousel(output) : null;
 
   if (!loggedIn) {
     return (
@@ -107,6 +112,16 @@ export function MachineRunner({ machine, loggedIn, owned, trialsLeft }: Props) {
                 value={values[f.name]}
                 onChange={(e) => setValues({ ...values, [f.name]: e.target.value })}
               />
+            ) : f.type === "color" ? (
+              <div className="flex items-center gap-3">
+                <input
+                  type="color"
+                  className="h-11 w-16 cursor-pointer rounded-lg border border-border bg-surface-2"
+                  value={values[f.name]}
+                  onChange={(e) => setValues({ ...values, [f.name]: e.target.value })}
+                />
+                <span className="font-mono text-sm text-muted" dir="ltr">{values[f.name]}</span>
+              </div>
             ) : f.type === "select" ? (
               <select
                 className="field"
@@ -151,7 +166,27 @@ export function MachineRunner({ machine, loggedIn, owned, trialsLeft }: Props) {
 
       {error && <div className="card border-danger p-4 text-danger">{error}</div>}
 
-      {output && (
+      {output && carousel && (
+        <div className="card p-6">
+          <CarouselView
+            data={carousel}
+            style={{
+              bg: values.bg || "#0B1020",
+              accent: values.accent || "#36E0B0",
+              font: values.font || "Cairo",
+              handle: values.handle?.trim() ? (values.handle.trim().startsWith("@") ? values.handle.trim() : `@${values.handle.trim()}`) : "",
+            }}
+          />
+          {!owned && (
+            <div className="mt-6 rounded-xl bg-surface-2 p-4 text-center">
+              <p className="font-bold">عجبتك النتيجة؟</p>
+              <Link href={`/checkout?machines=${machine.slug}`} className="btn btn-primary mt-3">اشترِ الماكينة</Link>
+            </div>
+          )}
+        </div>
+      )}
+
+      {output && !carousel && (
         <div className="card p-6">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-extrabold">النتيجة</h2>
@@ -179,4 +214,14 @@ export function MachineRunner({ machine, loggedIn, owned, trialsLeft }: Props) {
       )}
     </div>
   );
+}
+
+function parseCarousel(text: string): CarouselData | null {
+  if (!text) return null;
+  try {
+    const data = JSON.parse(text) as CarouselData;
+    return Array.isArray(data.slides) && data.slides.length ? data : null;
+  } catch {
+    return null;
+  }
 }

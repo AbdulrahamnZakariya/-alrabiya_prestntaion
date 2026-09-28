@@ -14,6 +14,7 @@ Next.js 15 (App Router) + Supabase + Claude API. الواجهة عربية RTL.
 2. الفريق القياسي: analyst ← creator ← [reviewer-expert, reviewer-audience, reviewer-redteam, + مراجع متخصص] ← refiner ← qa-final.
 3. اكتب `agents/analyst.md` و`agents/creator.md` ومهارة المراجع المتخصص.
 4. `status: "soon"` تعرض الماكينة بدون شراء أو تشغيل، و`"live"` تفعّلها.
+5. مخرج مصمم بدل النص: ضع `"output": "carousel"` في plugin.json، وأضف `output.schema.json`، وأنشئ `agents/qa-final.md` خاصاً بالماكينة يسلّم JSON. المرحلة الأخيرة تُقيَّد بالمخطط تلقائياً (مثال: `machines/carousel`).
 
 ## قواعد
 - وكيل المرحلة الأخيرة (qa-final) يُخرج الناتج النهائي فقط، لأنه ما يراه العميل.

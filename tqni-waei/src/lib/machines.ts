@@ -10,7 +10,8 @@ import path from "node:path";
 export type MachineInput = {
   name: string;
   label: string;
-  type: "text" | "textarea" | "select";
+  type: "text" | "textarea" | "select" | "color";
+  default?: string;
   placeholder?: string;
   options?: string[];
   required?: boolean;
@@ -38,6 +39,8 @@ export type Machine = {
   inputs: MachineInput[];
   features: string[];
   team: Stage[];
+  /** شكل المخرج: markdown (افتراضي) أو carousel (سلايدات مصممة تُصدَّر PNG) */
+  output?: "markdown" | "carousel";
 };
 
 const MACHINES_DIR = path.join(process.cwd(), "machines");
@@ -77,6 +80,12 @@ export function readAgentSkillFromDisk(slug: string, agent: string): string | nu
   const shared = path.join(SHARED_AGENTS_DIR, `${agent}.md`);
   if (fs.existsSync(shared)) return fs.readFileSync(shared, "utf8");
   return null;
+}
+
+/** مخطط JSON لمخرج المرحلة الأخيرة (للمكائن التي مخرجها ليس نصاً) */
+export function readOutputSchema(slug: string): Record<string, unknown> | null {
+  const file = path.join(MACHINES_DIR, slug, "output.schema.json");
+  return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : null;
 }
 
 /** أسماء كل الوكلاء المستخدمين في الماكينة (لواجهة رفع المهارات) */

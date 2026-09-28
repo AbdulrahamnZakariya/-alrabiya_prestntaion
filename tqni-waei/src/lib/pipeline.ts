@@ -1,7 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { readAgentSkillFromDisk, type Machine, type Stage } from "@/lib/machines";
+import { readAgentSkillFromDisk, readOutputSchema, type Machine, type Stage } from "@/lib/machines";
 
 // محرّك فريق العمل: كل ماكينة تمر بمراحل، وكل مرحلة فيها وكيل أو أكثر.
 // الوكلاء في نفس المرحلة يشتغلوا بالتوازي، وكل مرحلة تستلم شغل اللي قبلها.
@@ -79,6 +79,7 @@ async function runAgent(
   stage: Stage,
   agent: string,
   brief: string,
+  schema: Record<string, unknown> | null = null,
 ): Promise<string> {
   const skill = await loadSkill(machine.slug, agent);
   const response = await anthropic().beta.messages.create({
@@ -87,7 +88,10 @@ async function runAgent(
     betas: ["server-side-fallback-2026-07-01"],
     fallbacks: "default",
     thinking: { type: "adaptive" },
-    output_config: { effort: stage.effort ?? "high" },
+    output_config: {
+      effort: stage.effort ?? "high",
+      ...(schema && { format: { type: "json_schema" as const, schema } }),
+    },
     system: [
       { type: "text", text: HOUSE_RULES },
       { type: "text", text: skill, cache_control: { type: "ephemeral" } },
@@ -111,6 +115,8 @@ export async function runTeam(
 ): Promise<string> {
   const history: Contribution[] = [];
   let last = "";
+  // المرحلة الأخيرة في مكائن المخرجات المصممة تُسلّم JSON مطابقاً للمخطط
+  const finalSchema = machine.output && machine.output !== "markdown" ? readOutputSchema(machine.slug) : null;
 
   for (const [index, stage] of machine.team.entries()) {
     emit({
@@ -122,7 +128,9 @@ export async function runTeam(
     });
     const brief = buildBrief(machine, inputs, stage, history);
     const outputs = await Promise.all(
-      stage.agents.map((agent) => runAgent(machine, stage, agent, brief)),
+      stage.agents.map((agent) =>
+        runAgent(machine, stage, agent, brief, index === machine.team.length - 1 ? finalSchema : null),
+      ),
     );
     stage.agents.forEach((agent, i) =>
       history.push({ stage: stage.title, agent, text: outputs[i] }),

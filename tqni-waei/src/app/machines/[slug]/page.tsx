@@ -76,7 +76,7 @@ export default async function MachinePage({ params }: { params: Promise<{ slug: 
       {live && (
         <section id="run" className="mx-auto max-w-4xl scroll-mt-20 px-4 py-10">
           <MachineRunner
-            machine={{ slug: machine.slug, name: machine.name, inputs: machine.inputs }}
+            machine={{ slug: machine.slug, name: machine.name, inputs: machine.inputs, output: machine.output }}
             loggedIn={Boolean(user)}
             owned={access.owned}
             trialsLeft={access.trialsLeft}
