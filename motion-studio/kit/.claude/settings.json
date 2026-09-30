@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx hyperframes lint *)",
+      "Bash(npx hyperframes check *)",
+      "Bash(npx hyperframes snapshot *)",
+      "Bash(npx hyperframes timeline *)",
+      "Bash(npx hyperframes catalog *)",
+      "Bash(npx remotion still *)",
+      "Bash(ffprobe *)"
+    ],
+    "ask": [
+      "mcp__blotato"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/hf-guard.sh",
+            "timeout": 120,
+            "statusMessage": "Arabic/HyperFrames guard"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "mcp__blotato__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/publish-gate.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

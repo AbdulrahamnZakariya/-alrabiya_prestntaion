@@ -1,0 +1,350 @@
+<!doctype html><html lang="ar"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>استوديو الموشن العربي</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;600&family=IBM+Plex+Mono&display=swap">
+<style>
+:root{--bg:#F3ECE0;--surface:#E7DDCC;--ink:#1B1A17;--muted:#5E574B;--accent:#0F5C4D;--line:#d6c9b3;
+--f-display:'Alexandria','IBM Plex Sans Arabic',system-ui,sans-serif;--f-body:'IBM Plex Sans Arabic',system-ui,sans-serif;--f-mono:'IBM Plex Mono',ui-monospace,monospace}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0F0E13;--surface:#1A1820;--ink:#F4EFE6;--muted:#9A93A6;--accent:#E8A33D;--line:#2A2733;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F0E13;--surface:#1A1820;--ink:#F4EFE6;--muted:#9A93A6;--accent:#E8A33D;--line:#2A2733;color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.8;padding-inline:16px;padding-block:32px 64px}
+main{max-width:52rem;margin-inline:auto}
+h1,h2,h3{font-family:var(--f-display);line-height:1.3;text-wrap:balance}
+h1{font-size:2.1rem;font-weight:800;margin-block:0 .4em}
+h2{font-size:1.45rem;font-weight:700;margin-block:2.2em .6em;padding-block-start:.8em;border-top:1px solid var(--line)}
+h2::before{content:'';display:inline-block;width:.55em;height:.55em;background:var(--accent);margin-inline-end:.45em;vertical-align:.1em}
+h3{font-size:1.1rem;margin-block:1.6em .4em}
+blockquote{margin:0;color:var(--muted);border-inline-start:3px solid var(--accent);padding-inline-start:1em}
+strong{color:var(--ink)} a{color:var(--accent)}
+hr{display:none}
+code{font-family:var(--f-mono);font-size:.86em;background:var(--surface);padding:.1em .35em;border-radius:3px;direction:ltr;unicode-bidi:isolate}
+pre{background:var(--surface);padding:1em 1.1em;overflow-x:auto;border-radius:6px;line-height:1.55;text-align:left}
+pre code{background:none;padding:0;font-size:.82rem}
+.tbl{overflow-x:auto;margin-block:1em}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:right;padding:.55em .7em;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);font-weight:600;color:var(--muted);font-size:.85rem}
+li{margin-block:.25em}
+</style></head><body dir="rtl"><main><h1>استوديو الموشن العربي: التقرير النهائي للفريق</h1>
+<blockquote>
+<p>Claude Code (Opus 5.5) + HyperFrames + GSAP 3 + Remotion + Whisper + Blotato
+تاريخ التقرير: 30 أيلول 2026 · أعدّه فريق من 5 أدوار (بحث، أفكار فايرال، تصميم وحركة، هندسة أنظمة، هندسة برومبت)</p>
+</blockquote>
+<hr />
+<h2>الخلاصة بسطور</h2>
+<ol>
+<li><strong>HyperFrames</strong> (من HeyGen، مفتوح المصدر Apache-2.0، النسخة 0.8.95) بتكتب فيه الفيديو كصفحة HTML + CSS + GSAP timeline متوقف، وبيحوّلها لـ MP4 فريم بفريم. <strong>جرّبناه فعلياً</strong> على فيديو عربي 1080×1920: الرندر أخد 7 ثواني، والحروف متصلة صح، وكل رندر بيطلع مطابق للي قبله بالبت.</li>
+<li><strong>GSAP 3.15 صار مجاني بالكامل</strong> مع كل الإضافات (SplitText, MorphSVG, DrawSVG…) حتى للشغل التجاري.</li>
+<li><strong>Remotion</strong> شغّال كمان (جرّبناه بالعربي). مجاني للأفراد والشركات لحد 3 موظفين، وأكبر من هيك بدها رخصة مدفوعة.</li>
+<li><strong>الفرصة الحقيقية:</strong> المحتوى العربي تقريباً فاضي من «موشن إكسبلينر + داتا متحركة + برومبت ← فيديو». وAfter Effects بيتعب مع العربي، بينما المتصفح بيرسم العربي صح. هاد هو <strong>الخندق (moat)</strong> تبعك.</li>
+<li><strong>جاهز عندك:</strong> كيت كامل (CLAUDE.md + 10 skills + 3 وكلاء مراجعة + hooks حماية)، سكربت قص السكتات والإعادات، زووم تلقائي لتسجيلات الشاشة، وخطة نشر 30 يوم.</li>
+</ol>
+<hr />
+<h2>1. شو كان بالفيديوهين فعلاً (تصحيح الأسماء)</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>اللي انكتب بالتفريغ</th>
+<th>الحقيقة بعد التحقق</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>الفيديو <code>AW3Uku__BBE</code></td>
+<td>"Opus 5.5 Is The Best Video Editor I've Ever Used" لـ <strong>Paul J Lipsky</strong> (نُشر 28 أيلول 2026)</td>
+</tr>
+<tr>
+<td>الفيديو <code>cmxZ4FvKuig</code></td>
+<td>فيديو <strong>بالإسبانية</strong>: "Claude Opus 5.5 despidió a mi equipo de edición de vídeo" (القناة ما تأكدنا منها)</td>
+</tr>
+<tr>
+<td>Broomi MCP</td>
+<td><strong>Borumi</strong>: مسجّل شاشة وكاميرا لـ macOS، ضاف MCP server من نسخة 0.29. في skill عامة اسمها <code>edit-borumi-video</code> (Samin12) وما تأكدنا إنها نفسها اللي بالفيديو</td>
+</tr>
+<tr>
+<td>Whisper M1XD</td>
+<td>غالباً <strong>WhisperX</strong> (على كرت NVIDIA)، أو <strong>mlx-whisper</strong> إذا الشغل على ماك</td>
+</tr>
+<tr>
+<td>Hyperframe/Highfield</td>
+<td>أداتين مختلفتين: <strong>HyperFrames</strong> (موشن بالكود) و <strong>Higgsfield AI</strong> (توليد فيديو بالذكاء الاصطناعي، إلو MCP لـ Claude)</td>
+</tr>
+<tr>
+<td>Blotato</td>
+<td>صحيح: نشر تلقائي لـ 9 منصات عبر MCP/API (بالخطط المدفوعة)</td>
+</tr>
+<tr>
+<td>A/B thumbnails</td>
+<td>ميزة يوتيوب نفسها <strong>Test &amp; Compare</strong>: لحد 3 صور، <strong>للفيديوهات الطويلة بس مش للـ Shorts</strong>، وما لقينا API إلها</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2>2. ابدأ الآن: خطوات اليوم الأول</h2>
+<h3>أ) التثبيت (ماك Apple Silicon)</h3>
+<pre dir="ltr"><code class="language-bash">xcode-select --install
+/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;
+brew install node ffmpeg git rclone uv          # تأكد إنو node -v ≥ 22
+curl -fsSL https://claude.ai/install.sh | bash  # Claude Code
+claude --version
+
+mkdir -p ~/studio &amp;&amp; cd ~/studio &amp;&amp; git init
+uv python install 3.12
+uv venv --python 3.12 .venv &amp;&amp; source .venv/bin/activate
+uv pip install mlx-whisper auto-editor mcp
+npx hyperframes@latest doctor
+npx hyperframes browser ensure
+</code></pre>
+<h3>أ) التثبيت (ويندوز 11 مع كرت NVIDIA)</h3>
+<pre dir="ltr"><code class="language-powershell">winget install OpenJS.NodeJS.LTS Git.Git Gyan.FFmpeg Rclone.Rclone astral-sh.uv
+irm https://claude.ai/install.ps1 | iex
+mkdir $HOME\studio; cd $HOME\studio; git init
+uv python install 3.12
+uv venv --python 3.12 .venv; .venv\Scripts\activate
+# ثبّت CUDA Toolkit 12.8 أولاً، بعدين:
+uv pip install whisperx auto-editor mcp
+npx hyperframes@latest doctor; npx hyperframes browser ensure
+</code></pre>
+<h3>ب) ركّب الكيت والإضافات الرسمية</h3>
+<pre dir="ltr"><code class="language-bash"># فك arabic-motion-kit.zip جوّا ~/studio (أو انسخ محتوى motion-studio/kit)
+unzip arabic-motion-kit.zip -d .
+chmod +x .claude/hooks/*.sh .claude/skills/first-pass-edit/scripts/edl.py
+npm init -y &amp;&amp; npm i -D hyperframes
+
+claude plugin marketplace add heygen-com/hyperframes
+claude plugin install hyperframes@hyperframes
+npx skills add remotion-dev/skills                       # إذا رح تستعمل Remotion
+claude mcp add --transport http blotato https://mcp.blotato.com/mcp   # الاسم لازم blotato بحروف صغيرة
+</code></pre>
+<p>بعدها نزّل ملفات الخطوط (Alexandria و IBM Plex Sans Arabic من Google Fonts) وحطها بـ <code>brand/fonts/</code>.</p>
+<h3>ج) أول رسائل جوّا Claude Code</h3>
+<ol>
+<li><code>/context</code> ← لازم تشوف CLAUDE.md. و <code>/hooks</code> ← لازم تشوف الحارس وبوابة النشر.</li>
+<li>فحص البيئة:
+   <code>اقرأ CLAUDE.md و brand/tokens.css و brand/motion.js.
+   تأكد إنو كل ملف خط موجود بـ brand/fonts/، وشغّل npx hyperframes doctor،
+   ولخّصلي قواعد الاستوديو بـ 8 نقاط. ما تعدّل ولا ملف.</code></li>
+<li>اختبار 3 ثواني:
+   <code>اعمل مشروع videos/smoke-test بـ npx hyperframes init وانسخ brand/ جوّاه.
+   مشهد 9:16 مدته 3 ثواني: «أهلاً وسهلاً بالاستوديو» تدخل كلمة كلمة من اليمين
+   (stagger 0.2s، power3.out) والكلمة «الاستوديو» بلون --c-accent.
+   بعدين شغّل /qa-gate smoke-test وورجيني مسارات الصور.</code>
+   افتح الصور بنفسك: الحروف متصلة؟ الترتيب من اليمين؟ إذا آه، الأساس شغّال.</li>
+<li>أول فيديو حقيقي: من سكربت <code>/storyboard-director videos/ep01/script.md 9:16 25</code>
+   أو من فوتج خام <code>/raw-to-published ~/Movies/raw/ep01 ep01 hyperframes</code></li>
+<li>آخر النهار: «شو أكتر شي أخد تعديلات اليوم؟ اقترح 3 أسطر نضيفها لـ CLAUDE.md وما تعدّل لحتى وافق.»</li>
+</ol>
+<hr />
+<h2>3. المعمارية: منهجيتين بخط واحد</h2>
+<pre dir="ltr"><code>فوتج خام (Drive عبر rclone أو ملف محلي)
+   │
+   ▼
+تفريغ بتوقيت كل كلمة ── WhisperX / mlx-whisper  (--language ar, large-v3)
+   │
+   ▼
+قص أولي: سكتات + تأتأة + إعادات (بيحتفظ بآخر أخذة) ── autocut.py / edl.py
+   │                                                  ◆ موافقتك على edl.json
+   ▼
+ستوريبورد + هوك ── /storyboard-director + /viral-hook-writer   ◆ موافقتك
+   │
+   ▼
+مشاهد موشن: HyperFrames (HTML+GSAP) للموشن الصافي
+            Remotion (React 19) للفوتج + زووم + تبديل layouts
+   │                                                  ◆ موافقتك على style frame
+   ▼
+كابشن عربي بالكلمة + QA gate (30 بند) + رندر
+   │
+   ▼
+نسخ 9:16 / 1:1 / 16:9 ── /aspect-variants
+   │
+   ▼
+حزمة النشر (عناوين، هاشتاغ، ثمبنيلين) ── /publish-pack   ◆ لازم تكتب «انشر»
+   │
+   ▼
+Blotato MCP ← يوتيوب، تيك توك، إنستغرام…
+</code></pre>
+<p><strong>المنهجية التفاعلية (زي Borumi):</strong> سكربت Playwright بيسجّل الشاشة وبيسجّل مكان كل كبسة، و <code>autozoom.py</code> بيعمل زووم تلقائي على الكبسات بـ 9:16، و <code>timeline_mcp.py</code> سيرفر MCP صغير بيخلّي Claude يعدّل الـ timeline (edl.json) بأدوات. الثلاثة اشتغلوا بالتجربة.</p>
+<hr />
+<h2>4. الأفكار: شو تنشر</h2>
+<p><strong>الفجوة:</strong> العربي عن الذكاء الاصطناعي أغلبه «قوائم أدوات» وحكي للكاميرا، والموشن العربي أغلبه تمبليتس إعلانية. أنت مونتير حقيقي بيبني موشن عربي بالكود وبيورجي الطريقة.</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>الترتيب</th>
+<th>السلسلة</th>
+<th>ليش</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>«اكتبلي وبحرّكها»</strong></td>
+<td>الناس بتكتب كلمة/اسم بالكومنت وبتصير خط عربي متحرك. أعلى تفاعل، ومحرّك نمو ذاتي</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>«مونتير ضد برومبت»</strong></td>
+<td>سباق بتوقيت حقيقي: أنت بـ After Effects ضد Claude بالكود. سلطة + زبائن B2B</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>«كلمة وأصلها»</strong></td>
+<td>أصول الكلمات الشامية بطباعة حركية. علم ينتفع به وبيتشارك عائلياً ومش مربوط بترند</td>
+</tr>
+<tr>
+<td>4 (من الأسبوع 3)</td>
+<td><strong>«درس بدقيقة»</strong></td>
+<td>تسجيل شاشة + زووم تلقائي. أوضح فايدة، وأسرع باب لربح الشركات</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>خطة 30 يوم (1-30 تشرين الأول):</strong> 5 ريلز بالأسبوع على Reels + TikTok، ونسخة Shorts، و LinkedIn لفيديوهات السباق. جدول ثابت (سبت/ثلاثاء: كلمة وأصلها · أحد/أربعاء: اكتبلي · اثنين: مونتير ضد برومبت). جرّب الهوكات بـ Trial Reels. <strong>ما تحكم على سلسلة قبل 6 حلقات.</strong></p>
+<p><strong>أهداف القياس:</strong> مشاهدة أول 3 ثواني ≥ 65% · متوسط مشاهدة ≥ 60% · (مشاركة + حفظ) ÷ وصول ≥ 2% · ≥ 30 كومنت لكل «اكتبلي».</p>
+<p><strong>الربح:</strong> خدمات موشن للوكالات والبراندات، توطين الإعلانات لعدة لهجات، تيوتوريالات للشركات، تمبليتس و skills <strong>عربية تحديداً</strong> (الإنجليزية متوفرة مجاناً)، كورسات بالعربي.</p>
+<p>الأفكار الـ 21 كاملة مع الهوك لكل وحدة: <code>reports/02-viral-ideas.md</code></p>
+<hr />
+<h2>5. نظام التصميم («جميل مرعب» بدون AI slop)</h2>
+<ul>
+<li><strong>الفخامة قرار:</strong> لون تمييز واحد، خطّين بس، فرق أوزان حاد (300 مقابل 900)، 95% من الانتقالات قطع حاد على الإيقاع.</li>
+<li><strong>الخطوط (كلها OFL مجانية):</strong> الافتراضي <strong>Alexandria</strong> للعناوين + <strong>IBM Plex Sans Arabic</strong> للنص. Cairo و Tajawal صاروا «Inter العربي» من كثرة الاستعمال، استعملهم عن قصد بس.</li>
+<li><strong>الألوان (3 لوحات، التباين محسوب):</strong> «ليل الزعفران» <code>#0F0E13 / #F4EFE6 / #E8A33D</code> · «رمل وحبر» <code>#F3ECE0 / #1B1A17 / #0F5C4D</code> · «برتقالي الإشارة» <code>#101826 / #F7F3EA / #FF5A36</code>.</li>
+<li><strong>المنطقة الآمنة 9:16:</strong> x من 120 لـ 960، y من 220 لـ 1500. أزرار تيك توك وريلز على اليمين بتصطدم بالنص العربي.</li>
+<li><strong>سرعة القراءة:</strong> العربي 138 كلمة/دقيقة مقابل 228 للإنجليزي. ثبّت النص <code>max(1.5s, 0.6 + كلمات/2)</code>. أقصى شي كلمتين بالثانية.</li>
+<li><strong>الزووم بتسجيلات الشاشة:</strong> ‎1.6–2.2x، يبدأ 0.45 ثانية قبل الكبسة، 0.6 ثانية دخول، ثبات ≥ 1.2 ثانية، زووم واحد كل 3-4 ثواني بالكتير.</li>
+<li><strong>الصوت نص الفخامة:</strong> الـ hit عند حوالي 30% من حركة <code>expo.out</code>، وصمت قصير قبل الضربة الكبيرة.</li>
+</ul>
+<h3>قواعد العربي الذهبية (مجرّبة بالاختبار)</h3>
+<ol>
+<li><strong>ممنوع تقسيم العربي لحروف</strong> (SplitText <code>chars</code> بيفك الوصل). حرّك بالكلمة أو السطر، أو اكشف بقناع <code>clip-path</code> من اليمين.</li>
+<li><strong>ممنوع <code>dir="rtl"</code> على <code>&lt;html&gt;</code></strong> بـ HyperFrames (خطأ lint وممكن يطلع فيديو أسود). حط <code>direction: rtl</code> على المشهد وحاويات النص.</li>
+<li><strong><code>letter-spacing</code> ما بيشتغل على العربي</strong> بالمتصفح. البديل الكشيدة أو محور الوزن بالخطوط المتغيرة.</li>
+<li><strong>الأرقام:</strong> حدّد النظام صراحة (<code>ar-u-nu-arab</code> = ١٢٣ أو <code>ar-u-nu-latn</code> = 123).</li>
+<li><strong>الخطوط محلية دايماً</strong> (<code>@font-face</code> لملف بـ <code>brand/fonts/</code>). HyperFrames ما فيه خطوط عربية مدمجة.</li>
+<li><strong>التفريغ العربي:</strong> <code>transcribe</code> الافتراضي إنجليزي بس. استعمل <code>--model large-v3 --language ar</code>. وبالشامي نسبة الغلط عالية (تقريباً 28-58% حسب النموذج)، فكل كابشن بدها مراجعة بشرية.</li>
+</ol>
+<p>العشر حركات المميزة مع الكود (HyperFrames + Remotion): <code>reports/03-design.md</code> و <code>design-assets/</code></p>
+<hr />
+<h2>6. الكيت الجاهز (<code>kit/</code> أو <code>arabic-motion-kit.zip</code>)</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>الملف</th>
+<th>الوظيفة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CLAUDE.md</code></td>
+<td>دستور الاستوديو (100 سطر): العربي، الحتمية، المناطق الآمنة، الجودة، قاعدة النشر</td>
+</tr>
+<tr>
+<td><code>brand/tokens.css</code> + <code>motion.js</code></td>
+<td>هويتك: ألوان، خطوط، easing، مدد، مولّد عشوائي ببذرة. <strong>عدّلهم لهويتك</strong></td>
+</tr>
+<tr>
+<td><code>skills/raw-to-published</code></td>
+<td>الخط الكامل من الفوتج للنشر، مع 🛑 نقاط موافقة</td>
+</tr>
+<tr>
+<td><code>skills/first-pass-edit</code></td>
+<td>قص السكتات والتأتأة والإعادات من التفريغ (مع <code>edl.py</code> مجرّب)</td>
+</tr>
+<tr>
+<td><code>skills/storyboard-director</code> · <code>viral-hook-writer</code></td>
+<td>ستوريبورد بالثواني والفريمات · هوكات بآليات مختلفة</td>
+</tr>
+<tr>
+<td><code>skills/brand-scene-builder</code> · <code>remotion-scene-builder</code></td>
+<td>بناء المشاهد بـ HyperFrames أو Remotion</td>
+</tr>
+<tr>
+<td><code>skills/arabic-kinetic-captions</code></td>
+<td>كابشن كاريوكي عربي بالكلمة</td>
+</tr>
+<tr>
+<td><code>skills/qa-gate</code> · <code>aspect-variants</code> · <code>publish-pack</code></td>
+<td>فحص الجودة · النسخ 9:16/1:1/16:9 · حزمة النشر</td>
+</tr>
+<tr>
+<td><code>agents/motion-critic</code> · <code>arabic-type-reviewer</code> · <code>script-writer</code></td>
+<td>ناقد حركة وناقد خط عربي (قراءة بس) + كاتب سكربت شامي</td>
+</tr>
+<tr>
+<td><code>hooks/hf-guard.sh</code></td>
+<td>بعد كل تعديل: بيمنع تقسيم الحروف، العشوائية، الساعة، <code>repeat:-1</code></td>
+</tr>
+<tr>
+<td><code>hooks/publish-gate.sh</code></td>
+<td><strong>بيسألك قبل أي نشر</strong> على Blotato حتى لو Claude بوضع تلقائي</td>
+</tr>
+</tbody>
+</table></div>
+<p>مكتبة 15 برومبت شامي جاهز للنسخ: <code>reports/05-prompts.md</code> القسم 7.</p>
+<hr />
+<h2>7. شو المطلوب منك أنت (مش من Claude)</h2>
+<p>Claude بيولّد البنية والحركة والبيانات والتنويعات. <strong>أنت</strong> بتقرر الذوق والقصة، بتختار وبتمكس الصوت، بتصوّر الفوتج، بتراجع العربي والأرقام والحقوق، وبتختار الثمبنيلز. وكل ما Claude يغلط نفس الغلطة مرتين، زيد سطر بـ CLAUDE.md.</p>
+<p><strong>خارطة 4 أسابيع:</strong> (1) تثبيت + smoke test + هويتك بالـ tokens · (2) 3 تمبليتس للسلاسل الأولى + 6 حلقات جاهزة · (3) الخط الآلي كامل على «درس بدقيقة» + Blotato بالموافقة · (4) قياس: كم دقيقة من التسجيل للنشر (الهدف &lt; 30 دقيقة) وكم نسبة الكابشن اللي بدها تصحيح.</p>
+<hr />
+<h2>8. مخاطر ولازم تنتبه إلها</h2>
+<ul>
+<li><strong>تعب الناس من AI slop:</strong> الجودة والذوق هم الفرق. ما تنشر إشي ما مرق من QA gate.</li>
+<li><strong>يوتيوب وسياسة المحتوى المكرّر/الجماعي:</strong> بتهدد السلاسل المؤتمتة بالكامل. خلّي فيها لمسة بشرية واضحة.</li>
+<li><strong>النشر الآلي:</strong> دايماً بموافقتك (الـ hook بيفرضها).</li>
+<li><strong>الحقوق:</strong> تراخيص الخطوط، الشعر الحديث، شعارات البراندات، وبيانات الناس بالفيديوهات الشخصية.</li>
+<li><strong>المحتوى السياسي:</strong> في تاريخ تقييد على ميتا لمحتوى متعلق بفلسطين.</li>
+<li><strong>HyperFrames لسا قبل 1.0:</strong> بيتغير بسرعة. خلّي Claude يتأكد من <code>--help</code> قبل أي أمر مش مؤكد.</li>
+</ul>
+<h3>شو ما قدرنا نتأكد منو 100%</h3>
+<ul>
+<li>أرقام المناطق الآمنة للمنصات (مصادر طرف ثالث بتختلف)، وأسعار Remotion و Blotato وأسماء أدوات Blotato.</li>
+<li>صيغة <code>--batch</code> و <code>--caption-zone</code> بـ HyperFrames.</li>
+<li>التفريغ العربي نفسه ما جرّبناه هون (موقع huggingface محجوب بالبيئة). قص السكتات اتجرّب على مقطع اصطناعي.</li>
+<li>الكيت ككل ما اتجرّب بجلسة Claude حقيقية بتحمّل الـ skills والـ hooks وبترندر منها.</li>
+</ul>
+<hr />
+<h2>9. محتوى هاد المجلد</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>المسار</th>
+<th>الوصف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reports/01-research.md</code></td>
+<td>البحث: HyperFrames، GSAP، Remotion، الريبوز، صنّاع المحتوى، التحقق من الفيديوهين</td>
+</tr>
+<tr>
+<td><code>reports/02-viral-ideas.md</code></td>
+<td>21 فكرة، التوب 3، خطة 30 يوم، الهوكات، الربح، المخاطر</td>
+</tr>
+<tr>
+<td><code>reports/03-design.md</code></td>
+<td>دستور التصميم والحركة: خطوط، ألوان، 10 حركات بالكود، QA gate</td>
+</tr>
+<tr>
+<td><code>reports/04-engineering.md</code></td>
+<td>المعمارية، التثبيت، المقارنة، خارطة الطريق، نتائج الاختبار</td>
+</tr>
+<tr>
+<td><code>reports/05-prompts.md</code></td>
+<td>كيت البرومبتات كامل ومكتبة البرومبتات</td>
+</tr>
+<tr>
+<td><code>kit/</code> · <code>arabic-motion-kit.zip</code></td>
+<td>الكيت الجاهز للنسخ لمشروعك</td>
+</tr>
+<tr>
+<td><code>pipeline/</code></td>
+<td><code>autocut.py</code> (قص)، <code>autozoom.py</code> (زووم)، <code>record_broll.mjs</code> (تسجيل شاشة)، <code>timeline_mcp.py</code> (سيرفر MCP)</td>
+</tr>
+<tr>
+<td><code>design-assets/</code></td>
+<td>الحركات العشر (HyperFrames + Remotion) وصور الاختبار</td>
+</tr>
+<tr>
+<td><code>samples/</code></td>
+<td>فيديوهات الاختبار ومشاريعها</td>
+</tr>
+</tbody>
+</table></div></main></body></html>

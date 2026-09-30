@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<title>Signature Moves Lab</title>
+<!-- Verified: hyperframes 0.8.95 lint (0 errors), snapshot, render, seek-determinism 20/20. Fonts: put the OFL .ttf files from github.com/google/fonts in ./fonts/ -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/DrawSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/MorphSVGPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/CustomEase.min.js"></script>
+<style>
+  @font-face { font-family: "IBM Plex Sans Arabic"; src: url("fonts/IBMPlexSansArabic-Bold.ttf") format("truetype"); font-weight: 700; font-display: block; }
+  @font-face { font-family: "IBM Plex Sans Arabic"; src: url("fonts/IBMPlexSansArabic-Regular.ttf") format("truetype"); font-weight: 400; font-display: block; }
+  @font-face { font-family: "Alexandria"; src: url("fonts/Alexandria-VF.ttf") format("truetype"); font-weight: 100 900; font-display: block; }
+  :root {
+    --bg: #0F0E13; --surface: #1A1820; --ink: #F4EFE6; --muted: #9A93A6;
+    --accent: #E8A33D; --accent-2: #C4553A; --line: #2A2733;
+    --font-display: "Alexandria", sans-serif;
+    --font-text: "IBM Plex Sans Arabic", sans-serif;
+    --safe-top: 220px; --safe-bottom: 420px; --safe-side: 120px;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-text); }
+  #root { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
+  .scene { direction: rtl; position: absolute; inset: 0; box-sizing: border-box; width: 100%; height: 100%;
+           padding: var(--safe-top) var(--safe-side) var(--safe-bottom); display: flex; flex-direction: column; justify-content: center; gap: 48px; }
+  .kicker { font: 400 34px/1.4 var(--font-text); color: var(--muted); margin: 0; }
+  /* 1 mask reveal */
+  .headline { font: 800 118px/1.45 var(--font-display); margin: 0; }
+  .line { display: block; overflow: hidden; padding-block: 0.08em; }
+  .line-in { display: block; }
+  .accent { color: var(--accent); }
+  /* 2 counter */
+  .stat { font: 800 300px/1.1 var(--font-display); font-variant-numeric: tabular-nums; display: flex; align-items: baseline; gap: 12px; }
+  .stat .unit { font-size: 140px; color: var(--accent); }
+  /* 3 bars */
+  .bars { position: relative; height: 720px; }
+  .row { position: absolute; inset-inline: 0; height: 120px; display: grid; grid-template-columns: 220px 1fr 150px; align-items: center; gap: 24px; }
+  .row .name { font: 700 44px/1 var(--font-text); }
+  .row .track { height: 72px; background: var(--surface); border-radius: 12px; overflow: hidden; }
+  .row .fill { height: 100%; width: 100%; background: var(--accent); transform-origin: 100% 50%; border-radius: 12px; }
+  .row .val { font: 700 48px/1 var(--font-display); font-variant-numeric: tabular-nums; text-align: left; }
+  /* 4 line draw */
+  .chart { width: 840px; height: 520px; }
+  /* 5 glitch */
+  .glitch { position: relative; font: 900 190px/1.4 var(--font-display); }
+  .glitch .layer { position: absolute; inset: 0; }
+  .glitch .r { color: #FF3B3B; mix-blend-mode: screen; }
+  .glitch .c { color: #2FE6FF; mix-blend-mode: screen; }
+  /* 6 flip */
+  .flip-stage { perspective: 1800px; width: 840px; height: 1000px; }
+  .card-wrap, .card { position: relative; width: 100%; height: 100%; }
+  .card { transform-style: preserve-3d; }
+  .face { position: absolute; inset: 0; border-radius: 40px; backface-visibility: hidden; display: grid; place-items: center; font: 800 96px/1.4 var(--font-display); text-align: center; }
+  .face.front { background: var(--surface); }
+  .face.back { background: var(--accent); color: var(--bg); transform: rotateY(180deg); }
+  /* 7 camera */
+  .world { position: absolute; inset: 0; direction: rtl; }
+  .bgtype { position: absolute; inset: 0; display: grid; place-items: center; font: 900 520px/1 var(--font-display); color: var(--ink); opacity: 0.05; }
+  /* 8 karaoke */
+  .kara { font: 700 76px/1.6 var(--font-text); text-align: center; }
+  .kw { color: var(--ink); opacity: 0.35; display: inline-block; }
+  /* 9 morph */
+  .logo { width: 520px; height: 520px; align-self: center; }
+  /* 10 sheen */
+  .plate { position: relative; overflow: hidden; border-radius: 36px; background: var(--surface); padding: 80px 64px; }
+  .plate h2 { margin: 0; font: 800 110px/1.4 var(--font-display); }
+  .sheen { position: absolute; top: -20%; bottom: -20%; width: 35%; right: 0;
+           background: linear-gradient(100deg, transparent 0%, rgba(255,240,220,.28) 50%, transparent 100%); mix-blend-mode: screen; }
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-start="0" data-width="1080" data-height="1920" data-duration="30">
+
+  <section id="s1" class="scene clip" data-start="0" data-duration="3" data-track-index="0">
+    <p class="kicker">١ — Mask reveal</p>
+    <h1 class="headline">
+      <span class="line"><span class="line-in">التصميم ليس</span></span>
+      <span class="line"><span class="line-in">ما <span class="accent">تراه</span> فقط</span></span>
+    </h1>
+  </section>
+
+  <section id="s2" class="scene clip" data-start="3" data-duration="3" data-track-index="0">
+    <p class="kicker">نمو المشاهدات</p>
+    <div class="stat"><span id="s2-num">٠</span><span class="unit">٪</span></div>
+  </section>
+
+  <section id="s3" class="scene clip" data-start="6" data-duration="3" data-track-index="0">
+    <p class="kicker">٣ — Bar race (RTL)</p>
+    <div class="bars" id="s3-bars"></div>
+  </section>
+
+  <section id="s4" class="scene clip" data-start="9" data-duration="3" data-track-index="0">
+    <p class="kicker">٤ — Line draw</p>
+    <svg class="chart" viewBox="0 0 840 520">
+      <path id="s4-grid" d="M0 519 H840" stroke="#2A2733" stroke-width="2" fill="none" />
+      <path id="s4-line" d="M0 430 C120 420 160 300 260 320 S420 380 500 240 S700 90 840 60" stroke="#E8A33D" stroke-width="10" stroke-linecap="round" fill="none" />
+      <circle id="s4-dot" cx="840" cy="60" r="18" fill="#F4EFE6" />
+    </svg>
+  </section>
+
+  <section id="s5" class="scene clip" data-start="12" data-duration="3" data-track-index="0">
+    <p class="kicker">٥ — Glitch cut</p>
+    <div class="glitch" id="s5-g">
+      <div class="layer r">عاجل</div>
+      <div class="layer c">عاجل</div>
+      <div class="base">عاجل</div>
+    </div>
+  </section>
+
+  <section id="s6" class="scene clip" data-start="15" data-duration="3" data-track-index="0" style="align-items:center">
+    <div class="flip-stage"><div class="card-wrap" id="s6-wrap"><div class="card" id="s6-card">
+      <div class="face front">قبل</div><div class="face back">بعد</div>
+    </div></div></div>
+  </section>
+
+  <section id="s7" class="clip" data-start="18" data-duration="3" data-track-index="0" style="position:absolute;inset:0">
+    <div class="world" id="s7-world">
+      <div class="bgtype">٢٠٢٦</div>
+      <div class="scene"><p class="kicker">٧ — Camera push</p><h1 class="headline">اقترب<span class="accent">.</span></h1></div>
+    </div>
+  </section>
+
+  <section id="s8" class="scene clip" data-start="21" data-duration="3" data-track-index="0">
+    <p class="kicker">٨ — Karaoke</p>
+    <p class="kara" id="s8-kara"></p>
+  </section>
+
+  <section id="s9" class="scene clip" data-start="24" data-duration="3" data-track-index="0">
+    <p class="kicker">٩ — Logo morph</p>
+    <svg class="logo" viewBox="0 0 200 200">
+      <path id="s9-shape" fill="#E8A33D" d="M100 20 A80 80 0 1 1 99.9 20 Z" />
+      <path id="s9-target" style="visibility:hidden" d="M40 40 H160 L100 170 Z" />
+    </svg>
+  </section>
+
+  <section id="s10" class="scene clip" data-start="27" data-duration="3" data-track-index="0">
+    <p class="kicker">١٠ — Light sweep</p>
+    <div class="plate" id="s10-plate"><h2>اشترك الآن</h2><div class="sheen" id="s10-sheen"></div></div>
+  </section>
+</div>
+
+<script>
+  gsap.registerPlugin(SplitText, DrawSVGPlugin, MorphSVGPlugin, CustomEase);
+  CustomEase.create("brandOut", "0.16,1,0.3,1");      /* = easeOutExpo curve */
+  CustomEase.create("brandMove", "0.65,0,0.35,1");    /* = easeInOutCubic */
+
+  function mulberry32(seed) { return function () { seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    var t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+  var tl = gsap.timeline({ paused: true });
+
+  /* ---------- 1. Mask reveal (RTL wipe + line rise) ---------- */
+  tl.addLabel("s1", 0);
+  tl.fromTo("#s1 .line", { clipPath: "inset(0% 0% 0% 100%)" },
+                         { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: "power3.inOut", stagger: 0.14 }, "s1+=0.2");
+  tl.fromTo("#s1 .line-in", { yPercent: 60, x: 40 },
+                            { yPercent: 0, x: 0, duration: 1.0, ease: "brandOut", stagger: 0.14 }, "s1+=0.2");
+
+  /* ---------- 2. Counter roll-up (Arabic-Indic digits) ---------- */
+  tl.addLabel("s2", 3);
+  var s2 = { v: 0 }, s2El = document.getElementById("s2-num");
+  var fmtAr = new Intl.NumberFormat("ar-u-nu-arab");
+  tl.fromTo(s2, { v: 0 }, { v: 87, duration: 1.6, ease: "power3.out",
+    onUpdate: function () { s2El.textContent = fmtAr.format(Math.round(s2.v)); } }, "s2+=0.25");
+  tl.fromTo("#s2 .stat", { scale: 0.92 }, { scale: 1, duration: 1.6, ease: "power2.out" }, "s2+=0.25");
+
+  /* ---------- 3. Bar race (RTL: bars grow from the right) ---------- */
+  tl.addLabel("s3", 6);
+  var s3Data = [
+    { name: "الرياض", a: 62, b: 71 }, { name: "دبي", a: 80, b: 66 },
+    { name: "القاهرة", a: 45, b: 90 }, { name: "عمّان", a: 30, b: 38 } ];
+  var ROW = 160, MAX = 100, s3Box = document.getElementById("s3-bars");
+  var rankA = s3Data.map(function (d, i) { return i; }).sort(function (i, j) { return s3Data[j].a - s3Data[i].a; });
+  var rankB = s3Data.map(function (d, i) { return i; }).sort(function (i, j) { return s3Data[j].b - s3Data[i].b; });
+  s3Data.forEach(function (d, i) {
+    var row = document.createElement("div"); row.className = "row";
+    row.innerHTML = '<span class="name">' + d.name + '</span><div class="track"><div class="fill"></div></div><span class="val">٠</span>';
+    s3Box.appendChild(row);
+    var fill = row.querySelector(".fill"), val = row.querySelector(".val"), p = { v: 0 };
+    var yA = rankA.indexOf(i) * ROW, yB = rankB.indexOf(i) * ROW;
+    tl.fromTo(row, { y: yA, opacity: 0 }, { y: yA, opacity: 1, duration: 0.3, ease: "none" }, "s3+=" + (0.15 + rankA.indexOf(i) * 0.08));
+    tl.fromTo(fill, { scaleX: 0 }, { scaleX: d.a / MAX, duration: 0.9, ease: "power3.out" }, "s3+=" + (0.2 + rankA.indexOf(i) * 0.08));
+    tl.fromTo(p, { v: 0 }, { v: d.a, duration: 0.9, ease: "power3.out",
+      onUpdate: function () { val.textContent = fmtAr.format(Math.round(p.v)); } }, "s3+=" + (0.2 + rankA.indexOf(i) * 0.08));
+    /* race phase: new values + re-rank on the same beat */
+    tl.to(fill, { scaleX: d.b / MAX, duration: 0.9, ease: "brandMove" }, "s3+=1.6");
+    tl.to(p, { v: d.b, duration: 0.9, ease: "brandMove",
+      onUpdate: function () { val.textContent = fmtAr.format(Math.round(p.v)); } }, "s3+=1.6");
+    tl.to(row, { y: yB, duration: 0.9, ease: "brandMove" }, "s3+=1.6");
+  });
+
+  /* ---------- 4. SVG line draw (drawn right -> left) ---------- */
+  tl.addLabel("s4", 9);
+  tl.fromTo("#s4-grid", { drawSVG: "100% 100%" }, { drawSVG: "0% 100%", duration: 0.6, ease: "power2.inOut" }, "s4+=0.1");
+  tl.fromTo("#s4-line", { drawSVG: "100% 100%" }, { drawSVG: "0% 100%", duration: 1.4, ease: "power2.inOut" }, "s4+=0.3");
+  tl.fromTo("#s4-dot", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.5, ease: "back.out(2.2)" }, "s4+=0.25");
+
+  /* ---------- 5. Glitch cut (seeded, frame-quantized) ---------- */
+  tl.addLabel("s5", 12);
+  (function () {
+    var rnd = mulberry32(20260930), FPS = 30, N = 9, T0 = 12.2;
+    for (var k = 0; k < N; k++) {
+      var t = T0 + k / FPS, top = Math.floor(rnd() * 70), h = 8 + Math.floor(rnd() * 22);
+      var dx = Math.round((rnd() - 0.5) * 60);
+      tl.set("#s5 .r", { x: dx, clipPath: "inset(" + top + "% 0% " + Math.max(0, 100 - top - h) + "% 0%)" }, t);
+      tl.set("#s5 .c", { x: -dx, clipPath: "inset(" + Math.max(0, top - 10) + "% 0% " + Math.max(0, 90 - top - h) + "% 0%)" }, t);
+      tl.set("#s5 .base", { x: Math.round(dx * 0.25) }, t);
+    }
+    tl.set("#s5 .r, #s5 .c", { x: 0, clipPath: "inset(0% 0% 100% 0%)" }, T0 + N / FPS);
+    tl.set("#s5 .base", { x: 0 }, T0 + N / FPS);
+  })();
+
+  /* ---------- 6. 3D card flip ---------- */
+  tl.addLabel("s6", 15);
+  tl.fromTo("#s6-card", { rotationY: 0 }, { rotationY: 180, duration: 1.1, ease: "power3.inOut" }, "s6+=0.6");
+  tl.fromTo("#s6-wrap", { scale: 1 }, { keyframes: { scale: [1, 0.88, 1], ease: "sine.inOut" }, duration: 1.1 }, "s6+=0.6");
+
+  /* ---------- 7. Camera push (scale on a world wrapper) ---------- */
+  tl.addLabel("s7", 18);
+  tl.fromTo("#s7-world", { scale: 1, x: 0, y: 0, transformOrigin: "50% 45%" },
+                         { scale: 1.18, x: 30, y: 40, duration: 3, ease: "power1.inOut" }, "s7");
+  tl.fromTo("#s7 .bgtype", { filter: "blur(0px)" }, { filter: "blur(10px)", duration: 3, ease: "power1.in" }, "s7");
+
+  /* ---------- 8. Karaoke highlight (word-level, never letters) ---------- */
+  tl.addLabel("s8", 21);
+  (function () {
+    var words = [ { w: "كل", s: 0.20, e: 0.45 }, { w: "كلمة", s: 0.45, e: 0.85 }, { w: "تضيء", s: 0.85, e: 1.30 },
+                  { w: "لحظة", s: 1.30, e: 1.70 }, { w: "نطقها", s: 1.70, e: 2.30 } ];
+    var box = document.getElementById("s8-kara");
+    words.forEach(function (d, i) {
+      var sp = document.createElement("span"); sp.className = "kw"; sp.textContent = d.w;
+      box.appendChild(sp); if (i < words.length - 1) box.appendChild(document.createTextNode(" "));
+      tl.fromTo(sp, { opacity: 0.35, color: "#F4EFE6", scale: 1 },
+                    { opacity: 1, color: "#E8A33D", scale: 1.08, duration: 0.12, ease: "power2.out", immediateRender: false }, "s8+=" + d.s);
+      tl.to(sp, { color: "#F4EFE6", scale: 1, duration: 0.2, ease: "power1.out" }, "s8+=" + d.e);
+    });
+  })();
+
+  /* ---------- 9. Logo morph ---------- */
+  tl.addLabel("s9", 24);
+  tl.to("#s9-shape", { morphSVG: { shape: "#s9-target", shapeIndex: "auto" }, duration: 1.0, ease: "expo.inOut" }, "s9+=0.6");
+  tl.fromTo("#s9 .logo", { rotation: 0 }, { rotation: -90, duration: 1.0, ease: "expo.inOut" }, "s9+=0.6");
+
+  /* ---------- 10. Light sweep (right -> left sheen) ---------- */
+  tl.addLabel("s10", 27);
+  tl.fromTo("#s10-plate", { scale: 0.94, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "brandOut" }, "s10+=0.15");
+  tl.fromTo("#s10-sheen", { xPercent: 120, skewX: -18 }, { xPercent: -420, skewX: -18, duration: 1.1, ease: "power2.inOut" }, "s10+=0.8");
+
+  window.__timelines["main"] = tl;
+</script>
+</body>
+</html>

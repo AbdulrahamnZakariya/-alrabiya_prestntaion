@@ -1,0 +1,57 @@
+/* ============================================================
+   Brand tokens — source of truth for every composition.
+   بدّل القيم حسب هويتك. ما تحط hex مباشرة بالمشاهد، استعمل var(--...).
+   ============================================================ */
+
+/* Fonts: download the .woff2 files into brand/fonts/ (all below are OFL, on Google Fonts).
+   الخطوط لازم تكون محلية، ممنوع <link> لـ Google Fonts وقت الرندر. */
+@font-face { font-family: "Brand Display"; src: url("./fonts/Alexandria-Black.woff2") format("woff2"); font-weight: 900; font-display: block; }
+@font-face { font-family: "Brand Display"; src: url("./fonts/Alexandria-Bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
+@font-face { font-family: "Brand Body";    src: url("./fonts/IBMPlexSansArabic-Medium.woff2") format("woff2"); font-weight: 500; font-display: block; }
+@font-face { font-family: "Brand Body";    src: url("./fonts/IBMPlexSansArabic-Bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
+@font-face { font-family: "Brand Quote";   src: url("./fonts/ArefRuqaa-Bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
+
+:root {
+  /* ---------- Color (one dominant bg + one accent per scene) ---------- */
+  --c-bg:        #0B0D12;   /* dominant background */
+  --c-bg-2:      #151924;   /* cards / panels */
+  --c-ink:       #F5F3EE;   /* primary text */
+  --c-ink-dim:   #A9ADB8;   /* secondary text */
+  --c-accent:    #F2B43C;   /* brand accent (highlights, active caption word) */
+  --c-accent-2:  #2EC4B6;   /* secondary accent — data / positive */
+  --c-alert:     #E4572E;   /* breaking / negative */
+  --c-caption-bg: rgba(11, 13, 18, 0.72);
+
+  /* ---------- Type ---------- */
+  --font-display: "Brand Display", sans-serif;
+  --font-body:    "Brand Body", sans-serif;
+  --font-quote:   "Brand Quote", serif;
+  --numerals: latn;          /* latn = 123 | arab = ١٢٣ — pick one per video */
+
+  /* Scale for a 1080px-wide canvas (9:16 and 1:1). Multiply by ~1.1 for 16:9. */
+  --fs-hero:    150px;  --lh-hero:    1.2;
+  --fs-h1:      112px;  --lh-h1:      1.2;
+  --fs-h2:       76px;  --lh-h2:      1.3;
+  --fs-body:     52px;  --lh-body:    1.55;
+  --fs-caption:  60px;  --lh-caption: 1.5;
+  --fs-label:    36px;  --lh-label:   1.4;
+
+  /* ---------- Spacing / radius ---------- */
+  --space-1: 12px; --space-2: 24px; --space-3: 40px; --space-4: 64px; --space-5: 96px;
+  --radius-card: 28px; --radius-pill: 999px;
+
+  /* ---------- Safe zones (px), 9:16 1080x1920 ---------- */
+  --safe-9x16-top: 250px;  --safe-9x16-bottom: 420px;  --safe-9x16-side: 120px;
+  --caption-9x16-top: 1180px; --caption-9x16-bottom: 1460px;
+  /* 1:1 1080x1080 */
+  --safe-1x1: 80px;
+  /* 16:9 1920x1080 */
+  --safe-16x9: 96px; --caption-16x9-top: 820px; --caption-16x9-bottom: 980px;
+}
+
+/* Arabic text defaults */
+[dir="rtl"] { font-family: var(--font-body); letter-spacing: 0; font-style: normal; }
+.w { display: inline-block; }                   /* one animated word — never one letter */
+.num { font-variant-numeric: tabular-nums; }
+.line { display: block; text-wrap: balance; }   /* one element per line — no <br> */
+.mask { overflow: hidden; padding-block: 0.25em; } /* padding keeps dots/descenders visible */
