@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="ar" data-resolution="portrait">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=1080, height=1920" />
+<script src="assets/vendor/gsap.min.js"></script>
+<script src="assets/vendor/CustomEase.min.js"></script>
+<script src="assets/vendor/DrawSVGPlugin.min.js"></script>
+<style>
+@font-face{font-family:"Lalezar";src:url("assets/fonts/lalezar/lalezar-full-400-normal.ttf") format("truetype");font-weight:400;font-display:block}
+@font-face{font-family:"Readex Pro";src:url("assets/fonts/readex-pro/readex-pro-full-700-normal.ttf") format("truetype");font-weight:700;font-display:block}
+:root{
+  --paper:#F2EEE6; --desk:#E4DED2; --ink:#161412; --acc:#FFCF1F; --red:#D6262B; --white:#FBFAF7;
+  --tape:rgba(232,225,200,.82);
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .28 0 0 0 0 .22 0 0 0 0 .16 .55 0 0 0 -.2'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)'/%3E%3C/svg%3E");
+  --fiber:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .05' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .22 .5 0 0 0 -.18'/%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23f)'/%3E%3C/svg%3E");
+  --shadow:drop-shadow(0 10px 14px rgba(45,32,15,.34));
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--desk)}
+#root{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--desk)}
+#desk{position:absolute;inset:0;background:var(--grain),var(--fiber),var(--desk);z-index:0}
+#camwrap{position:absolute;left:0;top:0;width:1080px;height:1920px;z-index:1;transform-origin:50% 50%}
+#polaroid{position:absolute;left:-54px;top:-54px;right:-54px;bottom:-230px;background:var(--grain),var(--white);opacity:0}
+#clipbox{position:absolute;inset:0;overflow:hidden}
+#cam{position:absolute;inset:0;transform-origin:50% 30%}
+#cam video{position:absolute;left:0;top:0;width:1080px;height:1920px;object-fit:cover}
+#behind{position:absolute;inset:0;z-index:2}
+#cut{position:absolute;inset:0;z-index:3}
+#front{position:absolute;inset:0;z-index:4}
+#over{position:absolute;inset:0;z-index:6}
+.h{opacity:0;visibility:hidden}
+.card{position:absolute;filter:var(--shadow)}
+.paper{background:var(--grain),var(--paper);color:var(--ink);position:relative}
+.ar{direction:rtl;font-family:"Lalezar";font-weight:400;line-height:1.3;white-space:nowrap}
+.tape{position:absolute;width:150px;height:44px;background:var(--grain),var(--tape);left:50%;top:-22px;margin-left:-75px}
+.hl{position:absolute;overflow:visible;z-index:0;pointer-events:none}
+.hl path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.wtxt{position:relative;z-index:1}
+.hero{position:absolute;left:0;width:1080px;text-align:center;direction:rtl;font-family:"Lalezar";color:var(--ink);line-height:1.25;white-space:nowrap}
+#caps{position:absolute;left:80px;width:920px;top:1184px;height:276px;z-index:5;filter:var(--shadow)}
+.page{position:absolute;inset:0;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;direction:rtl;gap:8px 14px}
+.scrap{position:relative;display:inline-block;padding:0 22px 10px;background:var(--grain),var(--paper)}
+.scrap .mk{position:absolute;left:10px;right:10px;top:22%;bottom:16%;background:var(--acc);transform-origin:100% 50%;z-index:0}
+.scrap .t{position:relative;z-index:1;font-family:"Readex Pro";font-weight:700;font-size:74px;line-height:1.38;color:var(--ink);direction:rtl}
+.sticker{position:absolute;border-radius:50%;border:12px solid var(--white);display:flex;align-items:center;justify-content:center;filter:var(--shadow)}
+.die{position:absolute;overflow:visible;filter:var(--shadow)}
+.rip{position:absolute;background:var(--grain),var(--fiber),var(--paper);filter:drop-shadow(-10px 0 18px rgba(45,32,15,.35))}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="main" data-width="1080" data-height="1920" data-duration="40.9667" data-fps="30">
+  <div id="desk"></div>
+  <div id="camwrap">
+    <div id="polaroid"></div>
+    <div id="clipbox">
+      <div id="cam">
+        <video id="vbase" src="assets/media/base.mp4" class="clip" data-start="0" data-duration="40.9667" data-media-start="0" data-track-index="0" muted playsinline style="z-index:1"></video>
+        <div id="behind"></div>
+        <div id="cut"><video id="vperson" src="assets/media/person.webm" class="clip" data-start="0" data-duration="40.9667" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      </div>
+    </div>
+  </div>
+  <div id="front"></div>
+  <div id="caps"></div>
+  <div id="over"></div>
+</div>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <filter id="dieF" x="-40%" y="-40%" width="180%" height="180%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="8" result="d1"/>
+      <feMorphology in="d1" operator="erode" radius="4" result="d2"/>
+      <feFlood flood-color="#FBFAF7"/><feComposite in2="d2" operator="in" result="w"/>
+      <feMerge><feMergeNode in="w"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="dieL" x="-20%" y="-30%" width="140%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="16" result="d1"/>
+      <feMorphology in="d1" operator="erode" radius="6" result="d2"/>
+      <feFlood flood-color="#FBFAF7"/><feComposite in2="d2" operator="in" result="w"/>
+      <feMerge><feMergeNode in="w"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="grunge" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="11" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -7 5.7" result="m"/>
+      <feComposite in="SourceGraphic" in2="m" operator="in"/>
+    </filter>
+  </defs>
+</svg>
+<script>
+(function(){
+gsap.registerPlugin(CustomEase, DrawSVGPlugin);
+CustomEase.create("hOut","0.23,1,0.32,1");
+CustomEase.create("hInOut","0.77,0,0.175,1");
+CustomEase.create("hDrawer","0.32,0.72,0,1");
+const ICONS={"frown": "<path d=\"M15 10V9\" /> <path d=\"M9 10V9\" /> <path d=\"M9 16a5 5 0 016 0\" /> <circle cx=\"12\" cy=\"12\" r=\"10\" />", "bot": "<path d=\"M12 8V4H8\" /> <rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\" /> <path d=\"M2 14h2\" /> <path d=\"M20 14h2\" /> <path d=\"M15 13v2\" /> <path d=\"M9 13v2\" />", "scissors": "<circle cx=\"6\" cy=\"6\" r=\"3\" /> <path d=\"M8.12 8.12 12 12\" /> <path d=\"M20 4 8.12 15.88\" /> <circle cx=\"6\" cy=\"18\" r=\"3\" /> <path d=\"M14.8 14.8 20 20\" />", "eye": "<path d=\"M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0\" /> <circle cx=\"12\" cy=\"12\" r=\"3\" />", "lightbulb": "<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\" /> <path d=\"M9 18h6\" /> <path d=\"M10 22h4\" />", "palette": "<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\" /> <circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\" /> <circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\" /> <circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\" /> <circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\" />", "pen-tool": "<path d=\"M15.707 21.293a1 1 0 0 1-1.414 0l-1.586-1.586a1 1 0 0 1 0-1.414l5.586-5.586a1 1 0 0 1 1.414 0l1.586 1.586a1 1 0 0 1 0 1.414z\" /> <path d=\"m18 13-1.375-6.874a1 1 0 0 0-.746-.776L3.235 2.028a1 1 0 0 0-1.207 1.207L5.35 15.879a1 1 0 0 0 .776.746L13 18\" /> <path d=\"m2.3 2.3 7.286 7.286\" /> <circle cx=\"11\" cy=\"11\" r=\"2\" />", "sparkles": "<path d=\"M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z\" /> <path d=\"M20 2v4\" /> <path d=\"M22 4h-4\" /> <circle cx=\"4\" cy=\"20\" r=\"2\" />", "trending-up": "<path d=\"M16 7h6v6\" /> <path d=\"m22 7-8.5 8.5-5-5L2 17\" />", "handshake": "<path d=\"m11 17 2 2a1 1 0 1 0 3-3\" /> <path d=\"m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4\" /> <path d=\"m21 3 1 11h-2\" /> <path d=\"M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3\" /> <path d=\"M3 4h8\" />", "check": "<path d=\"M20 6 9 17l-5-5\" />", "x": "<path d=\"M18 6 6 18\" /> <path d=\"m6 6 12 12\" />", "cpu": "<path d=\"M12 20v2\" /> <path d=\"M12 2v2\" /> <path d=\"M17 20v2\" /> <path d=\"M17 2v2\" /> <path d=\"M2 12h2\" /> <path d=\"M2 17h2\" /> <path d=\"M2 7h2\" /> <path d=\"M20 12h2\" /> <path d=\"M20 17h2\" /> <path d=\"M20 7h2\" /> <path d=\"M7 20v2\" /> <path d=\"M7 2v2\" /> <rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\" /> <rect x=\"8\" y=\"8\" width=\"8\" height=\"8\" rx=\"1\" />", "layers": "<path d=\"M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z\" /> <path d=\"M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12\" /> <path d=\"M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17\" />", "wand-sparkles": "<path d=\"m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72\" /> <path d=\"m14 7 3 3\" /> <path d=\"M5 6v4\" /> <path d=\"M19 14v4\" /> <path d=\"M10 2v2\" /> <path d=\"M7 8H3\" /> <path d=\"M21 16h-4\" /> <path d=\"M11 3H9\" />", "message-circle": "<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\" />", "play": "<path d=\"M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z\" />", "film": "<rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\" /> <path d=\"M7 3v18\" /> <path d=\"M3 7.5h4\" /> <path d=\"M3 12h18\" /> <path d=\"M3 16.5h4\" /> <path d=\"M17 3v18\" /> <path d=\"M17 7.5h4\" /> <path d=\"M17 16.5h4\" />", "user": "<path d=\"M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2\" /> <circle cx=\"12\" cy=\"7\" r=\"4\" />", "award": "<path d=\"m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526\" /> <circle cx=\"12\" cy=\"8\" r=\"6\" />", "sliders-horizontal": "<path d=\"M10 5H3\" /> <path d=\"M12 19H3\" /> <path d=\"M14 3v4\" /> <path d=\"M16 17v4\" /> <path d=\"M21 12h-9\" /> <path d=\"M21 19h-5\" /> <path d=\"M21 5h-7\" /> <path d=\"M8 10v4\" /> <path d=\"M8 12H3\" />"};
+const BRANDS={"adobepremierepro": "<path d=\"M10.15 8.42a2.93 2.93 0 00-1.18-.2 13.9 13.9 0 00-1.09.02v3.36l.39.02h.53c.39 0 .78-.06 1.15-.18.32-.09.6-.28.82-.53.21-.25.31-.59.31-1.03a1.45 1.45 0 00-.93-1.46zM19.75.3H4.25A4.25 4.25 0 000 4.55v14.9c0 2.35 1.9 4.25 4.25 4.25h15.5c2.35 0 4.25-1.9 4.25-4.25V4.55C24 2.2 22.1.3 19.75.3zm-7.09 11.65c-.4.56-.96.98-1.61 1.22-.68.25-1.43.34-2.25.34l-.5-.01-.43-.01v3.21a.12.12 0 01-.11.14H5.82c-.08 0-.12-.04-.12-.13V6.42c0-.07.03-.11.1-.11l.56-.01.76-.02.87-.02.91-.01c.82 0 1.5.1 2.06.31.5.17.96.45 1.34.82.32.32.57.71.73 1.14.15.42.23.85.23 1.3 0 .86-.2 1.57-.6 2.13zm6.82-3.15v1.95c0 .08-.05.11-.16.11a4.35 4.35 0 00-1.92.37c-.19.09-.37.21-.51.37v5.1c0 .1-.04.14-.13.14h-1.97a.14.14 0 01-.16-.12v-5.58l-.01-.75-.02-.78c0-.23-.02-.45-.04-.68a.1.1 0 01.07-.11h1.78c.1 0 .18.07.2.16a3.03 3.03 0 01.13.92c.3-.35.67-.64 1.08-.86a3.1 3.1 0 011.52-.39c.07-.01.13.04.14.11v.04z\"/>", "adobeaftereffects": "<path d=\"M8.54 10.73c-.1-.31-.19-.61-.29-.92s-.19-.6-.27-.89c-.08-.28-.15-.54-.22-.78h-.02c-.09.43-.2.86-.34 1.29-.15.48-.3.98-.46 1.48-.13.51-.29.98-.44 1.4h2.54c-.06-.21-.14-.46-.23-.72-.09-.27-.18-.56-.27-.86zm8.58-.29c-.55-.03-1.07.26-1.33.76-.12.23-.19.47-.22.72h2.109c.26 0 .45 0 .57-.01.08-.01.16-.03.23-.08v-.1c0-.13-.021-.25-.061-.37-.178-.56-.708-.94-1.298-.92zM19.75.3H4.25C1.9.3 0 2.2 0 4.55v14.9c0 2.35 1.9 4.25 4.25 4.25h15.5c2.35 0 4.25-1.9 4.25-4.25V4.55C24 2.2 22.1.3 19.75.3zm-7.04 16.511h-2.09c-.07.01-.14-.041-.16-.11l-.82-2.4H5.92l-.76 2.36c-.02.09-.1.15-.19.14H3.09c-.11 0-.14-.06-.11-.18L6.2 7.39c.03-.1.06-.19.1-.31.04-.21.06-.43.06-.65-.01-.05.03-.1.08-.11h2.59c.07 0 .12.03.13.08l3.65 10.25c.03.11.001.161-.1.161zm7.851-3.991c-.021.189-.031.33-.041.42-.01.07-.069.13-.14.13-.06 0-.17.01-.33.021-.159.02-.35.029-.579.029-.23 0-.471-.04-.73-.04h-3.17c.039.31.14.62.31.89.181.271.431.48.729.601.4.17.841.26 1.281.25.35-.011.699-.04 1.039-.11.311-.039.61-.119.891-.23.05-.039.08-.02.08.08v1.531c0 .039-.01.08-.021.119-.021.03-.04.051-.069.07-.32.14-.65.24-1 .3-.471.09-.94.13-1.42.12-.761 0-1.4-.12-1.92-.35-.49-.211-.921-.541-1.261-.95-.319-.39-.55-.83-.69-1.31-.14-.471-.209-.961-.209-1.461 0-.539.08-1.07.25-1.59.16-.5.41-.96.75-1.37.33-.4.739-.72 1.209-.95.471-.23 1.03-.31 1.67-.31.531-.01 1.06.09 1.55.31.41.18.77.45 1.05.8.26.34.47.72.601 1.14.129.4.189.81.189 1.22 0 .24-.01.45-.019.64z\"/>", "claude": "<path d=\"m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z\"/>", "openai": "<path d=\"M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z\"/>", "davinciresolve": "<path d=\"M17.621 0 5.977.004c-1.37 0-2.756.345-3.762 1.11a4.925 4.925 0 0 0-1.61 2.003C.233 3.93 0 5.02 0 5.951l.012 12.2c.002 1.604.479 3.057 1.461 4.112.984 1.056 2.462 1.683 4.331 1.691L16.856 24c1.26.005 3.095-.036 4.303-.714 1.075-.605 2.025-1.556 2.497-2.984.278-.84.345-2.084.344-3.147l-.021-11.13c-.002-.888-.15-2.023-.547-2.934-.425-.976-1.181-1.815-2.322-2.425C20.353.26 19.123 0 17.622 0zm0 .93c1.378 0 2.538.295 3.04.565.977.523 1.544 1.166 1.889 1.96.315.721.47 1.793.473 2.572l.018 11.13c.002 1.013-.097 2.257-.298 2.86-.396 1.202-1.146 1.946-2.063 2.462-.814.457-2.612.593-3.82.588l-11.05-.044c-1.657-.007-2.832-.534-3.626-1.386-.792-.851-1.212-2.06-1.212-3.485L.999 5.95c0-.829.196-1.827.474-2.437.345-.757.75-1.207 1.365-1.674C3.585 1.27 4.868.97 6.08.97zm-5.66 3.423c-1.976.089-3.204 1.658-3.214 3.29.019 1.443 1.635 3.481 2.884 4.53.12.099.154.109.33.18.062.025.198-.047.327-.135.36-.245.993-.947 1.648-1.738a7.67 7.67 0 0 0 1.031-1.683c.409-.89.261-1.599.235-1.888a3.983 3.983 0 0 0-.99-1.692 3.36 3.36 0 0 0-2.251-.864zm4.172 7.922a10.185 10.185 0 0 0-3.244.61c-.15.058-.26.1-.374.17-.057.036-.11.135-.105.292.017.433.29 1.278.624 2.27.384 1.135 1.066 2.27 1.844 2.74a3.23 3.23 0 0 0 2.53.342c.832-.243 1.595-.868 1.962-1.546.986-1.818.19-3.548-1.121-4.417-.447-.296-1.133-.445-1.89-.46-.074 0-.15-.002-.226-.001zm-8.432.038a6.201 6.201 0 0 0-.752.047c-.596.078-.932.273-1.29.51a3.177 3.177 0 0 0-1.365 1.979c-.075.552-.086 1.053.033 1.507.433 1.389 1.326 2.222 2.847 2.452.636.028 1.37-.063 1.99-.45 1.269-.782 2.08-3.17 2.412-4.742.053-.176.035-.357-.013-.42-.005-.067-.044-.113-.19-.183-.398-.192-1.32-.417-2.375-.6a7.68 7.68 0 0 0-1.297-.1z\"/>", "youtube": "<path d=\"M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z\"/>", "googlegemini": "<path d=\"M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81\"/>"};
+const WORDS=[["طفرة", 0.06, 0.37, 0], ["في", 0.37, 0.64, 0], ["عالم", 0.64, 1.24, 0], ["التصميم", 1.24, 1.81, 0], ["المصممين", 2.04, 2.56, 1], ["رح", 2.56, 2.83, 1], ["يزعلوا", 2.83, 3.16, 1], ["علينا", 3.16, 3.59, 1], ["بعد", 3.59, 3.68, 1], ["هذا", 3.68, 3.97, 1], ["الفيديو", 3.97, 4.44, 1], ["طبعاً", 4.6, 5.11, 2], ["للتأكيد", 5.28, 5.98, 3], ["وللمعلومية", 5.98, 6.97, 3], ["إنو", 7.13, 7.35, 4], ["الذكاء", 7.35, 7.81, 4], ["الاصطناعي", 7.81, 8.22, 4], ["فعلياً", 8.22, 8.67, 4], ["بيعملك", 8.67, 9.05, 4], ["مونتاج", 9.05, 9.28, 4], ["الفيديوهات", 9.28, 9.95, 4], ["بس", 10.11, 10.3, 5], ["كل", 10.3, 10.49, 5], ["ما", 10.49, 10.7, 5], ["كان", 10.7, 11.08, 5], ["إنت", 11.08, 11.43, 5], ["عندك", 11.43, 11.75, 5], ["حس", 11.75, 11.97, 5], ["بصري", 11.97, 12.28, 5], ["وعندك", 12.44, 12.91, 6], ["أشياء", 12.91, 13.38, 6], ["في", 13.38, 13.45, 6], ["بالك", 13.45, 14.01, 6], ["بتقدر", 14.01, 14.33, 6], ["تدخلها", 14.33, 14.83, 6], ["داخل", 14.83, 15.17, 6], ["الفيديو", 15.17, 15.83, 6], ["كل", 15.96, 16.1, 7], ["ما", 16.1, 16.28, 7], ["كانت", 16.28, 16.53, 7], ["النتيجة", 16.53, 17.15, 7], ["أفضل", 17.15, 17.36, 7], ["فالذكاء", 17.52, 18.07, 8], ["الاصطناعي", 18.07, 18.57, 8], ["كل", 18.83, 19.07, 9], ["ما", 19.07, 19.13, 9], ["كلّمته", 19.13, 19.57, 9], ["أكتر", 19.57, 19.91, 9], ["كل", 20.04, 20.29, 10], ["ما", 20.29, 20.29, 10], ["أعطاك", 20.29, 20.59, 10], ["نتائج", 20.59, 21.04, 10], ["أفضل", 21.04, 21.26, 10], ["فهل", 21.42, 21.68, 11], ["فعلاً", 21.68, 22.09, 11], ["اللي", 22.09, 22.42, 11], ["بيستخدم", 22.42, 22.91, 11], ["الذكاء", 22.91, 23.24, 11], ["الاصطناعي", 23.24, 23.89, 11], ["باحترافية", 23.89, 24.51, 11], ["وبيضيف", 24.51, 25.12, 11], ["الإضافات", 25.12, 25.57, 11], ["الصح", 25.57, 25.93, 11], ["داخل", 26.03, 26.49, 12], ["الفيديو", 26.49, 26.94, 12], ["داخل", 26.94, 27.3, 12], ["الماكينة", 27.3, 28.04, 12], ["نفس", 28.27, 28.42, 13], ["اللي", 28.42, 28.77, 13], ["بيستخدم", 28.77, 29.16, 13], ["استخدام", 29.16, 29.69, 13], ["عادي؟", 29.69, 29.93, 13], ["أكيد", 30.09, 30.57, 14], ["لا", 30.57, 30.86, 14], ["فبشرى", 31.02, 31.69, 15], ["للمصممين", 31.88, 32.9, 16], ["إنه", 33.06, 33.55, 17], ["إنت", 33.55, 33.86, 17], ["رح", 33.86, 34.13, 17], ["هاي", 34.13, 34.65, 17], ["الأداة", 34.65, 35.24, 17], ["تكون", 35.24, 35.83, 17], ["مساعد", 35.83, 36.33, 17], ["إلك", 36.33, 36.74, 17], ["وليس", 36.9, 37.43, 18], ["تحل", 37.43, 37.77, 18], ["محلك", 37.77, 38.18, 18]];
+const INK="#161412", ACC="#FFCF1F", RED="#D6262B", WHITE="#FBFAF7", PAPER="#F2EEE6";
+const D=40.9667;
+window.__timelines=window.__timelines||{};
+const tl=gsap.timeline({paused:true});
+window.__timelines["main"]=tl;
+
+/* ---------- helpers ---------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function torn(seed,a,nx,ny,ed){a=a||5;nx=nx||14;ny=ny||5;ed=ed||"trbl";const r=rng(seed),p=[];
+  const A=e=>ed.indexOf(e)>=0?(r()*a).toFixed(1):"0";
+  for(let i=0;i<=nx;i++)p.push(`${(i/nx*100).toFixed(2)}% ${A("t")}px`);
+  for(let j=1;j<ny;j++)p.push(`calc(100% - ${A("r")}px) ${(j/ny*100).toFixed(2)}%`);
+  for(let i=nx;i>=0;i--)p.push(`${(i/nx*100).toFixed(2)}% calc(100% - ${A("b")}px)`);
+  for(let j=ny-1;j>=1;j--)p.push(`${A("l")}px ${(j/ny*100).toFixed(2)}%`);
+  return `polygon(${p.join(",")})`;}
+function quad(seed){const r=rng(seed),f=()=>(r()*2.2).toFixed(2);return `polygon(${f()}% ${(r()*9).toFixed(1)}%, ${(100-r()*2.2).toFixed(2)}% ${f()}%, 100% ${(100-r()*9).toFixed(1)}%, ${f()}% 100%)`;}
+function el(parent,html){const w=document.createElement("div");w.innerHTML=html.trim();const n=w.firstChild;(typeof parent==="string"?document.getElementById(parent):parent).appendChild(n);return n;}
+function center(n){gsap.set(n,{xPercent:-50,yPercent:-50});return n;}
+function iconSVG(name,size,stroke,sw){return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="${stroke||INK}" stroke-width="${sw||2.2}" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg>`;}
+function die(parent,name,size,x,y,rot,color){
+  const n=el(parent,`<svg class="die h" viewBox="-5 -5 34 34" width="${size}" height="${size}" style="left:${x}px;top:${y}px"><g filter="url(#dieF)"><g fill="none" stroke="${color||INK}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</g></g></svg>`);
+  center(n);gsap.set(n,{rotation:rot||0});return n;}
+function sticker(parent,name,size,x,y,rot,bg,ring){
+  const n=el(parent,`<div class="sticker h" style="width:${size}px;height:${size}px;left:${x}px;top:${y}px;background:var(--grain),${bg||ACC};${ring?`border-color:${ring};`:""}border-width:${Math.round(size*0.065)}px">${iconSVG(name,size*0.6,INK,2.2)}</div>`);
+  center(n);gsap.set(n,{rotation:rot||0});return n;}
+function brand(parent,slug,size,x,y,rot){
+  const n=el(parent,`<div class="card h" style="left:${x}px;top:${y}px"><div style="width:${size}px;height:${size}px;background:${WHITE};border-radius:${size*.22}px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="${size*.64}" height="${size*.64}" fill="${INK}">${BRANDS[slug]}</svg></div></div>`);
+  center(n);gsap.set(n,{rotation:rot||0});return n;}
+function card(parent,{x,y,w,h,rot=0,seed=1,html="",tape=true,tapeRot=-4,pad="18px 34px 24px",bg,cls=""}){
+  const sz=(w?`width:${w}px;`:"")+(h?`height:${h}px;`:"");
+  const n=el(parent,`<div class="card h ${cls}" style="left:${x}px;top:${y}px"><div class="paper" style="${sz}padding:${pad};clip-path:${torn(seed,6,16,6)};${bg?`background:var(--grain),${bg};`:""}">${html}</div>${tape?`<div class="tape" style="clip-path:${torn(seed+50,4,3,4,"lr")};transform:rotate(${tapeRot}deg)"></div>`:""}</div>`);
+  center(n);gsap.set(n,{rotation:rot});return n;}
+function label(parent,text,x,y,{size=72,rot=-4,seed=3,bg,tapeRot=5}={}){
+  return card(parent,{x,y,rot,seed,bg,tapeRot,pad:`2px ${Math.round(size*.42)}px ${Math.round(size*.22)}px`,html:`<div class="ar" style="font-size:${size}px">${text}</div>`});}
+function mk(kind,w,h,color,sw,seed){const r=rng(seed||5),j=()=>(r()-.5)*h*.12;let d;
+  if(kind==="hl")d=`M${w-6},${h*.58+j()} C${w*.7},${h*.5+j()} ${w*.35},${h*.66+j()} 6,${h*.56+j()}`;
+  else if(kind==="circle")d=`M${w*.62},${h*.08} C${w*.05},${h*.02} ${w*.0},${h*.9} ${w*.5},${h*.94} C${w*1.02},${h*.98} ${w*.98},${h*.12} ${w*.42},${h*.12}`;
+  else if(kind==="strike")d=`M${w-4},${h*.62} C${w*.66},${h*.4} ${w*.33},${h*.64} 4,${h*.38}`;
+  else if(kind==="check")d=`M${w*.08},${h*.52} L${w*.38},${h*.86} L${w*.94},${h*.1}`;
+  else if(kind==="x1")d=`M${w*.1},${h*.1} L${w*.9},${h*.9}`;
+  else if(kind==="x2")d=`M${w*.88},${h*.08} L${w*.12},${h*.92}`;
+  return `<path d="${d}" stroke="${color}" stroke-width="${sw}"/>`;}
+function hlSVG(w,h,paths,style){return `<svg class="hl" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" preserveAspectRatio="none" style="${style||""}">${paths}</svg>`;}
+const draw=(sel,t,d,e)=>tl.fromTo(sel,{drawSVG:"0%"},{drawSVG:"100%",duration:d||.35,ease:e||"hOut"},t);
+function slap(n,t,rot,dur){const r=gsap.getProperty(n,"rotation");
+  tl.fromTo(n,{autoAlpha:0,scale:1.3,rotation:r+(rot||-9)},{autoAlpha:1,scale:1,rotation:r,duration:dur||.2,ease:"hOut",immediateRender:false},t);}
+function enter(n,t,dy){tl.fromTo(n,{autoAlpha:0,y:dy||36,scale:.96},{autoAlpha:1,y:0,scale:1,duration:.4,ease:"hOut",immediateRender:false},t);}
+function hide(ns,t){tl.set(ns,{autoAlpha:0},t);}
+function peel(n,t,dx){tl.to(n,{autoAlpha:0,x:`+=${dx||90}`,rotation:"+=12",duration:.2,ease:"hInOut"},t);}
+function arrow(parent,d,vb,style,color,sw){ // hand-drawn arrow: shaft + head (two paths)
+  return el(parent,`<svg class="h" viewBox="${vb}" style="position:absolute;overflow:visible;${style}"><path class="a1" d="${d[0]}" stroke="${color||INK}" stroke-width="${sw||10}" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path class="a2" d="${d[1]}" stroke="${color||INK}" stroke-width="${sw||10}" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`);}
+function drawArrow(a,t){tl.set(a,{autoAlpha:1},t);draw(a.querySelector(".a1"),t,.3);draw(a.querySelector(".a2"),t+.26,.12);}
+
+/* ---------- camera punches on jump cuts ---------- */
+const cam=document.getElementById("cam"),cw=document.getElementById("camwrap"),pol=document.getElementById("polaroid"),clipbox=document.getElementById("clipbox");
+const FRONT=document.getElementById("front"),OVER=document.getElementById("over");
+gsap.set(cam,{scale:1});
+function punch(t,s,whip){
+  if(whip){tl.set(cam,{scale:s*1.045,x:whip*80,filter:"blur(7px)"},t);
+    tl.to(cam,{scale:s,x:0,filter:"blur(0px)",duration:.22,ease:"hOut"},t+0.001);}
+  else tl.set(cam,{scale:s,x:0},t);}
+punch(4.54,1.10,1); punch(7.07,1.0,0); punch(10.05,1.12,-1); punch(12.38,1.0,0);
+punch(17.46,1.08,1); punch(21.36,1.0,0); punch(30.03,1.12,0); punch(30.96,1.0,0); punch(33.0,1.08,-1);
+
+/* ---------- logo ---------- */
+function logoMark(size){return `<svg viewBox="0 0 120 120" width="${size}" height="${size}"><circle cx="60" cy="60" r="56" fill="${INK}"/><path d="M14,60 Q60,14 106,60 Q60,106 14,60 Z" fill="#F2EEE6"/><circle cx="60" cy="60" r="23" fill="${ACC}"/><path d="M53,48 L73,60 L53,72 Z" fill="${INK}"/></svg>`;}
+const badge=card("over",{x:252,y:232,rot:-3,seed:77,tapeRot:6,pad:"6px 20px 12px 16px",
+  html:`<div style="display:flex;align-items:center;gap:12px;direction:rtl"><div style="width:66px;height:66px">${logoMark(66)}</div><div class="ar" style="font-size:56px;line-height:1.2">تقني واعي</div></div>`});
+badge.querySelector(".tape").style.cssText+=";width:120px;height:36px;margin-left:-60px;top:-18px";
+tl.fromTo(badge,{autoAlpha:0,y:-20,rotation:-10},{autoAlpha:1,y:0,rotation:-3,duration:.35,ease:"hOut"},0.9);
+tl.to(badge,{autoAlpha:0,y:-16,duration:.2,ease:"hOut"},38.3);
+
+/* ---------- hero word: clean read IN FRONT at chest, then it rises BEHIND his head ---------- */
+function heroPair(text,size,bandBg,seed,tFront,tUp,tOut){
+  const inner=`<div class="card" style="left:-40px;top:300px;transform:rotate(-2.5deg)"><div class="paper" style="width:1160px;height:236px;background:var(--grain),${bandBg};clip-path:${torn(seed,18,34,4,"tb")}"></div></div><div class="hero" style="top:262px;font-size:${size}px">${text}</div>`;
+  const B=el("behind",`<div class="h" style="position:absolute;left:0;top:0;width:1080px;height:700px">${inner}</div>`);
+  const F=el("front",`<div class="h" style="position:absolute;left:0;top:0;width:1080px;height:700px">${inner}</div>`);
+  gsap.set([B,F],{y:640,scale:1.04,transformOrigin:"50% 420px"});
+  if(tFront<=0)gsap.set(F,{autoAlpha:1});else tl.fromTo(F,{autoAlpha:0},{autoAlpha:1,duration:.12,immediateRender:false},tFront);
+  tl.to([B,F],{y:0,scale:.97,duration:.42,ease:"hInOut"},tUp);
+  tl.set(F,{autoAlpha:0},tUp+0.17);tl.set(B,{autoAlpha:1},tUp+0.17);
+  tl.to(B,{y:-120,autoAlpha:0,duration:.2,ease:"hInOut"},tOut);
+  return {B,F};}
+
+/* ================= HOOK 0 - 2.0 ================= */
+heroPair("طفـــــــــــــرة",226,PAPER,808,0,0.46,1.86);
+// orbit: 6 paper word cards / brand stickers circle his head with depth (behind copy + front copy)
+const ORB=[{t:"مونتاج"},{b:"adobepremierepro"},{t:"الذكاء الاصطناعي"},{t:"موشن"},{b:"adobeaftereffects"},{t:"مونتير"}];
+const CX=540,CY=690,RX=430,RY=235,TILT=-8*Math.PI/180,W0=2*Math.PI/3.0,EXTRA=1.4,T0=0.5,TEND=2.02;
+function thetaAt(k,t){const u=Math.max(0,t-T0);return k*2*Math.PI/ORB.length+0.3-(W0*u+EXTRA*(1-Math.exp(-u/0.3)));}
+function posAt(k,t){const th=thetaAt(k,t),ex=RX*Math.cos(th),ey=RY*Math.sin(th);
+  return {x:CX+ex*Math.cos(TILT)-ey*Math.sin(TILT),y:CY+ex*Math.sin(TILT)+ey*Math.cos(TILT),d:Math.sin(th),c:Math.cos(th)};}
+ORB.forEach((o,k)=>{
+  const copies=["behind","front"].map(layer=>{
+    let n;
+    if(o.t) n=el(layer,`<div class="card h" style="left:0;top:0"><div class="paper ar in" style="font-size:62px;padding:2px 30px 12px;clip-path:${torn(20+k,5,10,4)}">${o.t}</div></div>`);
+    else n=el(layer,`<div class="card h" style="left:0;top:0"><div class="in" style="width:132px;height:132px;background:${WHITE};border-radius:30px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="90" height="90" fill="${INK}">${BRANDS[o.b]}</svg></div></div>`);
+    center(n);return n;});
+  const [B,F]=copies,IB=B.querySelector(".in"),IF=F.querySelector(".in");
+  const S=d=>0.74+0.36*(d+1)/2, BL=d=>Math.max(0,-d)*2.6;
+  const STEP=1/15;const p0=posAt(k,T0);
+  gsap.set([B,F],{x:p0.x,y:p0.y,scale:S(p0.d),rotation:-7*p0.c});gsap.set([IB,IF],{filter:`blur(${BL(p0.d).toFixed(2)}px)`});
+  const front0=p0.d>0;
+  tl.fromTo(front0?F:B,{autoAlpha:0},{autoAlpha:1,duration:.16,immediateRender:false},T0-0.06+k*0.03);
+  for(let t=T0;t<TEND-1e-6;t+=STEP){const p1=posAt(k,Math.min(TEND,t+STEP));
+    tl.to([B,F],{x:p1.x,y:p1.y,scale:S(p1.d),rotation:-7*p1.c,duration:STEP,ease:"none"},t);
+    tl.to([IB,IF],{filter:`blur(${BL(p1.d).toFixed(2)}px)`,duration:STEP,ease:"none"},t);}
+  let prev=front0;
+  for(let t=T0+1/300;t<TEND;t+=1/300){const f=posAt(k,t).d>0;
+    if(f!==prev){tl.set(B,{autoAlpha:f?0:1},t);tl.set(F,{autoAlpha:f?1:0},t);prev=f;}}
+  const pe=posAt(k,TEND),ang=Math.atan2(pe.y-CY,pe.x-CX);
+  tl.to([B,F],{x:pe.x+Math.cos(ang)*640,y:pe.y+Math.sin(ang)*440,rotation:"+=25",duration:.3,ease:"hInOut"},TEND-0.02);
+  hide([B,F],TEND+0.3);
+});
+const strip0=card("front",{x:540,y:1336,rot:-2,seed:9,tapeRot:3,pad:"4px 40px 16px",
+  html:`<div class="ar" style="font-size:104px;position:relative"><span class="wtxt">في عالم </span><span style="position:relative;display:inline-block">${hlSVG(330,150,mk("hl",330,150,ACC,78,3),"left:-8px;top:0;width:calc(100% + 16px);height:100%")}<span class="wtxt">التصميم</span></span></div>`});
+enter(strip0,0.34,40);
+draw(strip0.querySelectorAll(".hl path"),1.22,.38);
+tl.to(strip0,{autoAlpha:0,y:50,rotation:5,duration:.16,ease:"hOut"},1.83);
+
+/* ================= S1 2.04-4.44 المصممين رح يزعلوا علينا بعد هذا الفيديو ================= */
+const desC=card("front",{x:190,y:520,rot:-6,seed:201,tapeRot:8,pad:"8px 26px 18px",
+  html:`<div style="display:flex;flex-direction:column;align-items:center;gap:2px">${iconSVG("pen-tool",76,INK,2)}<div class="ar" style="font-size:60px">المصممين</div></div>`});
+slap(desC,2.08,-10);
+const frown=sticker("front","frown",230,900,800,12,ACC);
+slap(frown,2.8,-14);
+const angry=el("front",`<svg class="h" viewBox="0 0 200 160" width="200" height="160" style="position:absolute;left:740px;top:600px;overflow:visible"><path d="M150,70 L190,40" stroke="${INK}" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M168,112 L210,108" stroke="${INK}" stroke-width="10" stroke-linecap="round" fill="none"/><path d="M118,44 L132,6" stroke="${INK}" stroke-width="10" stroke-linecap="round" fill="none"/></svg>`);
+tl.set(angry,{autoAlpha:1},2.95);draw(angry.querySelectorAll("path"),2.95,.2);
+const yt=brand("front","youtube",170,905,420,8);
+slap(yt,3.72,12);
+hide([desC,frown,angry,yt],4.54);
+
+/* ================= S2/S3 4.54-6.97 طبعاً ✓ للتأكيد وللمعلومية ================= */
+const tab=card("front",{x:540,y:1030,rot:-3,seed:31,tapeRot:-6,pad:"6px 70px 26px 170px",
+  html:`<div class="ar" style="font-size:190px;position:relative">طبعاً</div>${hlSVG(130,130,mk("check",130,130,INK,17),"left:26px;top:74px")}`});
+slap(tab,4.58,-10);
+draw(tab.querySelectorAll(".hl path"),5.32,.32);
+const memo=card("front",{x:185,y:560,w:250,h:250,rot:5,seed:41,tapeRot:-8,bg:"var(--acc)",pad:"26px 16px",
+  html:`<div class="ar" style="font-size:96px;text-align:center;line-height:1">!</div><div class="ar" style="font-size:50px;text-align:center">للمعلومية</div>`});
+slap(memo,5.95,10);
+const info=sticker("front","check",200,900,600,-8,WHITE,INK);
+slap(info,5.36,12);
+peel(tab,6.98);hide([memo,info],7.07);
+
+/* ================= S4 7.07-9.95 AI edits your videos ================= */
+const bot1=sticker("front","bot",210,900,430,8,ACC);
+slap(bot1,7.36,12);
+const cl=brand("front","claude",170,180,430,-8), oa=brand("front","openai",170,215,640,7);
+slap(cl,7.8,-10);slap(oa,8.0,10);
+peel(cl,8.98,-90);peel(oa,9.02,-90);
+const pr=brand("front","adobepremierepro",170,180,430,6), dv=brand("front","davinciresolve",170,215,640,-7), ae=brand("front","adobeaftereffects",160,905,660,-6);
+slap(pr,9.08,-10);slap(dv,9.22,10);slap(ae,9.34,-8);
+const SPR=`repeating-linear-gradient(90deg,transparent 0 10px,#F2EEE6 10px 26px,transparent 26px 36px)`;
+function filmHalf(k){return `<div style="position:relative;display:flex;gap:14px;padding:30px 22px;background:${INK}"><div style="position:absolute;left:0;right:0;top:9px;height:12px;background:${SPR}"></div><div style="position:absolute;left:0;right:0;bottom:9px;height:12px;background:${SPR}"></div>${[0,1].map(i=>`<div style="width:124px;height:96px;background:var(--grain),${[ACC,"#8d8578","#c9bfae","#8d8578"][k*2+i]}"></div>`).join("")}</div>`;}
+const filmR=card("front",{x:690,y:1050,rot:-2,seed:41,tape:false,pad:"0",html:filmHalf(0)});
+const filmL=card("front",{x:390,y:1050,rot:-2,seed:42,tape:true,tapeRot:5,pad:"0",html:filmHalf(1)});
+[filmR,filmL].forEach((n,i)=>{n.querySelector(".paper").style.clipPath=torn(60+i,4,10,4,i?"tbl":"tbr");});
+enter(filmR,8.62,30);enter(filmL,8.66,30);
+const sc=die("front","scissors",160,960,1050,-90);
+tl.fromTo(sc,{autoAlpha:0},{autoAlpha:1,duration:.12,immediateRender:false},8.86);
+tl.to(sc,{x:-420,duration:.26,ease:"hInOut"},8.95);
+tl.to(filmR,{x:"+=46",y:"+=14",rotation:5,duration:.3,ease:"hOut"},9.1);
+tl.to(filmL,{x:"-=40",y:"-=8",rotation:-8,duration:.3,ease:"hOut"},9.1);
+tl.to(sc,{autoAlpha:0,x:-560,duration:.2,ease:"hOut"},9.35);
+hide([filmR,filmL,bot1,pr,dv,ae],10.05);
+
+/* ================= S5 10.05-12.28 إنت عندك حس بصري ================= */
+const you=label("front","إنت",175,760,{size:110,rot:-6,seed:301,bg:"var(--acc)"});
+slap(you,11.02,-10);
+const arr1=arrow("front",["M250,690 C300,640 320,590 330,520","M300,540 L332,516 L350,556"],"0 0 1080 1920","left:0;top:0;width:1080px;height:1920px",INK,11);
+drawArrow(arr1,11.2);
+const hiss=card("front",{x:540,y:1040,rot:2,seed:51,tapeRot:-3,pad:"4px 54px 22px",
+  html:`<div class="ar" style="font-size:150px;position:relative">${hlSVG(560,200,mk("hl",560,200,ACC,110,4),"left:-6%;top:-4%;width:112%;height:108%")}<span class="wtxt">حس بصري</span></div>`});
+enter(hiss,11.64,36);draw(hiss.querySelectorAll(".hl path"),11.8,.36);
+const eye=sticker("front","eye",220,900,520,-10,WHITE,INK);
+slap(eye,11.95,-12);
+hide([you,arr1,hiss,eye],12.38);
+
+/* ================= S6 12.38-15.83 ideas in your head -> into the video ================= */
+const cloud=el("front",`<div class="card h" style="left:190px;top:470px"><div class="paper" style="width:290px;height:200px;border-radius:50%;display:flex;align-items:center;justify-content:center;gap:10px"></div><div class="paper" style="position:absolute;width:44px;height:44px;border-radius:50%;left:196px;top:196px"></div><div class="paper" style="position:absolute;width:24px;height:24px;border-radius:50%;left:236px;top:246px"></div></div>`);
+center(cloud);
+const bulb=sticker("front","lightbulb",220,900,470,-8,ACC);
+const rays=el("front",`<svg class="h" viewBox="0 0 160 160" width="160" height="160" style="position:absolute;left:820px;top:282px;overflow:visible"><path d="M80,8 L80,-26" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><path d="M134,30 L158,6" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><path d="M26,30 L2,6" stroke="${INK}" stroke-width="10" stroke-linecap="round"/></svg>`);
+slap(cloud,12.92,8);
+slap(bulb,13.42,-12);
+tl.set(rays,{autoAlpha:1},13.55);draw(rays.querySelectorAll("path"),13.55,.2);
+const frame=card("front",{x:540,y:1085,w:540,h:300,rot:-2,seed:61,tapeRot:4,pad:"26px",
+  html:`<div style="position:absolute;inset:26px;background:${INK};display:flex;align-items:center;justify-content:center">${iconSVG("play",90,"#F2EEE6",2)}</div>`});
+enter(frame,14.28,34);
+const ideas=[["palette",-150,-6,120],["pen-tool",0,8,190],["sparkles",150,-4,260]].map(([nm,dx,r,cx])=>{
+  const n=sticker("front",nm,100,cx+(cx-190)*0.2,470,r,PAPER);return [n,dx,cx];});
+ideas.forEach(([n],i)=>slap(n,13.02+i*0.1,8,.16));
+ideas.forEach(([n,dx,cx],i)=>{const t=14.62+i*0.1;
+  tl.to(n,{x:540+dx-(cx+(cx-190)*0.2),y:1085-470,scale:1.15,rotation:(i-1)*10,duration:.45,ease:"hInOut"},t);});
+tl.to(rays,{autoAlpha:0,duration:.15},14.62);
+tl.to([cloud,bulb],{autoAlpha:0,scale:.9,duration:.18,ease:"hOut"},15.5);
+tl.to([frame,...ideas.map(a=>a[0])],{autoAlpha:0,y:"-=16",duration:.16,ease:"hOut"},15.9);
+
+/* ================= S7 15.96-17.36 النتيجة أفضل ================= */
+const award=sticker("front","award",220,180,560,-8,ACC);
+slap(award,16.2,-12);
+const res=card("front",{x:540,y:1040,rot:-2,seed:71,tapeRot:5,pad:"4px 50px 22px",
+  html:`<div class="ar" style="font-size:132px;position:relative">${hlSVG(700,190,mk("hl",700,190,ACC,100,6),"left:-4%;top:0;width:108%;height:104%")}<span class="wtxt">النتيجة </span><span class="wtxt" style="position:relative;display:inline-block">أفضل${hlSVG(300,200,mk("circle",300,200,INK,9),"left:-24%;top:-10%;width:148%;height:125%")}</span></div>`});
+tl.fromTo(res,{autoAlpha:0,scale:1.12,y:10},{autoAlpha:1,scale:1,y:0,duration:.14,ease:"hOut",immediateRender:false},16.4);
+const resP=res.querySelectorAll(".hl path");
+draw(resP[0],16.45,.24);draw(resP[1],16.98,.34);
+const trend=sticker("front","trending-up",220,900,600,-6,WHITE,INK);
+slap(trend,17.08,10);
+hide([res,trend,award],17.46);
+
+/* ================= S8-S10 17.46-21.26 the more you talk -> better results ================= */
+const bot2=sticker("front","bot",210,900,430,-8,ACC);
+slap(bot2,17.55,12);
+const cl2=brand("front","claude",170,180,470,-8);
+slap(cl2,17.92,-10);
+function bubble(x,y,rot,seed,flip){return card("front",{x,y,rot,seed,tape:false,pad:"20px 26px 24px",
+  html:`<div style="display:flex;flex-direction:column;gap:12px;align-items:${flip?"flex-start":"flex-end"}"><div style="width:170px;height:14px;background:${INK}"></div><div style="width:110px;height:14px;background:rgba(22,20,18,.45)"></div></div><div style="position:absolute;${flip?"left":"right"}:26px;bottom:-24px;width:38px;height:28px;background:var(--grain),var(--paper);clip-path:polygon(0 0,100% 0,${flip?"0 100%":"100% 100%"})"></div>`});}
+const bubs=[bubble(880,700,3,81,false),bubble(850,830,-4,82,true),bubble(885,960,2,83,false)];
+bubs.forEach(b=>{b.querySelector(".paper").style.clipPath="none";});
+[18.86,19.2,19.56].forEach((t,i)=>slap(bubs[i],t,i%2?8:-8,.18));
+const chart=card("front",{x:205,y:790,w:300,h:270,rot:-3,seed:91,tapeRot:-5,pad:"0",
+  html:`<svg viewBox="0 0 330 290" width="300" height="270" style="position:absolute;inset:0;overflow:visible"><path d="M40,250 L300,250" stroke="${INK}" stroke-width="7" stroke-linecap="round" fill="none"/><path class="bar" d="M85,246 L85,196" stroke="${INK}" stroke-width="40" fill="none"/><path class="bar" d="M160,246 L160,150" stroke="${INK}" stroke-width="40" fill="none"/><path class="bar" d="M240,246 L240,70" stroke="${ACC}" stroke-width="40" fill="none"/></svg>`});
+enter(chart,20.05,30);
+const bars=chart.querySelectorAll(".bar");
+draw(bars[0],20.3,.25);draw(bars[1],20.6,.25);draw(bars[2],20.95,.3);
+
+/* ================= BOARD 21.36-28.27 محترف | عادي ================= */
+function rip(id,t){
+  const n=el("over",`<div class="rip" style="left:0;top:-40px;width:2000px;height:2000px;clip-path:${torn(id,34,6,40,"lr")}"></div>`);
+  tl.fromTo(n,{x:1100},{x:-2100,duration:.56,ease:"hInOut",immediateRender:true},t-0.28);
+  return n;}
+rip(101,21.36);
+hide([bot2,cl2,chart,...bubs],21.36);
+tl.set(cw,{x:0,y:-265,scale:.52,rotation:-2,filter:"drop-shadow(0 30px 40px rgba(45,32,15,.4))"},21.36);
+tl.set(clipbox,{clipPath:"inset(0px 0px 672px 0px)"},21.36);
+tl.set(pol,{opacity:1,bottom:"442px"},21.36);
+const polTape=el("front",`<div class="tape h" style="left:540px;top:140px;width:200px;height:54px;margin-left:-100px;clip-path:${torn(333,4,3,4,"lr")};transform:rotate(4deg)"></div>`);
+tl.set(polTape,{autoAlpha:1},21.36);
+function hdr(x,y,text,w,rot,seed,size){return card("front",{x,y,rot,seed,tape:false,pad:"8px 0 16px",bg:INK,html:`<div class="ar" style="width:${w}px;text-align:center;font-size:${size}px;color:#F2EEE6;line-height:1.15">${text}</div>`});}
+function strip(x,y,rot,seed,icon,text,o={}){
+  const ic=icon?`<div style="flex:none;width:80px;height:80px;border-radius:50%;background:var(--grain),${ACC};display:flex;align-items:center;justify-content:center;border:6px solid ${WHITE};box-shadow:0 3px 6px rgba(45,32,15,.3)">${iconSVG(icon,44,INK,2.4)}</div>`:"";
+  return card("front",{x,y,rot,seed,tapeRot:rot>0?-6:6,pad:"6px 24px 12px",bg:o.bg,html:`<div style="display:flex;align-items:center;gap:14px;direction:rtl">${ic}<div class="ar" style="font-size:${o.size||64}px;position:relative;color:${o.color||INK}">${o.hl?hlSVG(300,80,mk("hl",300,80,ACC,58,8),"left:-6%;top:6%;width:112%;height:92%"):""}<span class="wtxt">${text}</span></div></div>`});}
+const hR=hdr(672,1084,"محترف",380,-2,111,100), hL=hdr(228,1098,"عادي",190,3,112,58);
+const rR=[strip(668,1222,1.5,121,"sparkles","باحترافية",{hl:true,size:70}),strip(672,1358,-1.5,122,"sliders-horizontal","الإضافات الصح",{size:70}),strip(664,1492,1,123,"cpu","داخل الماكينة",{size:70})];
+const rL=strip(222,1222,-2,124,null,"استخدام عادي",{size:44,color:"#8a8378",bg:"#E0DBD1"});
+const qm=el("front",`<div class="sticker h" style="width:96px;height:96px;left:150px;top:1330px;background:var(--grain),#E0DBD1;border-width:7px"><div class="ar" style="font-size:60px;color:#6f695f;line-height:1;padding-top:8px">؟</div></div>`);
+center(qm);gsap.set(qm,{rotation:10});
+const vs=el("front",`<div class="h" style="position:absolute;left:418px;top:1100px;width:170px;height:150px"><svg class="hl" viewBox="0 0 170 150" width="170" height="150" style="left:0;top:0">${mk("circle",170,150,ACC,16,21)}</svg><div class="ar" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:96px;line-height:1;padding-top:12px">ضد</div></div>`);
+center(vs);gsap.set(vs,{rotation:-10});
+slap(hR,22.4,-8,.2);slap(hL,22.6,8,.2);
+tl.fromTo(vs,{autoAlpha:0,scale:1.4},{autoAlpha:1,scale:1,duration:.18,ease:"hOut",immediateRender:false},22.8);
+draw(vs.querySelector("path"),22.86,.3);
+[[rR[0],23.86],[rR[1],25.1],[rR[2],27.28]].forEach(([r,t],i)=>slap(r,t,i%2?7:-7,.2));
+draw(rR[0].querySelectorAll(".hl path"),24.0,.3);
+slap(rL,24.7,6,.2);slap(qm,24.95,-12,.16);
+const pBot=sticker("front","bot",150,792,236,10,ACC);slap(pBot,22.95,-12);
+const pFilm=sticker("front","film",140,800,880,10,WHITE,INK);slap(pFilm,26.1,12);
+// back to full frame for «نفس اللي بيستخدم استخدام عادي؟»
+tl.to([hR,hL,vs,...rR,rL,qm],{y:"+=560",rotation:"+=6",autoAlpha:0,duration:.34,ease:"hInOut",stagger:.02},27.94);
+tl.to([pBot,pFilm,polTape],{autoAlpha:0,duration:.15},28.05);
+tl.to(cw,{y:0,scale:1,rotation:0,duration:.44,ease:"hInOut"},28.06);
+tl.to(clipbox,{clipPath:"inset(0px 0px 0px 0px)",duration:.44,ease:"hInOut"},28.06);
+tl.to(pol,{opacity:0,duration:.3,ease:"hOut"},28.12);
+tl.set(pol,{bottom:"-230px"},28.5);tl.set(cw,{filter:"none"},28.5);
+// «=؟» sticker on him
+const eq=el("front",`<div class="sticker h" style="width:250px;height:250px;left:880px;top:560px;background:var(--grain),#F2EEE6;border-width:16px"><svg viewBox="0 0 120 120" width="200" height="200" style="overflow:visible"><path class="e1" d="M104,46 L50,44" stroke="${INK}" stroke-width="11" stroke-linecap="round" fill="none"/><path class="e2" d="M104,72 L50,70" stroke="${INK}" stroke-width="11" stroke-linecap="round" fill="none"/><text x="24" y="92" text-anchor="middle" font-family="Lalezar" font-size="80" fill="${INK}">؟</text><path class="sl" d="M96,18 L58,100" stroke="${RED}" stroke-width="12" stroke-linecap="round" fill="none"/></svg></div>`);
+center(eq);gsap.set(eq,{rotation:-6});
+slap(eq,28.42,-12,.2);
+tl.set(eq.querySelector(".sl"),{drawSVG:"0%"},0);
+draw(eq.querySelector(".sl"),30.12,.16);
+// «أكيد لا» HUGE full-frame rubber stamp
+const stamp=el("over",`<svg class="h" viewBox="0 0 640 280" width="840" height="368" style="position:absolute;left:540px;top:1000px;overflow:visible"><g filter="url(#grunge)"><rect x="10" y="10" width="620" height="260" rx="10" fill="none" stroke="${RED}" stroke-width="15"/><rect x="32" y="32" width="576" height="216" fill="none" stroke="${RED}" stroke-width="6"/><text x="320" y="198" text-anchor="middle" font-family="Lalezar" font-size="182" fill="${RED}" style="direction:rtl">أكيد لا</text></g></svg>`);
+center(stamp);gsap.set(stamp,{rotation:-8});
+const flash=el("over",`<div class="h" style="position:absolute;inset:0;background:#FFFDF6"></div>`);
+tl.set(flash,{autoAlpha:.9},30.06);tl.set(flash,{autoAlpha:.45},30.1);tl.set(flash,{autoAlpha:0},30.133);
+tl.fromTo(stamp,{autoAlpha:0,scale:1.8,rotation:-15},{autoAlpha:.96,scale:1,rotation:-8,duration:.1,ease:"power4.out",immediateRender:false},30.066);
+tl.fromTo(cam,{scale:1.17},{scale:1.12,duration:.3,ease:"hOut",immediateRender:false},30.166);
+[[16,-10],[-22,15],[12,-8],[-5,3],[0,0]].forEach(([dx,dy],i)=>tl.to([cw,FRONT,OVER],{x:dx,y:dy,duration:.034,ease:"none"},30.166+i*0.034));
+// rip to «بشرى»
+rip(102,30.96);
+hide([eq,stamp],30.96);
+
+/* ================= S15/16 فبشرى للمصممين ================= */
+heroPair("بشـــــــــــــــرى",204,"var(--acc)",909,30.96,31.4,32.84);
+const strip1=card("front",{x:540,y:1336,rot:2,seed:121,tapeRot:-4,pad:"4px 46px 18px",bg:"var(--acc)",
+  html:`<div class="ar" style="font-size:112px">للمصممين</div>`});
+slap(strip1,31.86,8);
+const pen=sticker("front","pen-tool",200,890,1080,14,WHITE,INK);
+slap(pen,32.02,-10);
+tl.to([strip1,pen],{autoAlpha:0,y:50,duration:.18,ease:"hInOut"},32.88);
+(function(){const r=rng(404);for(let i=0;i<12;i++){const left=i%2===0;const x0=left?110+r()*120:840+r()*110;
+  const c=[ACC,"#F2EEE6",INK,ACC][i%4];const w=34+r()*34,h=18+r()*20;
+  const n=el("front",`<div class="h" style="position:absolute;left:${x0}px;top:${130+r()*60}px;width:${w}px;height:${h}px;background:${c};box-shadow:0 4px 8px rgba(45,32,15,.3)"></div>`);
+  const t=31.55+r()*0.25;
+  tl.fromTo(n,{autoAlpha:1,x:0,y:0,rotation:r()*180},{x:(left?-1:1)*(30+r()*90),y:420+r()*480,rotation:`+=${(r()-.5)*520}`,duration:1.3,ease:"power2.out",immediateRender:false},t);
+  tl.to(n,{autoAlpha:0,duration:.2},t+1.1);}})();
+
+/* ================= S17/18 إنت + الأداة = مساعد ✓ / وليس تحل محلك ✗ ================= */
+const penY=sticker("front","pen-tool",210,180,520,-8,WHITE,INK);
+slap(penY,33.5,-12);
+const you2=label("front","إنت",185,705,{size:84,rot:5,seed:302,bg:"var(--acc)"});
+slap(you2,33.62,10);
+const bot3=sticker("front","bot",210,900,520,-6,ACC);
+slap(bot3,34.62,12);
+tl.to([penY,you2],{autoAlpha:0,x:"-=60",duration:.2,ease:"hInOut"},35.62);
+tl.to(bot3,{x:950-900,y:865-520,scale:.72,rotation:10,duration:.4,ease:"hInOut"},35.62);
+const help=card("front",{x:690,y:1005,rot:2.5,seed:131,tapeRot:-5,pad:"6px 40px 22px 150px",
+  html:`<div style="display:flex;align-items:center;gap:18px;direction:rtl"><div class="ar" style="font-size:150px;position:relative">${hlSVG(330,190,mk("hl",330,190,ACC,110,9),"left:-4%;top:2%;width:108%;height:100%")}<span class="wtxt">مساعد</span></div></div>${hlSVG(120,120,mk("check",120,120,INK,18),"left:20px;top:70px")}`});
+slap(help,35.8,-8,.22);
+const hp=help.querySelectorAll(".hl path");draw(hp[0],35.95,.35);draw(hp[1],36.2,.26);
+const replHTML=`<div class="ar" style="font-size:56px;text-align:center;line-height:1.1">وليس</div><div class="ar" style="font-size:112px;position:relative"><span class="wtxt">تحل محلك</span>${hlSVG(360,120,mk("strike",360,120,RED,18),"left:-6%;top:8%;width:112%;height:100%;z-index:2")}</div>${hlSVG(120,120,mk("x1",120,120,RED,17)+mk("x2",120,120,RED,17),"left:-50px;top:-44px;z-index:2")}`;
+const repl=card("front",{x:370,y:1175,rot:-4,seed:141,tapeRot:6,pad:"6px 48px 22px",html:replHTML});
+// torn halves (built before any DrawSVG touches the paths, so they carry the finished strike/✗)
+const halves=[0,1].map(i=>{const c=repl.cloneNode(true);repl.parentNode.appendChild(c);
+  c.style.clipPath=i?"polygon(0 0,51% 0,46% 18%,53% 36%,47% 55%,52% 74%,48% 100%,0 100%)":"polygon(51% 0,100% 0,100% 100%,48% 100%,52% 74%,47% 55%,53% 36%,46% 18%)";
+  gsap.set(c,{xPercent:-50,yPercent:-50,rotation:-4});return c;});
+slap(repl,36.9,8,.22);
+const rp=repl.querySelectorAll(".hl path");draw(rp[0],37.72,.22);draw(rp[1],37.9,.09);draw(rp[2],37.98,.09);
+tl.set(repl,{autoAlpha:0},38.1);tl.set(halves,{autoAlpha:1},38.1);
+tl.to(halves[0],{x:"+=70",y:"+=90",rotation:9,duration:.5,ease:"hOut"},38.1);
+tl.to(halves[1],{x:"-=80",y:"+=120",rotation:-18,duration:.5,ease:"hOut"},38.1);
+
+/* ================= END CARD 38.26-40.97 ================= */
+const endS=el("over",`<div class="rip" style="left:-40px;top:880px;width:1160px;height:1200px;background:var(--grain),var(--fiber),#1C1A17;clip-path:${torn(505,40,26,4,"t")};filter:drop-shadow(0 -12px 18px rgba(20,14,5,.45))"></div>`);
+tl.fromTo(endS,{y:1150},{y:0,duration:.46,ease:"hDrawer",immediateRender:true},38.26);
+tl.to(cam,{y:-110,duration:.5,ease:"hInOut"},38.26);
+hide(bot3,38.3);hide([help,...halves],38.75);
+const logo=el("over",`<div class="h" style="position:absolute;left:540px;top:1112px;filter:var(--shadow)"><div style="filter:url(#dieL);display:flex;align-items:center;gap:26px;direction:rtl;padding:10px"><div style="width:210px;height:210px;flex:none">${logoMark(210)}</div><div class="ar" style="font-size:176px;line-height:1.25;color:${INK};padding-top:10px">تقني واعي</div></div></div>`);
+center(logo);gsap.set(logo,{rotation:-3});
+tl.fromTo(logo,{autoAlpha:0,scale:1.35,rotation:-11},{autoAlpha:1,scale:1,rotation:-3,duration:.42,ease:"back.out(1.3)",immediateRender:false},38.55);
+const cta=card("over",{x:540,y:1372,rot:1.5,seed:606,tapeRot:-4,pad:"6px 56px 20px",bg:"var(--acc)",
+  html:`<div class="ar" style="font-size:88px;display:flex;align-items:center;gap:22px"><span>تابع تقني واعي</span><span style="display:inline-flex;width:74px;height:74px;background:${INK};align-items:center;justify-content:center;border-radius:50%"><svg viewBox="0 0 24 24" width="46" height="46" fill="none" stroke="${ACC}" stroke-width="3.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></div>`});
+enter(cta,38.95,40);
+
+/* ================= CAPTIONS: cut-paper scraps, active word = marker swipe + pop ================= */
+const PAGES=[[4,6],[7,10,4.5],[12,13,7.0],[14,16],[17,20,10.0],[21,24],[25,26,11.62],[29,32],[33,36,15.9],[37,39,16.42],
+  [42,43],[44,47],[48,52,21.3],[67,71,30.02],[76,79],[80,81,35.74]];
+const capsEl=document.getElementById("caps");
+PAGES.forEach((pg,pi)=>{
+  const [a,b,endO]=pg;const st=pi===0?2.0:WORDS[a][1]-0.08;
+  const nxt=PAGES[pi+1]?WORDS[PAGES[pi+1][0]][1]-0.08:D;
+  const en=endO||Math.min(nxt,WORDS[b][2]+0.4);
+  const r=rng(900+pi);
+  const page=el(capsEl,`<div class="page h"></div>`);
+  const scraps=[];
+  for(let i=a;i<=b;i++){
+    const s=el(page,`<div class="scrap" style="clip-path:${quad(1000+i)}"><div class="mk"></div><span class="t">${WORDS[i][0]}</span></div>`);
+    gsap.set(s,{rotation:(r()-.5)*4});gsap.set(s.querySelector(".mk"),{scaleX:0});
+    scraps.push([s,i]);}
+  tl.set(page,{autoAlpha:1},st);
+  tl.fromTo(scraps.map(x=>x[0]),{autoAlpha:0,y:22},{autoAlpha:1,y:0,duration:.2,ease:"hOut",stagger:.04,immediateRender:true},st);
+  scraps.forEach(([s,i],k)=>{const ws=Math.max(WORDS[i][1]-0.04,st+0.02);const m=s.querySelector(".mk");
+    tl.fromTo(m,{scaleX:0,opacity:1},{scaleX:1,duration:.14,ease:"hOut",immediateRender:false},ws);
+    tl.to(s,{scale:1.06,duration:.07,ease:"hOut"},ws);tl.to(s,{scale:1,duration:.16,ease:"hOut"},ws+.07);
+    if(k<scraps.length-1){const nx=Math.max(WORDS[scraps[k+1][1]][1]-0.04,st+0.02);tl.to(m,{opacity:0,duration:.12,ease:"hOut"},nx);}});
+  tl.to(page,{autoAlpha:0,duration:.1,ease:"hOut"},en-0.1);
+});
+
+tl.set({}, {}, D);
+})();
+</script>
+</body>
+</html>

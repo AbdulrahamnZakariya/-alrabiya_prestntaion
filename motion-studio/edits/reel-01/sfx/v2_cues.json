@@ -1,0 +1,163 @@
+{
+ "bed": "bed_tech.wav",
+ "cues": [
+  {
+   "t": 0.0,
+   "file": "impact_hit_b.wav",
+   "db": -9,
+   "note": "hook: «طفرة» card in front on frame 0"
+  },
+  {
+   "t": 0.42,
+   "file": "whoosh_short_a.wav",
+   "db": -13,
+   "note": "«طفرة» rises behind his head, word cards start orbiting (peak ~0.66)"
+  },
+  {
+   "t": 1.76,
+   "file": "whoosh_short_b.wav",
+   "db": -12,
+   "note": "orbit cards fly out (peak on 2.0)"
+  },
+  {
+   "t": 2.08,
+   "file": "pop_a.wav",
+   "db": -14,
+   "note": "«المصممين» card slaps left"
+  },
+  {
+   "t": 2.8,
+   "file": "pop_b.wav",
+   "db": -13,
+   "note": "frown sticker on «يزعلوا»"
+  },
+  {
+   "t": 4.58,
+   "file": "pop_b.wav",
+   "db": -11,
+   "note": "«طبعاً» card slap after whip-punch"
+  },
+  {
+   "t": 5.95,
+   "file": "pop_a.wav",
+   "db": -14,
+   "note": "yellow memo «للمعلومية»"
+  },
+  {
+   "t": 7.36,
+   "file": "pop_b.wav",
+   "db": -13,
+   "note": "AI bot sticker (+ Claude / OpenAI stickers)"
+  },
+  {
+   "t": 9.0,
+   "file": "camera_shutter.wav",
+   "db": -11,
+   "note": "scissors snip the film strip; editing-app stickers replace AI ones"
+  },
+  {
+   "t": 11.02,
+   "file": "pop_b.wav",
+   "db": -13,
+   "note": "«إنت» label + drawn arrow"
+  },
+  {
+   "t": 11.95,
+   "file": "pop_a.wav",
+   "db": -14,
+   "note": "eye sticker on «حس بصري»"
+  },
+  {
+   "t": 13.42,
+   "file": "shimmer_sparkle.wav",
+   "db": -17,
+   "note": "idea lightbulb + thought cloud"
+  },
+  {
+   "t": 17.02,
+   "file": "ding_success.wav",
+   "db": -16,
+   "note": "circle drawn around «أفضل»"
+  },
+  {
+   "t": 18.86,
+   "file": "pop_a.wav",
+   "db": -15,
+   "note": "chat bubbles pile up"
+  },
+  {
+   "t": 20.86,
+   "file": "whoosh_long.wav",
+   "db": -11,
+   "note": "paper-rip wipe into the polaroid board (peak 21.36)"
+  },
+  {
+   "t": 28.0,
+   "file": "whoosh_short_a.wav",
+   "db": -13,
+   "note": "polaroid zooms back to full frame"
+  },
+  {
+   "t": 28.42,
+   "file": "pop_a.wav",
+   "db": -13,
+   "note": "«=؟» sticker on «نفس»"
+  },
+  {
+   "t": 30.06,
+   "file": "impact_hit_a.wav",
+   "db": -5,
+   "note": "HUGE «أكيد لا» rubber stamp slam + shake"
+  },
+  {
+   "t": 30.06,
+   "file": "sub_drop.wav",
+   "db": -10,
+   "note": "stamp weight"
+  },
+  {
+   "t": 30.72,
+   "file": "whoosh_short_b.wav",
+   "db": -11,
+   "note": "paper-rip to «بشرى» (peak 30.96)"
+  },
+  {
+   "t": 31.5,
+   "file": "shimmer_sparkle.wav",
+   "db": -14,
+   "note": "«بشرى» rises behind him + confetti"
+  },
+  {
+   "t": 34.62,
+   "file": "pop_b.wav",
+   "db": -13,
+   "note": "bot sticker = the tool"
+  },
+  {
+   "t": 35.8,
+   "file": "ding_success.wav",
+   "db": -15,
+   "note": "«مساعد ✓» card"
+  },
+  {
+   "t": 37.72,
+   "file": "impact_hit_a.wav",
+   "db": -12,
+   "note": "red strike + ✗ on «تحل محلك», card tears in two (38.1)"
+  },
+  {
+   "t": 38.1,
+   "file": "swoosh_down.wav",
+   "db": -13,
+   "note": "torn halves fall, ink sheet rises"
+  },
+  {
+   "t": 38.55,
+   "file": "impact_hit_b.wav",
+   "db": -8,
+   "note": "logo sticker slap"
+  }
+ ],
+ "bed_lu_below_voice": 13,
+ "bed_fade_out": 1.2
+}

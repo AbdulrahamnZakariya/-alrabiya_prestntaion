@@ -1,0 +1,168 @@
+{
+ "bed": "bed_tech.wav",
+ "bed_db": -25,
+ "cues": [
+  {
+   "t": 0.0,
+   "file": "impact_hit_b.wav",
+   "db": -10,
+   "note": "hook: طفرة hero + orbit on frame 0"
+  },
+  {
+   "t": 1.8,
+   "file": "whoosh_short_a.wav",
+   "db": -14,
+   "note": "hook card expands to full frame (peak ~2.04)"
+  },
+  {
+   "t": 2.12,
+   "file": "cc0_uisfx/cc0_notification_glass.wav",
+   "db": -14,
+   "note": "designers group-chat toast"
+  },
+  {
+   "t": 4.3,
+   "file": "whoosh_short_b.wav",
+   "db": -13,
+   "note": "punch-in on jump cut 4.54"
+  },
+  {
+   "t": 6.83,
+   "file": "whoosh_short_a.wav",
+   "db": -12,
+   "note": "video shrinks into PROGRAM monitor (7.07)"
+  },
+  {
+   "t": 7.5,
+   "file": "click_ui_b.wav",
+   "db": -14,
+   "note": "timeline clips snap in"
+  },
+  {
+   "t": 9.05,
+   "file": "camera_shutter.wav",
+   "db": -12,
+   "note": "razor cut at مونتاج"
+  },
+  {
+   "t": 10.05,
+   "file": "cc0_uisfx/cc0_scanning_scifi.wav",
+   "db": -14,
+   "note": "hard cut back + face reticle lock"
+  },
+  {
+   "t": 12.9,
+   "file": "pop_a.wav",
+   "db": -15,
+   "note": "idea tiles float out of his head"
+  },
+  {
+   "t": 14.09,
+   "file": "whoosh_short_b.wav",
+   "db": -13,
+   "note": "tiles fly into the video (14.33)"
+  },
+  {
+   "t": 15.96,
+   "file": "cc0_uisfx/cc0_processing_scifi.wav",
+   "db": -15,
+   "note": "scan line + quality meter"
+  },
+  {
+   "t": 17.15,
+   "file": "ding_success.wav",
+   "db": -15,
+   "note": "meter hits HIGH at أفضل"
+  },
+  {
+   "t": 18.83,
+   "file": "typing_burst.wav",
+   "db": -15,
+   "note": "prompt bubbles stack"
+  },
+  {
+   "t": 21.12,
+   "file": "whoosh_long.wav",
+   "db": -13,
+   "note": "split-screen محترف vs عادي"
+  },
+  {
+   "t": 24.55,
+   "file": "pop_b.wav",
+   "db": -15,
+   "note": "add-on chips land on the pro card"
+  },
+  {
+   "t": 26.03,
+   "file": "cc0_uisfx/cc0_processing_scifi.wav",
+   "db": -16,
+   "note": "the machine badge spins"
+  },
+  {
+   "t": 28.09,
+   "file": "riser_2s.wav",
+   "db": -13,
+   "note": "tension over the question, ends on the ✗ slam"
+  },
+  {
+   "t": 30.03,
+   "file": "impact_hit_b.wav",
+   "db": -7,
+   "note": "red ✗ slams onto the «عادي» card + flash + shake"
+  },
+  {
+   "t": 30.03,
+   "file": "glitch_a.wav",
+   "db": -12,
+   "note": "glitch bars"
+  },
+  {
+   "t": 30.36,
+   "file": "impact_hit_a.wav",
+   "db": -5,
+   "note": "cut to full frame: «أكيد لا» stamp slam + red vignette + shake"
+  },
+  {
+   "t": 30.36,
+   "file": "sub_drop.wav",
+   "db": -11,
+   "note": "under the stamp"
+  },
+  {
+   "t": 30.38,
+   "file": "glitch_b.wav",
+   "db": -14,
+   "note": "stamp RGB ghost"
+  },
+  {
+   "t": 31.0,
+   "file": "shimmer_sparkle.wav",
+   "db": -14,
+   "note": "بشرى reveal behind him"
+  },
+  {
+   "t": 35.83,
+   "file": "ding_success.wav",
+   "db": -15,
+   "note": "handshake: مساعد ✓"
+  },
+  {
+   "t": 37.43,
+   "file": "click_ui_b.wav",
+   "db": -12,
+   "note": "red ✗ blocks the replacement"
+  },
+  {
+   "t": 37.85,
+   "file": "whoosh_long.wav",
+   "db": -13,
+   "note": "into the end card"
+  },
+  {
+   "t": 38.75,
+   "file": "impact_hit_a.wav",
+   "db": -10,
+   "note": "logo pupil lands"
+  }
+ ]
+}
