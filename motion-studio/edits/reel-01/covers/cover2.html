@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Lz;src:url(f/lalezar-arabic-400-normal.woff2);unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF,U+200C-200F}
+@font-face{font-family:Lz;src:url(f/lalezar-latin-400-normal.woff2)}
+@font-face{font-family:Rx;src:url(f/readex-pro-arabic-700-normal.woff2);font-weight:700}
+@font-face{font-family:Mono;src:url(f/ibm-plex-mono-latin-700-normal.woff2);font-weight:700}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#F2EEE6}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;background:#F2EEE6}
+.grain{position:absolute;inset:0;opacity:.55;mix-blend-mode:multiply}
+.band{position:absolute;left:-40px;top:1060px;width:1160px;height:560px;background:#FFCF1F;transform:rotate(-4deg);
+  clip-path:polygon(0 6%,8% 2%,17% 7%,28% 1%,41% 6%,55% 2%,68% 7%,80% 1%,91% 5%,100% 2%,100% 96%,90% 99%,78% 94%,64% 99%,50% 94%,37% 99%,24% 95%,12% 99%,0 95%)}
+.person{position:absolute;left:108px;top:760px;width:864px;height:1536px;
+  filter:drop-shadow(0 0 0 #fff) drop-shadow(6px 0 0 #fff) drop-shadow(-6px 0 0 #fff) drop-shadow(0 6px 0 #fff) drop-shadow(0 -6px 0 #fff) drop-shadow(0 18px 24px rgba(22,20,18,.35))}
+.strip{position:absolute;direction:rtl;text-align:center;color:#161412;font-family:Lz}
+.s1{top:300px;left:150px;width:780px;padding:18px 0 4px;background:#FFFFFF;font-size:170px;line-height:1.15;transform:rotate(-3deg);box-shadow:0 14px 30px rgba(22,20,18,.22);
+  clip-path:polygon(0 4%,6% 0,14% 5%,25% 1%,37% 5%,50% 0,63% 4%,76% 1%,88% 5%,100% 1%,99% 96%,90% 100%,79% 95%,66% 100%,53% 96%,40% 100%,27% 95%,14% 100%,3% 96%)}
+.s2{top:540px;left:60px;width:960px;padding:10px 0 0;background:#161412;color:#F2EEE6;font-size:190px;line-height:1.1;transform:rotate(2.5deg);box-shadow:0 18px 36px rgba(22,20,18,.3);
+  clip-path:polygon(0 3%,9% 0,20% 4%,33% 0,47% 5%,61% 1%,74% 5%,86% 0,100% 4%,98% 97%,85% 100%,71% 96%,57% 100%,43% 96%,29% 100%,15% 96%,2% 100%)}
+.s2 b{font-weight:400;color:#FFCF1F}
+.tape{position:absolute;width:190px;height:58px;background:rgba(255,248,220,.72);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.stamp{position:absolute;top:210px;left:60px;transform:rotate(-12deg);border:9px solid #D6262B;border-radius:14px;padding:10px 26px 6px;color:#D6262B;font:700 64px/1 Mono;letter-spacing:.04em;opacity:.93;background:rgba(242,238,230,.35)}
+.stamp::after{content:"";position:absolute;inset:6px;border:3px solid #D6262B;border-radius:6px}
+.foot{position:absolute;left:-30px;top:1600px;width:1140px;height:360px;background:#161412;transform:rotate(-2deg);clip-path:polygon(0 8%,7% 3%,15% 9%,26% 2%,38% 8%,50% 1%,62% 7%,74% 2%,86% 8%,100% 3%,100% 100%,0 100%);box-shadow:0 -10px 30px rgba(0,0,0,.2)}
+.logo{position:absolute;left:50%;top:1720px;transform:translateX(-50%) rotate(-2deg);display:flex;align-items:center;gap:16px;background:#161412;border:8px solid #fff;border-radius:999px;padding:12px 34px 16px;direction:rtl;box-shadow:0 12px 26px rgba(22,20,18,.3)}
+.logo span{font:700 48px/1 Rx;color:#F2EEE6}
+.logo svg{width:60px;height:60px}
+.arrow{position:absolute;top:840px;left:770px;width:190px;height:170px}
+</style></head><body>
+<div id="c">
+  <svg class="grain" width="1080" height="1920"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 .45  0 0 0 0 .40  0 0 0 0 .34  0 0 0 .35 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+  <div class="band"></div>
+  <img class="person" src="cut_v2_20.6.png">
+  <div class="strip s1">وداعًا</div>
+  <div class="tape" style="top:282px;left:120px;transform:rotate(-38deg)"></div>
+  <div class="tape" style="top:300px;left:800px;transform:rotate(30deg)"></div>
+  <div class="strip s2"><b>للمونتاج</b></div>
+  <div class="stamp">OPUS 5.5</div>
+  <svg class="arrow" viewBox="0 0 190 170" fill="none"><path d="M170 10C150 70 110 110 40 130" stroke="#161412" stroke-width="9" stroke-linecap="round"/><path d="M70 100 36 132l44 16" stroke="#161412" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="foot"></div>
+  <div class="tape" style="top:1590px;left:90px;transform:rotate(-8deg)"></div>
+  <div class="logo">
+    <svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28" fill="#FFCF1F"/><path d="M12 32c5-8 12-12 20-12s15 4 20 12c-5 8-12 12-20 12s-15-4-20-12z" fill="#fff" stroke="#161412" stroke-width="3.5"/><circle cx="32" cy="32" r="7" fill="#161412"/><path d="M30 28.5v7l6-3.5z" fill="#FFCF1F"/></svg>
+    <span>تقني واعي</span>
+  </div>
+</div>
+</body></html>

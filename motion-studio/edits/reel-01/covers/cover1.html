@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ar"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Alx;src:url(f/alexandria-arabic-900-normal.woff2);font-weight:900;unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF,U+200C-200F}
+@font-face{font-family:Alx;src:url(f/alexandria-latin-900-normal.woff2);font-weight:900}
+@font-face{font-family:Alx;src:url(f/alexandria-arabic-800-normal.woff2);font-weight:800;unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF,U+200C-200F}
+@font-face{font-family:Alx;src:url(f/alexandria-latin-800-normal.woff2);font-weight:800}
+@font-face{font-family:Mono;src:url(f/ibm-plex-mono-latin-700-normal.woff2);font-weight:700}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#0A1220}
+#c{position:relative;width:1080px;height:1920px;overflow:hidden;
+ background:
+  radial-gradient(ellipse 560px 520px at 540px 1100px, rgba(196,234,102,.22), transparent 70%),
+  radial-gradient(ellipse 900px 700px at 540px 420px, rgba(40,70,120,.35), transparent 70%),
+  #0A1220}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(238,241,234,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(238,241,234,.05) 1px,transparent 1px);background-size:60px 60px;
+ -webkit-mask-image:radial-gradient(ellipse 700px 900px at 540px 700px,#000 30%,transparent 80%)}
+.person{position:absolute;left:108px;top:752px;width:864px;height:1536px;filter:drop-shadow(0 0 40px rgba(196,234,102,.25));-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent 88%),linear-gradient(to right,transparent 0,#000 12%,#000 88%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect}
+.fade{position:absolute;left:0;right:0;bottom:0;height:300px;background:linear-gradient(to bottom,transparent,#0A1220 85%)}
+.pill{position:absolute;top:268px;left:50%;transform:translateX(-50%);font:700 38px Mono;color:#0A1220;background:#C4EA66;padding:12px 30px 12px;border-radius:999px;letter-spacing:.04em;white-space:nowrap}
+.t1{position:absolute;top:360px;left:0;right:0;text-align:center;direction:rtl;font:900 220px/1.05 Alx;color:#EEF1EA;text-shadow:0 10px 40px rgba(0,0,0,.45)}
+.t2{position:absolute;top:585px;left:0;right:0;text-align:center;direction:rtl;font:900 200px/1.05 Alx;color:#C4EA66}
+.br{position:absolute;width:70px;height:70px;border:0 solid #C4EA66}
+.tl{left:300px;top:790px;border-top-width:6px;border-left-width:6px}
+.tr{left:710px;top:790px;border-top-width:6px;border-right-width:6px}
+.bl{left:300px;top:1300px;border-bottom-width:6px;border-left-width:6px}
+.bq{left:710px;top:1300px;border-bottom-width:6px;border-right-width:6px}
+.lab{position:absolute;left:300px;top:1386px;font:700 26px Mono;color:#C4EA66;letter-spacing:.06em}
+.lab i{display:inline-block;width:14px;height:14px;border-radius:50%;background:#EE4B3E;margin-right:10px;vertical-align:1px}
+.logo{position:absolute;left:50%;top:1680px;transform:translateX(-50%);display:flex;align-items:center;gap:18px;background:rgba(18,28,46,.85);border:2px solid rgba(196,234,102,.55);border-radius:999px;padding:14px 34px 16px;direction:rtl}
+.logo span{font:800 50px/1 Alx;color:#EEF1EA}
+.logo svg{width:62px;height:62px}
+</style></head><body>
+<div id="c">
+  <div class="grid"></div>
+  <div class="pill">OPUS 5.5</div>
+  <div class="t1">وداعًا</div>
+  <div class="t2">للمونتاج</div>
+  <img class="person" src="cut_v1_1.0.png">
+  <div class="fade"></div>
+  <div class="br tl"></div><div class="br tr"></div><div class="br bl"></div><div class="br bq"></div>
+  
+  <div class="logo">
+    <svg viewBox="0 0 64 64" fill="none"><path d="M6 32c7-12 16-18 26-18s19 6 26 18c-7 12-16 18-26 18S13 44 6 32z" stroke="#EEF1EA" stroke-width="4"/><circle cx="32" cy="32" r="9" fill="#C4EA66"/><path d="M2 14V4h10M52 4h10v10M62 50v10H52M12 60H2V50" stroke="#C4EA66" stroke-width="4"/></svg>
+    <span>تقني واعي</span>
+  </div>
+</div>
+</body></html>
